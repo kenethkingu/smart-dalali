@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { PrimaryButton, PropertyStatusBadge, formatPrice } from '../shared/Bits'
 import { RotatingWord } from '../shared/RotatingWord'
 import { useTypewriterPlaceholder } from '@/hooks/useTypewriterPlaceholder'
+import { GradientThumb } from '../shared/GradientThumb'
 import { properties } from '@/data/mockData'
 import type { Property } from '@/types'
 
@@ -32,12 +33,9 @@ function MiniPropertyCard({
       >
         <Link to={`/properties/${property.id}`} className="block group">
           <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-3 bg-zinc-100">
-            {/* Using a stable Unsplash ID to avoid flickering/broken images */}
-            <img 
-              src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400&q=80" 
-              alt={property.title}
-              className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out" 
-            />
+            <div className="w-full h-full group-hover:scale-[1.03] transition-transform duration-500 ease-out">
+              <GradientThumb tone={property.tone} />
+            </div>
             <div className="absolute top-2 left-2 scale-90 origin-top-left">
               <PropertyStatusBadge status={property.status} />
             </div>

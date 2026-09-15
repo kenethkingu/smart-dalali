@@ -5,6 +5,7 @@ import { siteVisitRequests, properties } from '@/data/mockData'
 import { canDecline, formatCountdown } from '@/lib/dates'
 import { PrimaryButton, DangerButton, formatPrice } from '@/components/shared/Bits'
 import { CountdownBadge } from '@/components/shared/CountdownBadge'
+import { GradientThumb } from '@/components/shared/GradientThumb'
 
 export function BuyerRequestDetail() {
   const { id } = useParams()
@@ -71,11 +72,7 @@ export function BuyerRequestDetail() {
       {/* Property summary card */}
       <div className="bg-white rounded-2xl border border-pl-line p-6 mb-6 flex gap-4">
         <div className="w-20 h-20 rounded-xl bg-zinc-200 overflow-hidden shrink-0">
-          <img
-            src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=200&q=80"
-            alt={property.title}
-            className="w-full h-full object-cover"
-          />
+          <GradientThumb tone={property.tone} className="object-cover" />
         </div>
         <div>
           <h2 className="font-bold text-pl-ink mb-1">

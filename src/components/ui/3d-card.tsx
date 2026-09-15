@@ -22,9 +22,17 @@ export const CardContainer = ({
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return
     const { left, top, width, height } = containerRef.current.getBoundingClientRect()
-    const x = (e.clientX - left - width / 2) / 25
-    const y = (e.clientY - top - height / 2) / 25
-    setMousePosition({ x, y })
+    
+    const MAX_TILT_DEG = 6
+    const clamp = (val: number, min: number, max: number) => Math.min(Math.max(val, min), max)
+
+    const rawX = (e.clientX - left - width / 2) / 25
+    const rawY = (e.clientY - top - height / 2) / 25
+    
+    setMousePosition({ 
+      x: clamp(rawX, -MAX_TILT_DEG, MAX_TILT_DEG), 
+      y: clamp(rawY, -MAX_TILT_DEG, MAX_TILT_DEG) 
+    })
   }
 
   const handleMouseEnter = () => setIsMouseEntered(true)

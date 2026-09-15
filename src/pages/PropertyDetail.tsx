@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { MapPin, Shield, ArrowLeft } from 'lucide-react'
 import { PrimaryButton, GhostButton, PropertyStatusBadge, formatPrice } from '../components/shared/Bits'
+import { GradientThumb } from '../components/shared/GradientThumb'
 import { properties } from '../data/mockData'
 
 export function PropertyDetail() {
@@ -24,11 +25,7 @@ export function PropertyDetail() {
           {/* LEFT PANEL: Gallery (~60%) */}
           <div className="w-full lg:w-3/5 space-y-4">
             <div className="aspect-[4/3] bg-zinc-200 rounded-2xl overflow-hidden relative">
-              <img 
-                src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80" 
-                alt={property.title}
-                className="w-full h-full object-cover"
-              />
+              <GradientThumb tone={property.tone} className="object-cover" />
               <div className="absolute top-4 left-4">
                 <PropertyStatusBadge status={property.status} />
               </div>
@@ -37,11 +34,7 @@ export function PropertyDetail() {
             <div className="grid grid-cols-4 gap-4">
               {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="aspect-[4/3] bg-zinc-200 rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
-                  <img 
-                    src={`https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400&q=80&sig=${i}`} 
-                    alt={`Thumbnail ${i}`}
-                    className="w-full h-full object-cover"
-                  />
+                  <GradientThumb tone={property.tone} className="object-cover" />
                 </div>
               ))}
             </div>

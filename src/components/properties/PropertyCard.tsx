@@ -4,6 +4,7 @@ import { PropertyStatusBadge, formatPrice } from '../shared/Bits'
 import { CardContainer, CardBody, CardItem } from '../ui/3d-card'
 import type { Property } from '@/types'
 import { cn } from '@/lib/utils'
+import { GradientThumb } from '../shared/GradientThumb'
 
 interface PropertyCardProps {
   property: Property
@@ -26,11 +27,9 @@ export function PropertyCard({ property, featured = false }: PropertyCardProps) 
         >
           {/* Image */}
           <CardItem translateZ={20} className={cn('bg-zinc-100 relative overflow-hidden w-full', featured ? 'aspect-[16/10]' : 'aspect-[4/3]')}>
-        <img
-          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-          alt={property.title}
-          className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
-        />
+            <div className="w-full h-full group-hover:scale-[1.03] transition-transform duration-500 ease-out">
+              <GradientThumb tone={property.tone} />
+            </div>
         <div className="absolute top-3 left-3">
           <PropertyStatusBadge status={property.status} />
         </div>
