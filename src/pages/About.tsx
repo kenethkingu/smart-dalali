@@ -42,7 +42,7 @@ export function About() {
   return (
     <div className="bg-white min-h-screen">
       {/* Hero */}
-      <section className="bg-pl-ink text-white py-28 px-4">
+      <section className="grain-texture bg-pl-ink text-white py-28 px-4">
         <div className="container mx-auto max-w-3xl text-center">
           <motion.div {...fadeUp()} className="mb-6 flex justify-center">
             <Logo size={48} tone="light" />
@@ -62,7 +62,7 @@ export function About() {
 
       <TracingBeam className="px-6">
         {/* Our Story */}
-        <section className="py-20">
+        <section className="grain-texture py-20 bg-white">
           <div className="container mx-auto max-w-3xl">
             <motion.h2 {...fadeUp()} className="text-3xl font-heading font-bold text-pl-ink mb-6">
               Our Story
@@ -90,7 +90,7 @@ export function About() {
         </section>
 
         {/* Why Proland */}
-        <section className="py-20 rounded-3xl bg-pl-surface px-6 md:px-12 mx-auto max-w-5xl mb-20">
+        <section className="grain-texture py-20 rounded-3xl bg-pl-surface px-6 md:px-12 mx-auto max-w-5xl mb-20">
           <motion.h2 {...fadeUp()} className="text-3xl font-heading font-bold text-pl-ink mb-12 text-center">
             Why Choose Proland
           </motion.h2>
@@ -108,7 +108,7 @@ export function About() {
         </section>
 
         {/* Statistics */}
-        <section className="py-20 mb-20">
+        <section className="grain-texture py-20 mb-20 bg-white">
           <div className="container mx-auto max-w-4xl">
             <motion.h2 {...fadeUp()} className="text-3xl font-heading font-bold text-pl-ink mb-12 text-center">
               Proland by the Numbers
@@ -126,12 +126,12 @@ export function About() {
       </TracingBeam>
 
       {/* CTA */}
-      <section className="py-20 px-4 bg-pl-ink text-white">
+      <section className="grain-texture py-20 px-4 bg-pl-surface text-pl-ink">
         <div className="container mx-auto max-w-2xl text-center">
           <motion.h2 {...fadeUp()} className="text-3xl font-heading font-bold mb-4">
             Ready to find your next property?
           </motion.h2>
-          <motion.p {...fadeUp(0.1)} className="text-white/70 mb-8">
+          <motion.p {...fadeUp(0.1)} className="text-pl-muted mb-8">
             Browse hundreds of verified homes, plots, and offices across Tanzania.
           </motion.p>
           <motion.div {...fadeUp(0.2)}>

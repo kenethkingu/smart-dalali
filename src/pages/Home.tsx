@@ -5,7 +5,7 @@ import { Hero } from '../components/home/Hero'
 import { PropertyCard } from '../components/properties/PropertyCard'
 import { PrimaryButton, GhostButton } from '../components/shared/Bits'
 import { Timeline } from '@/components/ui/timeline'
-import { properties } from '../data/mockData'
+import { publicProperties } from '../data/mockData'
 
 import { useReducedMotion } from 'framer-motion'
 
@@ -49,8 +49,7 @@ const trustItems = [
 export function Home() {
   const fadeUp = useFadeUp()
   // Use all approved properties for the editorial grid
-  const approved = properties.filter(p => p.status === 'approved')
-  const [featured, ...rest] = approved
+  const [featured, ...rest] = publicProperties
 
   return (
     <div className="bg-white min-h-screen">
@@ -104,16 +103,16 @@ export function Home() {
       </section>
 
       {/* ── How Proland Works ──────────────────────────────────────────────── */}
-      <section className="grain-texture bg-pl-surface" id="how-it-works">
+      <section className="grain-texture bg-pl-ink text-white" id="how-it-works">
         <Timeline
           data={steps.map(step => ({
             title: `Step ${step.n}`,
             content: (
               <div>
-                <h3 className="font-heading font-bold text-pl-ink mb-4 text-2xl">
+                <h3 className="font-heading font-bold text-white mb-4 text-2xl">
                   {step.title}
                 </h3>
-                <p className="text-pl-muted text-sm leading-relaxed max-w-sm">
+                <p className="text-white/70 text-sm leading-relaxed max-w-sm">
                   {step.desc}
                 </p>
               </div>
@@ -121,14 +120,14 @@ export function Home() {
           }))}
         />
         
-        <motion.div {...fadeUp(0.5)} className="mt-20 pt-12 border-t border-pl-line flex justify-center pb-20">
+        <motion.div {...fadeUp(0.5)} className="mt-20 pt-12 border-t border-white/20 flex justify-center pb-20">
           <Link to="/properties">
             <PrimaryButton className="h-13 px-10">Browse Properties</PrimaryButton>
           </Link>
         </motion.div>
       </section>
       {/* ── Why Proland ────────────────────────────────────────────────────── */}
-      <section className="grain-texture py-20 bg-pl-surface">
+      <section className="grain-texture py-20 bg-white">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.h2
             {...fadeUp()}
@@ -172,7 +171,7 @@ export function Home() {
       </section>
 
       {/* ── Owner CTA ──────────────────────────────────────────────────────── */}
-      <section className="grain-texture py-20 px-4 bg-white border-t border-pl-line">
+      <section className="grain-texture py-20 px-4 bg-pl-surface border-t border-pl-line">
         <div className="container mx-auto max-w-3xl text-center">
           <motion.p {...fadeUp()} className="text-xs font-bold uppercase tracking-[0.2em] text-pl-muted mb-4">
             For Property Owners

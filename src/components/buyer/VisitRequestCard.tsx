@@ -3,7 +3,8 @@ import { ArrowRight, CheckCircle, XCircle, Clock, MapPin } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { canDecline } from '@/lib/dates'
 import { CountdownBadge } from '@/components/shared/CountdownBadge'
-import { PrimaryButton, DangerButton, formatPrice } from '@/components/shared/Bits'
+import { DangerButton, formatPrice } from '@/components/shared/Bits'
+import { ConfirmPaymentDialog } from './ConfirmPaymentDialog'
 import { properties } from '@/data/mockData'
 import type { SiteVisitRequest } from '@/types'
 
@@ -80,12 +81,13 @@ export function VisitRequestCard({ request, onDecline, onPay }: VisitRequestCard
                     Decline
                   </DangerButton>
                 )}
-                <PrimaryButton
-                  className="text-sm h-11 px-4"
-                  onClick={() => onPay?.(request.id)}
-                >
-                  Confirm Payment
-                </PrimaryButton>
+                {property && (
+                  <ConfirmPaymentDialog
+                    property={property}
+                    onConfirm={() => onPay?.(request.id)}
+                    triggerClassName="text-sm h-11 px-4"
+                  />
+                )}
               </>
             )}
             <Link

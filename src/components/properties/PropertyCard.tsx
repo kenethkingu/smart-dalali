@@ -14,7 +14,7 @@ interface PropertyCardProps {
 
 export function PropertyCard({ property, featured = false }: PropertyCardProps) {
   return (
-    <CardContainer containerClassName="w-full h-full p-0">
+    <CardContainer containerClassName="w-full h-full p-0" isStatic={featured}>
       <CardBody className="w-full h-full">
         <Link
           to={`/properties/${property.id}`}

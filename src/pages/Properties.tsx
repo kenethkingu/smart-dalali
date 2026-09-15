@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { properties } from '../data/mockData'
+import { publicProperties } from '../data/mockData'
 import { PropertyCard } from '../components/properties/PropertyCard'
 import { FiltersSidebar } from '../components/properties/FiltersSidebar'
 import { FiltersSheet } from '../components/properties/FiltersSheet'
@@ -30,7 +30,7 @@ export function Properties() {
   const { filters } = useFilterState()
 
   const filteredProperties = useMemo(() => {
-    return properties.filter(p => {
+    return publicProperties.filter(p => {
       if (filters.purpose && p.purpose !== filters.purpose) return false
       if (filters.type.length > 0 && !filters.type.includes(p.type)) return false
       if (filters.minPrice !== null && p.price < filters.minPrice) return false
@@ -42,7 +42,7 @@ export function Properties() {
   }, [filters])
 
   return (
-    <div className="bg-pl-surface min-h-screen">
+    <div className="grain-texture bg-pl-surface min-h-screen">
       <div className="container mx-auto px-4 py-8 lg:py-12">
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           

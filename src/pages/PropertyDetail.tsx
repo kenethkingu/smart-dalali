@@ -9,7 +9,7 @@ export function PropertyDetail() {
   const property = properties.find(p => p.id === id) || properties[0]
 
   return (
-    <div className="bg-pl-surface min-h-screen pb-20">
+    <div className="grain-texture bg-pl-surface min-h-screen pb-20">
       {/* Top Nav / Breadcrumbs */}
       <div className="bg-white border-b sticky top-16 z-40">
         <div className="container mx-auto px-4 h-14 flex items-center">

@@ -1,31 +1,28 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Clock, CheckCircle, Search } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
-import { siteVisitRequests } from '@/data/mockData'
 import { VisitRequestCard } from '@/components/buyer/VisitRequestCard'
 import { PrimaryButton } from '@/components/shared/Bits'
 
+import { useRequests } from '@/lib/requests'
+
 export function BuyerDashboard() {
   const { user } = useAuth()
-  const [requests, setRequests] = useState(
-    siteVisitRequests.filter(r => r.buyerId === 'buyer1') // mock: show buyer1's requests
-  )
+  const { requests: allRequests, updateRequest } = useRequests()
+  
+  // mock: show buyer1's requests
+  const requests = allRequests.filter(r => r.buyerId === 'buyer1')
 
   const pending = requests.filter(r => r.status === 'pending').length
   const confirmed = requests.filter(r => r.status === 'payment_confirmed').length
 
   const handleDecline = (id: string) => {
-    setRequests(prev =>
-      prev.map(r => r.id === id ? { ...r, status: 'declined' as const, declinedAt: new Date().toISOString() } : r)
-    )
+    updateRequest(id, { status: 'declined', declinedAt: new Date().toISOString() })
   }
 
   const handlePay = (id: string) => {
-    setRequests(prev =>
-      prev.map(r => r.id === id ? { ...r, status: 'payment_confirmed' as const, paymentConfirmedAt: new Date().toISOString() } : r)
-    )
+    updateRequest(id, { status: 'payment_confirmed', paymentConfirmedAt: new Date().toISOString() })
   }
 
   return (

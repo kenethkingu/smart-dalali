@@ -1,10 +1,9 @@
-import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import confetti from 'canvas-confetti'
+
 import { ArrowLeft, CheckCircle, Clock, XCircle, AlertCircle } from 'lucide-react'
-import { siteVisitRequests, properties } from '@/data/mockData'
+import { properties } from '@/data/mockData'
 import { canDecline, formatCountdown } from '@/lib/dates'
-import { PrimaryButton, DangerButton, formatPrice } from '@/components/shared/Bits'
+import { DangerButton, formatPrice } from '@/components/shared/Bits'
 import { CountdownBadge } from '@/components/shared/CountdownBadge'
 import { PropertyImage } from '@/components/shared/PropertyImage'
 import {
@@ -18,47 +17,23 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/components/ui/alert-dialog'
+import { ConfirmPaymentDialog } from '@/components/buyer/ConfirmPaymentDialog'
+import { useRequests } from '@/lib/requests'
 
 export function BuyerRequestDetail() {
   const { id } = useParams()
-  const [requests, setRequests] = useState(siteVisitRequests)
+  const { requests, updateRequest } = useRequests()
   const request = requests.find(r => r.id === id)
   const property = request ? properties.find(p => p.id === request.propertyId) : null
 
   const handleDecline = () => {
     if (!request) return
-    setRequests(prev =>
-      prev.map(r => r.id === id ? { ...r, status: 'declined' as const, declinedAt: new Date().toISOString() } : r)
-    )
+    updateRequest(id!, { status: 'declined', declinedAt: new Date().toISOString() })
   }
 
   const handlePay = () => {
     if (!request) return
-    setRequests(prev =>
-      prev.map(r => r.id === id ? { ...r, status: 'payment_confirmed' as const, paymentConfirmedAt: new Date().toISOString() } : r)
-    )
-
-    // Trigger confetti from the left and right edges
-    const duration = 2000
-    const end = Date.now() + duration
-    const frame = () => {
-      confetti({
-        particleCount: 5,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: ['#16A97C', '#0B0B0C', '#E5E5E4']
-      })
-      confetti({
-        particleCount: 5,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: ['#16A97C', '#0B0B0C', '#E5E5E4']
-      })
-      if (Date.now() < end) requestAnimationFrame(frame)
-    }
-    frame()
+    updateRequest(id!, { status: 'payment_confirmed', paymentConfirmedAt: new Date().toISOString() })
   }
 
   if (!request || !property) {
@@ -175,9 +150,7 @@ export function BuyerRequestDetail() {
                 </AlertDialogContent>
               </AlertDialog>
             )}
-            <PrimaryButton onClick={handlePay}>
-              Confirm Payment
-            </PrimaryButton>
+            <ConfirmPaymentDialog property={property} onConfirm={handlePay} />
           </div>
         )}
       </div>

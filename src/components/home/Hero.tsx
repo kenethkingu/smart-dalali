@@ -1,12 +1,13 @@
 import { useNavigate, Link } from 'react-router-dom'
 import { useState } from 'react'
-import { Search, MapPin } from 'lucide-react'
+import { Search, MapPin, ShieldCheck } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { PrimaryButton, PropertyStatusBadge, formatPrice } from '../shared/Bits'
 import { RotatingWord } from '../shared/RotatingWord'
 import { useTypewriterPlaceholder } from '@/hooks/useTypewriterPlaceholder'
 import { PropertyImage } from '../shared/PropertyImage'
-import { properties } from '@/data/mockData'
+
+import { publicProperties } from '@/data/mockData'
 import type { Property } from '@/types'
 
 function MiniPropertyCard({ 
@@ -51,6 +52,11 @@ function MiniPropertyCard({
               {property.priceUnit === 'month' && <span className="text-[10px] font-normal text-pl-muted ml-1">/ mo</span>}
             </div>
             <div className="text-xs font-semibold text-pl-ink/90 truncate">{property.title}</div>
+            {property.agent?.verified && (
+              <div className="flex items-center gap-1 mt-1 text-[10px] text-pl-accent font-bold tracking-tight">
+                <ShieldCheck className="w-3 h-3" /> VERIFIED OWNER
+              </div>
+            )}
           </div>
         </Link>
       </motion.div>
@@ -75,8 +81,8 @@ export function Hero() {
     navigate(`/properties?${params.toString()}`)
   }
 
-  // Get 2 featured/sponsored properties for the floating cards
-  const featuredCards = properties.filter(p => p.sponsored).slice(0, 2)
+  // Get up to 3 featured/sponsored properties for the floating cards
+  const featuredCards = publicProperties.filter(p => p.sponsored).slice(0, 3)
 
   return (
     <section className="grain-texture relative w-full min-h-[90vh] flex items-center overflow-hidden bg-pl-ink">
@@ -201,6 +207,14 @@ export function Hero() {
                   entranceDelay={1.65}
                   floatDelay={2}
                 />
+                {featuredCards[2] && (
+                  <MiniPropertyCard 
+                    property={featuredCards[2]} 
+                    className="top-1/2 -translate-y-1/2 left-32 -rotate-3 z-0 scale-90 opacity-80"
+                    entranceDelay={1.8}
+                    floatDelay={1}
+                  />
+                )}
               </>
             )}
           </div>

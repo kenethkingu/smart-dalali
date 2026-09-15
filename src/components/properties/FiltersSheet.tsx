@@ -3,7 +3,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { PriceRangeFilter } from './PriceRangeFilter'
 import { Pill, PrimaryButton } from '../shared/Bits'
 import { useFilterState } from '@/lib/useFilterState'
-import { properties } from '@/data/mockData'
+import { publicProperties } from '@/data/mockData'
 import type { PropertyType } from '@/types'
 import { Filter } from 'lucide-react'
 
@@ -12,7 +12,7 @@ export function FiltersSheet() {
 
   // For the sheet, we simulate "live counts" the exact same way as desktop
   const getCount = (key: string, val: any) => {
-    return properties.filter(p => {
+    return publicProperties.filter(p => {
       if (key === 'purpose' && p.purpose !== val) return false
       if (key === 'type' && p.type !== val) return false
       if (key === 'bedrooms' && val !== 'any' && (p.bedrooms || 0) < parseInt(val)) return false
@@ -38,7 +38,7 @@ export function FiltersSheet() {
   }
 
   // Simulate total filtered results for the bottom button
-  const currentTotal = properties.filter(p => {
+  const currentTotal = publicProperties.filter(p => {
     if (filters.purpose && p.purpose !== filters.purpose) return false
     if (filters.type.length > 0 && !filters.type.includes(p.type)) return false
     if (filters.minPrice !== null && p.price < filters.minPrice) return false

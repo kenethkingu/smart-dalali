@@ -6,7 +6,7 @@ export const properties: Property[] = [
     location: 'Sinza Mori, Dar es Salaam', price: 900_000, priceUnit: 'month',
     purpose: 'rent', type: 'house', bedrooms: 3, areaSqm: 120,
     amenities: ['WiFi', 'Parking', '24/7 Security', 'Reliable Water'],
-    status: 'approved',
+    status: 'approved', sponsored: true,
     imageUrl: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop',
     galleryUrls: [
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000&auto=format&fit=crop',
@@ -22,7 +22,7 @@ export const properties: Property[] = [
     location: 'Mikocheni B, Dar es Salaam', price: 900_000, priceUnit: 'month',
     purpose: 'rent', type: 'house', bedrooms: 3, areaSqm: 120,
     amenities: ['WiFi', 'Elevator', '24/7 Security', 'Generator Backup'],
-    status: 'approved',
+    status: 'approved', sponsored: true,
     imageUrl: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=2000&auto=format&fit=crop',
     galleryUrls: [
       'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2000&auto=format&fit=crop',
@@ -51,7 +51,7 @@ export const properties: Property[] = [
     purpose: 'rent', type: 'house', bedrooms: 2, areaSqm: 80,
     amenities: ['Reliable Water'],
     status: 'pending',
-    imageUrl: 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83_broken_test?q=80&w=2000&auto=format&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?q=80&w=2000&auto=format&fit=crop',
     galleryUrls: [
       'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=2000&auto=format&fit=crop',
     ],
@@ -85,3 +85,6 @@ export const demoUsers = {
   owner: { id: 'owner1', name: 'John Mwakalinga', phone: '+255712000222', role: 'owner' as const },
   admin: { id: 'admin1', name: 'Proland Admin', phone: '+255712000333', role: 'admin' as const },
 }
+
+// Only approved properties should ever be shown on public routes
+export const publicProperties = properties.filter(p => p.status === 'approved')

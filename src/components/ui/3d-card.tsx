@@ -10,10 +10,12 @@ export const CardContainer = ({
   children,
   className,
   containerClassName,
+  isStatic = false,
 }: {
   children: React.ReactNode
   className?: string
   containerClassName?: string
+  isStatic?: boolean
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isMouseEntered, setIsMouseEntered] = useState(false)
@@ -21,7 +23,7 @@ export const CardContainer = ({
   const shouldReduce = useReducedMotion()
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return
+    if (!containerRef.current || isStatic) return
     const { left, top, width, height } = containerRef.current.getBoundingClientRect()
     
     const MAX_TILT_DEG = 6
@@ -54,8 +56,8 @@ export const CardContainer = ({
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           animate={{
-            rotateY: isMouseEntered && !shouldReduce ? mousePosition.x : 0,
-            rotateX: isMouseEntered && !shouldReduce ? -mousePosition.y : 0,
+            rotateY: isMouseEntered && !shouldReduce && !isStatic ? mousePosition.x : 0,
+            rotateX: isMouseEntered && !shouldReduce && !isStatic ? -mousePosition.y : 0,
           }}
           transition={{ type: 'spring', stiffness: 400, damping: 30, mass: 0.5 }}
           className={cn('flex items-center justify-center relative transition-all duration-200 ease-linear', className)}

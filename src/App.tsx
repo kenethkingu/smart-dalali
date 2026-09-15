@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './lib/auth'
+import { RequestsProvider } from './lib/requests'
 
 // layout
 import { Navbar } from './components/layout/Navbar'
@@ -47,7 +48,8 @@ function App() {
     <BrowserRouter>
       <ScrollHandler />
       <AuthProvider>
-        <div className="flex flex-col min-h-screen">
+        <RequestsProvider>
+          <div className="flex flex-col min-h-screen">
           <Navbar />
           <main className="flex-1">
             <Routes>
@@ -90,7 +92,8 @@ function App() {
           </main>
           <FloatingWhatsApp />
           <Footer />
-        </div>
+          </div>
+        </RequestsProvider>
       </AuthProvider>
     </BrowserRouter>
   )

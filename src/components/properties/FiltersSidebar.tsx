@@ -2,7 +2,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { PriceRangeFilter } from './PriceRangeFilter'
 import { Pill } from '../shared/Bits'
 import { useFilterState } from '@/lib/useFilterState'
-import { properties } from '@/data/mockData'
+import { publicProperties } from '@/data/mockData'
 import type { PropertyType } from '@/types'
 
 export function FiltersSidebar() {
@@ -11,7 +11,7 @@ export function FiltersSidebar() {
   // Calculate live counts based on mockData
   // For each filter option, we pretend all other active filters are applied EXCEPT the one we're evaluating.
   const getCount = (key: string, val: any) => {
-    return properties.filter(p => {
+    return publicProperties.filter(p => {
       // Very basic filtering logic for mock live counts
       if (key === 'purpose' && p.purpose !== val) return false
       if (key === 'type' && p.type !== val) return false
