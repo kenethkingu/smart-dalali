@@ -44,7 +44,7 @@ export function useTypewriterPlaceholder({
     }
 
     const currentPhrase = phrases[phraseIndex]
-    let timeout: NodeJS.Timeout
+    let timeout: ReturnType<typeof setTimeout>
 
     if (!isDeleting && text === currentPhrase) {
       // Pause at the end of typing before deleting
