@@ -1,44 +1,108 @@
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import { Search, MapPin } from 'lucide-react'
 import { PrimaryButton, Pill } from '../shared/Bits'
 
 export function Hero() {
+  const navigate = useNavigate()
+  const [location, setLocation] = useState('')
+  const [activePurpose, setActivePurpose] = useState<'rent' | 'buy'>('rent')
+  const [activeType, setActiveType] = useState<string | null>(null)
+
+  const handleSearch = () => {
+    const params = new URLSearchParams()
+    if (activePurpose) params.set('purpose', activePurpose)
+    if (activeType) params.set('type', activeType)
+    navigate(`/properties?${params.toString()}`)
+  }
+
   return (
-    <section className="relative w-full h-[600px] flex items-center justify-center overflow-hidden bg-pl-surface">
-      {/* Background element */}
-      <div className="absolute inset-0 bg-gradient-to-br from-pl-surface to-pl-line/30" />
-      
-      <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center">
-        <h1 className="text-4xl md:text-6xl font-heading font-bold text-pl-ink max-w-4xl tracking-tight mb-8">
-          Find the Home or Plot You Want — Book a Visit, Pay Securely.
-        </h1>
-        
-        {/* Search Bar (Zillow pattern) */}
-        <div className="w-full max-w-3xl bg-white p-2 rounded-2xl shadow-xl flex flex-col sm:flex-row items-center gap-2">
-          <div className="flex-1 flex items-center gap-2 px-4 py-3 w-full border-b sm:border-b-0 sm:border-r border-pl-line">
-            <MapPin className="text-pl-muted w-5 h-5 shrink-0" />
-            <input 
-              type="text" 
-              placeholder="Enter location, neighborhood, or city" 
-              className="w-full bg-transparent outline-none text-pl-ink placeholder:text-pl-muted font-medium"
-            />
+    <section className="grain relative w-full min-h-[90vh] flex items-center overflow-hidden bg-pl-ink">
+
+      {/* Subtle architectural grid lines — background texture */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: 'linear-gradient(var(--pl-white) 1px, transparent 1px), linear-gradient(90deg, var(--pl-white) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+        }}
+      />
+
+      <div className="relative z-10 container mx-auto px-4 py-24 lg:py-32">
+        <div className="max-w-5xl">
+
+          {/* Headline — viewport-scaled, left-aligned, deliberately oversized */}
+          <h1
+            className="text-display font-heading font-bold text-white mb-6 tracking-[-0.02em] leading-[1.05]"
+            style={{ fontSize: 'clamp(2.75rem, 7vw, 5.5rem)' }}
+          >
+            Find the Home<br />
+            or Plot You Want.
+            <span className="block text-pl-accent mt-1" style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.75rem)' }}>
+              Book a visit. Pay securely.
+            </span>
+          </h1>
+
+          <p className="text-white/60 text-lg mb-10 max-w-xl leading-relaxed">
+            Every listing on Proland is reviewed by our team before going public.
+            No ghost properties, no payment before you've seen the place.
+          </p>
+
+          {/* Search bar */}
+          <div className="w-full max-w-2xl bg-white p-1.5 rounded-lg flex flex-col sm:flex-row items-stretch gap-1.5 mb-8">
+            <div className="flex flex-1 items-center gap-2 px-4 py-3">
+              <MapPin className="text-pl-muted w-4 h-4 shrink-0" />
+              <input
+                type="text"
+                value={location}
+                onChange={e => setLocation(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSearch()}
+                placeholder="Location, neighborhood or city…"
+                className="w-full bg-transparent outline-none text-pl-ink placeholder:text-pl-muted text-sm font-medium"
+              />
+            </div>
+            <PrimaryButton
+              onClick={handleSearch}
+              className="rounded-md px-6 py-3 text-sm shrink-0"
+            >
+              <Search className="w-4 h-4" /> Search
+            </PrimaryButton>
           </div>
-          
-          <PrimaryButton className="w-full sm:w-auto px-8 py-4 rounded-xl text-lg shrink-0">
-            <Search className="w-5 h-5 mr-1" /> Search
-          </PrimaryButton>
-        </div>
-        
-        {/* Quick filters */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
-          <span className="text-sm font-medium text-pl-muted mr-2">Quick Search:</span>
-          <Pill active>Rent</Pill>
-          <Pill>Buy</Pill>
-          <div className="w-px h-4 bg-pl-line mx-1" />
-          <Pill>Houses</Pill>
-          <Pill>Plots</Pill>
-          <Pill>Offices</Pill>
+
+          {/* Quick-filter pills */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-semibold text-white/40 uppercase tracking-widest mr-1">Filter</span>
+            <Pill
+              active={activePurpose === 'rent'}
+              onClick={() => setActivePurpose('rent')}
+              className="border-white/20 text-white/70 data-[active]:bg-white data-[active]:text-pl-ink"
+            >
+              Rent
+            </Pill>
+            <Pill
+              active={activePurpose === 'buy'}
+              onClick={() => setActivePurpose('buy')}
+              className="border-white/20 text-white/70"
+            >
+              Buy
+            </Pill>
+            <div className="w-px h-4 bg-white/20 mx-1" />
+            {['house', 'plot', 'office'].map(t => (
+              <Pill
+                key={t}
+                active={activeType === t}
+                onClick={() => setActiveType(activeType === t ? null : t)}
+                className="border-white/20 text-white/70 capitalize"
+              >
+                {t === 'house' ? 'Houses' : t === 'plot' ? 'Plots' : 'Offices'}
+              </Pill>
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* Bottom fade to white for seamless transition */}
+      <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
     </section>
   )
 }
