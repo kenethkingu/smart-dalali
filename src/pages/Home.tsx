@@ -51,7 +51,7 @@ export function Home() {
       <Hero />
 
       {/* ── Featured Properties ─────────────────────────────────────────────── */}
-      <section className="py-20 bg-white" id="featured">
+      <section className="grain-texture py-20 bg-white" id="featured">
         <div className="container mx-auto px-4">
           <motion.div {...fadeUp()} className="flex items-end justify-between mb-10">
             <div>
@@ -98,7 +98,7 @@ export function Home() {
       </section>
 
       {/* ── How Proland Works ──────────────────────────────────────────────── */}
-      <section className="bg-pl-surface" id="how-it-works">
+      <section className="grain-texture bg-pl-surface" id="how-it-works">
         <Timeline
           data={steps.map(step => ({
             title: `Step ${step.n}`,
@@ -122,7 +122,7 @@ export function Home() {
         </motion.div>
       </section>
       {/* ── Why Proland ────────────────────────────────────────────────────── */}
-      <section className="py-20 bg-pl-surface">
+      <section className="grain-texture py-20 bg-pl-surface">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.h2
             {...fadeUp()}
@@ -166,7 +166,7 @@ export function Home() {
       </section>
 
       {/* ── Owner CTA ──────────────────────────────────────────────────────── */}
-      <section className="py-20 px-4 bg-white border-t border-pl-line">
+      <section className="grain-texture py-20 px-4 bg-white border-t border-pl-line">
         <div className="container mx-auto max-w-3xl text-center">
           <motion.p {...fadeUp()} className="text-xs font-bold uppercase tracking-[0.2em] text-pl-muted mb-4">
             For Property Owners

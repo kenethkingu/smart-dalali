@@ -81,7 +81,7 @@ export function Hero() {
   const featuredCards = properties.filter(p => p.sponsored).slice(0, 2)
 
   return (
-    <section className="grain relative w-full min-h-[90vh] flex items-center overflow-hidden bg-pl-ink">
+    <section className="grain-texture relative w-full min-h-[90vh] flex items-center overflow-hidden bg-pl-ink">
       {/* Subtle architectural grid lines — background texture */}
       <div
         className="absolute inset-0 opacity-[0.04]"
