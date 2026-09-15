@@ -1,6 +1,6 @@
 import { useNavigate, Link } from 'react-router-dom'
 import { useState } from 'react'
-import { Search, MapPin, ShieldCheck } from 'lucide-react'
+import { Search, MapPin } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { PrimaryButton, PropertyStatusBadge, formatPrice } from '../shared/Bits'
 import { RotatingWord } from '../shared/RotatingWord'
@@ -52,11 +52,6 @@ function MiniPropertyCard({
               {property.priceUnit === 'month' && <span className="text-[10px] font-normal text-pl-muted ml-1">/ mo</span>}
             </div>
             <div className="text-xs font-semibold text-pl-ink/90 truncate">{property.title}</div>
-            {property.agent?.verified && (
-              <div className="flex items-center gap-1 mt-1 text-[10px] text-pl-accent font-bold tracking-tight">
-                <ShieldCheck className="w-3 h-3" /> VERIFIED OWNER
-              </div>
-            )}
           </div>
         </Link>
       </motion.div>
@@ -180,41 +175,33 @@ export function Hero() {
                   x="78" y="78" width="44" height="22" 
                   fill="#0B0B0C" // acts as the cutout for the "door" like the logo
                 />
-                <motion.rect 
-                  x="50" y="112" width="100" height="18" rx="9" 
-                  fill="none" 
-                  stroke="#FFFFFF" 
-                  strokeWidth="2" 
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }}
-                />
+
               </motion.svg>
             </div>
 
             {/* Floating Mini Property Cards */}
             {featuredCards.length >= 2 && (
               <>
+                {featuredCards[2] && (
+                  <MiniPropertyCard 
+                    property={featuredCards[2]} 
+                    className="top-8 right-24 rotate-3 z-0 scale-90 opacity-90"
+                    entranceDelay={1.8}
+                    floatDelay={1}
+                  />
+                )}
                 <MiniPropertyCard 
                   property={featuredCards[0]} 
-                  className="top-12 right-12 -rotate-2"
+                  className="top-28 -right-4 -rotate-2"
                   entranceDelay={1.5}
                   floatDelay={0}
                 />
                 <MiniPropertyCard 
                   property={featuredCards[1]} 
-                  className="bottom-12 left-8 rotate-1"
+                  className="bottom-16 left-12 rotate-1"
                   entranceDelay={1.65}
                   floatDelay={2}
                 />
-                {featuredCards[2] && (
-                  <MiniPropertyCard 
-                    property={featuredCards[2]} 
-                    className="top-1/2 -translate-y-1/2 left-32 -rotate-3 z-0 scale-90 opacity-80"
-                    entranceDelay={1.8}
-                    floatDelay={1}
-                  />
-                )}
               </>
             )}
           </div>
