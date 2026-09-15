@@ -28,13 +28,20 @@ export function Login() {
   const [name, setName] = useState('')
   const [role, setRole] = useState<'buyer' | 'owner'>('buyer')
 
-  const handleDemoLogin = (demoKey: keyof typeof demoUsers, dest: string) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleDemoLogin = async (demoKey: keyof typeof demoUsers, dest: string) => {
+    setIsSubmitting(true)
+    await new Promise(r => setTimeout(r, 600))
     login(demoUsers[demoKey])
     navigate(dest, { replace: true })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    await new Promise(r => setTimeout(r, 600))
+    
     // No real OTP backend yet — any submission logs in immediately.
     // The pre-filled phone maps to demoUsers.buyer by convention.
     const userName = tab === 'login' ? 'Amina Hassan' : name
@@ -49,7 +56,9 @@ export function Login() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <Logo size={40} tone="dark" />
+          <Link to="/">
+            <Logo size={40} tone="dark" />
+          </Link>
         </div>
 
         {/* Context hint */}
@@ -89,7 +98,7 @@ export function Login() {
           {/* Divider */}
           <div className="flex items-center gap-3 px-6 py-4">
             <div className="flex-1 h-px bg-pl-line" />
-            <span className="text-xs font-semibold text-pl-muted whitespace-nowrap">or sign in with your account</span>
+            <span className="text-xs font-semibold text-pl-muted whitespace-nowrap">or log in with your account</span>
             <div className="flex-1 h-px bg-pl-line" />
           </div>
 
@@ -181,14 +190,14 @@ export function Login() {
                   </div>
                 )}
 
-                <PrimaryButton type="submit" className="w-full h-11 text-sm mt-1">
-                  {tab === 'login' ? 'Log In' : 'Create Account'} <ChevronRight className="w-4 h-4" />
+                <PrimaryButton type="submit" disabled={isSubmitting} className="w-full h-11 text-sm mt-1">
+                  {isSubmitting ? (tab === 'login' ? 'Logging in...' : 'Creating Account...') : (tab === 'login' ? 'Log In' : 'Create Account')} {!isSubmitting && <ChevronRight className="w-4 h-4" />}
                 </PrimaryButton>
 
                 {tab === 'login' && (
                   <p className="text-center text-sm text-pl-muted">
                     Don't have an account?{' '}
-                    <button type="button" onClick={() => setTab('signup')} className="font-bold text-pl-ink underline underline-offset-2">
+                    <button type="button" disabled={isSubmitting} onClick={() => setTab('signup')} className="font-bold text-pl-ink underline underline-offset-2 disabled:opacity-50">
                       Sign Up
                     </button>
                   </p>

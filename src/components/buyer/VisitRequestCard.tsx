@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, CheckCircle, XCircle, Clock } from 'lucide-react'
+import { ArrowRight, CheckCircle, XCircle, Clock, MapPin } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { canDecline } from '@/lib/dates'
 import { CountdownBadge } from '@/components/shared/CountdownBadge'
@@ -27,8 +27,15 @@ export function VisitRequestCard({ request, onDecline, onPay }: VisitRequestCard
     >
       <div className="flex flex-col sm:flex-row gap-4 justify-between">
         <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-bold text-pl-ink">
+          {property && (
+            <div className="font-heading font-bold text-pl-ink tracking-tight mb-1 text-lg">
+              TSh {formatPrice(property.price)}
+              {property.priceUnit === 'month' && <span className="text-sm font-normal text-pl-muted ml-1">/ mo</span>}
+            </div>
+          )}
+          
+          <div className="flex items-center gap-2 mb-2">
+            <h3 className="font-heading font-semibold text-pl-ink/90 text-base">
               {property?.title ?? 'Unknown Property'}
             </h3>
             {request.status === 'payment_confirmed' && (
@@ -38,14 +45,13 @@ export function VisitRequestCard({ request, onDecline, onPay }: VisitRequestCard
               <XCircle className="w-4 h-4 text-pl-muted shrink-0" />
             )}
           </div>
-          <p className="text-sm text-pl-muted mb-2">{property?.location}</p>
-          {property && (
-            <p className="text-sm font-semibold text-pl-ink">
-              TSh {formatPrice(property.price)}
-              {property.priceUnit === 'month' ? '/mo' : ''}
-            </p>
-          )}
-          <p className="text-xs text-pl-muted mt-2">
+          
+          <div className="flex items-center text-sm text-pl-muted mb-2">
+            <MapPin className="w-3.5 h-3.5 mr-1 shrink-0" />
+            {property?.location}
+          </div>
+
+          <p className="text-xs text-pl-muted mt-3 pt-3 border-t border-pl-line">
             Requested {new Date(request.requestedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
           </p>
         </div>
@@ -68,14 +74,14 @@ export function VisitRequestCard({ request, onDecline, onPay }: VisitRequestCard
               <>
                 {canStillDecline && (
                   <DangerButton
-                    className="text-xs px-3 py-1.5"
+                    className="text-sm h-11 px-4"
                     onClick={() => onDecline?.(request.id)}
                   >
                     Decline
                   </DangerButton>
                 )}
                 <PrimaryButton
-                  className="text-xs px-3 py-1.5"
+                  className="text-sm h-11 px-4"
                   onClick={() => onPay?.(request.id)}
                 >
                   Confirm Payment

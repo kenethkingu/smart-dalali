@@ -29,13 +29,36 @@ const defaultForm: FormData = {
   bedrooms: '', areaSqm: '', description: '', amenities: [], photos: [],
 }
 
+import { properties } from '@/data/mockData'
+
 export function PropertyForm() {
   const { id } = useParams()
   const navigate = useNavigate()
   const isEdit = Boolean(id)
+  
+  // Find existing property if in edit mode
+  const existingProperty = isEdit ? properties.find(p => p.id === id) : null
+  
+  // If editing but ID is invalid, redirect to 404
+  if (isEdit && !existingProperty) {
+    navigate('/404', { replace: true })
+    return null
+  }
+
   const [step, setStep] = useState<Step>(1)
+  const [showAllAmenities, setShowAllAmenities] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-  const [form, setForm] = useState<FormData>(defaultForm)
+  const [form, setForm] = useState<FormData>(existingProperty ? {
+    purpose: existingProperty.purpose,
+    type: existingProperty.type,
+    location: existingProperty.location,
+    price: String(existingProperty.price),
+    bedrooms: existingProperty.bedrooms ? String(existingProperty.bedrooms) : '',
+    areaSqm: existingProperty.areaSqm ? String(existingProperty.areaSqm) : '',
+    description: existingProperty.description,
+    amenities: existingProperty.amenities,
+    photos: [] // No real photos in mock data
+  } : defaultForm)
 
   const set = (key: keyof FormData, value: any) => setForm(prev => ({ ...prev, [key]: value }))
 
@@ -52,9 +75,14 @@ export function PropertyForm() {
   const removePhoto = (i: number) =>
     set('photos', form.photos.filter((_, idx) => idx !== i))
 
-  const handleSubmit = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true)
+    await new Promise(r => setTimeout(r, 600))
     // Mock submit — property created with status: 'pending'
     setSubmitted(true)
+    setIsSubmitting(false)
   }
 
   if (submitted) {
@@ -182,7 +210,7 @@ export function PropertyForm() {
               <div>
                 <label className="block text-sm font-semibold text-pl-ink mb-3">Amenities</label>
                 <div className="grid grid-cols-2 gap-2">
-                  {AMENITIES.map(a => (
+                  {AMENITIES.slice(0, showAllAmenities ? AMENITIES.length : 6).map(a => (
                     <label key={a} className="flex items-center gap-2 cursor-pointer group">
                       <input type="checkbox" checked={form.amenities.includes(a)} onChange={() => toggleAmenity(a)}
                         className="w-4 h-4 accent-pl-accent" />
@@ -190,6 +218,15 @@ export function PropertyForm() {
                     </label>
                   ))}
                 </div>
+                {AMENITIES.length > 6 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAllAmenities(!showAllAmenities)}
+                    className="text-sm font-bold text-pl-accent hover:text-pl-accent-dark transition-colors mt-4 block"
+                  >
+                    {showAllAmenities ? 'Show less' : 'Show more'}
+                  </button>
+                )}
               </div>
             </motion.div>
           )}
@@ -238,8 +275,8 @@ export function PropertyForm() {
               Next <ChevronRight className="w-4 h-4" />
             </PrimaryButton>
           ) : (
-            <PrimaryButton onClick={handleSubmit} className="px-6">
-              Submit Listing <CheckCircle className="w-4 h-4" />
+            <PrimaryButton disabled={isSubmitting} onClick={handleSubmit} className="px-6">
+              {isSubmitting ? 'Submitting...' : 'Submit Listing'} {!isSubmitting && <CheckCircle className="w-4 h-4" />}
             </PrimaryButton>
           )}
         </div>

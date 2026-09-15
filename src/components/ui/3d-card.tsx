@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 const MouseEnterContext = createContext<
@@ -18,6 +18,7 @@ export const CardContainer = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const [isMouseEntered, setIsMouseEntered] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const shouldReduce = useReducedMotion()
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return
@@ -53,8 +54,8 @@ export const CardContainer = ({
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           animate={{
-            rotateY: isMouseEntered ? mousePosition.x : 0,
-            rotateX: isMouseEntered ? -mousePosition.y : 0,
+            rotateY: isMouseEntered && !shouldReduce ? mousePosition.x : 0,
+            rotateX: isMouseEntered && !shouldReduce ? -mousePosition.y : 0,
           }}
           transition={{ type: 'spring', stiffness: 400, damping: 30, mass: 0.5 }}
           className={cn('flex items-center justify-center relative transition-all duration-200 ease-linear', className)}

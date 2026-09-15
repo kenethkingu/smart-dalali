@@ -15,6 +15,7 @@ import { PropertyDetail } from './pages/PropertyDetail'
 import { HowItWorks } from './pages/HowItWorks'
 import { Login } from './pages/Login'
 import { Contact } from './pages/Contact'
+import { NotFound } from './pages/NotFound'
 
 // buyer
 import { BuyerDashboard } from './pages/buyer/BuyerDashboard'
@@ -82,6 +83,9 @@ function App() {
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="requests" element={<AdminRequests />} />
               </Route>
+
+              {/* 404 Route */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <FloatingWhatsApp />

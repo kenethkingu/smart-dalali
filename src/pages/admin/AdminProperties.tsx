@@ -61,7 +61,7 @@ export function AdminProperties() {
                             TSh {formatPrice(property.price)}{property.priceUnit === 'month' ? '/mo' : ''}
                             <span className="text-pl-muted font-normal ml-2">•</span>
                             <span className="text-pl-muted font-normal ml-2 capitalize">{property.type}</span>
-                            {property.bedrooms && <span className="text-pl-muted font-normal ml-2">• {property.bedrooms} bed</span>}
+                            {property.type === 'house' && property.bedrooms && <span className="text-pl-muted font-normal ml-2">• {property.bedrooms} bed</span>}
                           </p>
                           <p className="text-sm text-pl-muted line-clamp-2">{property.description}</p>
                           {property.amenities.length > 0 && (

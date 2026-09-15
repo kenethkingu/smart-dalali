@@ -7,12 +7,17 @@ import { PrimaryButton, GhostButton } from '../components/shared/Bits'
 import { Timeline } from '@/components/ui/timeline'
 import { properties } from '../data/mockData'
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6, delay },
-})
+import { useReducedMotion } from 'framer-motion'
+
+export function useFadeUp() {
+  const shouldReduce = useReducedMotion()
+  return (delay = 0) => ({
+    initial: shouldReduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: shouldReduce ? 0 : 0.6, delay: shouldReduce ? 0 : delay },
+  })
+}
 
 const steps = [
   {
@@ -42,6 +47,7 @@ const trustItems = [
 ]
 
 export function Home() {
+  const fadeUp = useFadeUp()
   // Use all approved properties for the editorial grid
   const approved = properties.filter(p => p.status === 'approved')
   const [featured, ...rest] = approved

@@ -1,11 +1,23 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import confetti from 'canvas-confetti'
 import { ArrowLeft, CheckCircle, Clock, XCircle, AlertCircle } from 'lucide-react'
 import { siteVisitRequests, properties } from '@/data/mockData'
 import { canDecline, formatCountdown } from '@/lib/dates'
 import { PrimaryButton, DangerButton, formatPrice } from '@/components/shared/Bits'
 import { CountdownBadge } from '@/components/shared/CountdownBadge'
-import { GradientThumb } from '@/components/shared/GradientThumb'
+import { PropertyImage } from '@/components/shared/PropertyImage'
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from '@/components/ui/alert-dialog'
 
 export function BuyerRequestDetail() {
   const { id } = useParams()
@@ -25,6 +37,28 @@ export function BuyerRequestDetail() {
     setRequests(prev =>
       prev.map(r => r.id === id ? { ...r, status: 'payment_confirmed' as const, paymentConfirmedAt: new Date().toISOString() } : r)
     )
+
+    // Trigger confetti from the left and right edges
+    const duration = 2000
+    const end = Date.now() + duration
+    const frame = () => {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ['#16A97C', '#0B0B0C', '#E5E5E4']
+      })
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ['#16A97C', '#0B0B0C', '#E5E5E4']
+      })
+      if (Date.now() < end) requestAnimationFrame(frame)
+    }
+    frame()
   }
 
   if (!request || !property) {
@@ -72,7 +106,7 @@ export function BuyerRequestDetail() {
       {/* Property summary card */}
       <div className="bg-white rounded-2xl border border-pl-line p-6 mb-6 flex gap-4">
         <div className="w-20 h-20 rounded-xl bg-zinc-200 overflow-hidden shrink-0">
-          <GradientThumb tone={property.tone} className="object-cover" />
+          <PropertyImage property={property} className="w-full h-full object-cover" alt={`Photo of ${property.title}`} />
         </div>
         <div>
           <h2 className="font-bold text-pl-ink mb-1">
@@ -119,9 +153,27 @@ export function BuyerRequestDetail() {
         {request.status === 'pending' && (
           <div className="flex flex-wrap gap-3">
             {canStillDecline && (
-              <DangerButton onClick={handleDecline}>
-                Decline Request
-              </DangerButton>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <DangerButton>
+                    Decline Request
+                  </DangerButton>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Decline this site visit?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This cancels your request for {property.title}. You won't be able to undo this.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Keep Request</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDecline}>
+                      Yes, Decline
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
             <PrimaryButton onClick={handlePay}>
               Confirm Payment

@@ -26,6 +26,8 @@ export interface Property {
   amenities: string[]
   status: PropertyStatus
   sponsored?: boolean
+  imageUrl?: string
+  galleryUrls?: string[]
   description: string
   tone: ThumbTone
   agent: { name: string; phone: string; verified: boolean; rating: number }

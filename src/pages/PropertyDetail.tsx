@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { MapPin, Shield, ArrowLeft } from 'lucide-react'
 import { PrimaryButton, GhostButton, PropertyStatusBadge, formatPrice } from '../components/shared/Bits'
-import { GradientThumb } from '../components/shared/GradientThumb'
+import { PropertyImage } from '../components/shared/PropertyImage'
 import { properties } from '../data/mockData'
 
 export function PropertyDetail() {
@@ -25,19 +25,21 @@ export function PropertyDetail() {
           {/* LEFT PANEL: Gallery (~60%) */}
           <div className="w-full lg:w-3/5 space-y-4">
             <div className="aspect-[4/3] bg-zinc-200 rounded-2xl overflow-hidden relative">
-              <GradientThumb tone={property.tone} className="object-cover" />
+              <PropertyImage property={property} className="w-full h-full object-cover" alt={`Main photo of ${property.title}`} />
               <div className="absolute top-4 left-4">
                 <PropertyStatusBadge status={property.status} />
               </div>
             </div>
             
-            <div className="grid grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="aspect-[4/3] bg-zinc-200 rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
-                  <GradientThumb tone={property.tone} className="object-cover" />
-                </div>
-              ))}
-            </div>
+            {property.galleryUrls && property.galleryUrls.length > 0 && (
+              <div className="grid grid-cols-4 gap-4">
+                {property.galleryUrls.map((url, i) => (
+                  <div key={i} className="aspect-[4/3] bg-zinc-200 rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
+                    <PropertyImage property={{ ...property, imageUrl: url }} className="w-full h-full object-cover" alt={`Gallery photo ${i + 1} of ${property.title}`} />
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Description & Details (Below Gallery on Mobile, Part of Left Scroll on Desktop) */}
             <div className="bg-white p-8 rounded-2xl shadow-sm mt-8">

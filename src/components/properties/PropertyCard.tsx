@@ -4,7 +4,7 @@ import { PropertyStatusBadge, formatPrice } from '../shared/Bits'
 import { CardContainer, CardBody, CardItem } from '../ui/3d-card'
 import type { Property } from '@/types'
 import { cn } from '@/lib/utils'
-import { GradientThumb } from '../shared/GradientThumb'
+import { PropertyImage } from '../shared/PropertyImage'
 
 interface PropertyCardProps {
   property: Property
@@ -27,8 +27,8 @@ export function PropertyCard({ property, featured = false }: PropertyCardProps) 
         >
           {/* Image */}
           <CardItem translateZ={20} className={cn('bg-zinc-100 relative overflow-hidden w-full', featured ? 'aspect-[16/10]' : 'aspect-[4/3]')}>
-            <div className="w-full h-full group-hover:scale-[1.03] transition-transform duration-500 ease-out">
-              <GradientThumb tone={property.tone} />
+            <div className="w-full h-full motion-safe:group-hover:scale-[1.03] transition-transform duration-500 ease-out">
+              <PropertyImage property={property} className="w-full h-full object-cover" />
             </div>
         <div className="absolute top-3 left-3">
           <PropertyStatusBadge status={property.status} />
@@ -41,7 +41,7 @@ export function PropertyCard({ property, featured = false }: PropertyCardProps) 
         {/* Property type pill — bottom of image */}
         <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-pl-ink text-[11px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider">
           {property.type}
-          {property.bedrooms ? ` · ${property.bedrooms} bed` : ''}
+          {property.type === 'house' && property.bedrooms ? ` · ${property.bedrooms} bed` : ''}
         </div>
           </CardItem>
 
