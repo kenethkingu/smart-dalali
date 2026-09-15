@@ -34,10 +34,17 @@ import { AdminUsers } from './pages/admin/AdminUsers'
 import { AdminRequests } from './pages/admin/AdminRequests'
 
 import { FloatingWhatsApp } from './components/shared/FloatingWhatsApp'
+import { useScrollToHash } from './hooks/useScrollToHash'
+
+function ScrollHandler() {
+  useScrollToHash()
+  return null
+}
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollHandler />
       <AuthProvider>
         <div className="flex flex-col min-h-screen">
           <Navbar />
