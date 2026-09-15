@@ -17,19 +17,13 @@ export function VisitRequestCard({ request, onDecline, onPay }: VisitRequestCard
   const property = properties.find(p => p.id === request.propertyId)
   const canStillDecline = canDecline(request)
 
-  const statusColors: Record<SiteVisitRequest['status'], string> = {
-    pending: 'border-l-amber-400',
-    declined: 'border-l-zinc-300 opacity-70',
-    payment_confirmed: 'border-l-pl-accent',
-  }
-
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
-      className={`bg-white border border-pl-line border-l-4 ${statusColors[request.status]} rounded-2xl p-6 shadow-sm`}
+      className={`bg-white border border-pl-line rounded-2xl p-6 shadow-sm`}
     >
       <div className="flex flex-col sm:flex-row gap-4 justify-between">
         <div className="flex-1">

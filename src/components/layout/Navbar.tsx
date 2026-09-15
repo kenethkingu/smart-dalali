@@ -38,7 +38,7 @@ export function Navbar() {
           ) : (
             <div className="flex items-center gap-4">
               <Link to={`/${user.role}/dashboard`} className="text-sm font-semibold hover:underline">
-                Dashboard ({user.role})
+                Dashboard
               </Link>
               <GhostButton onClick={logout} className="rounded-full px-4 py-1.5 h-auto text-xs">
                 Log Out

@@ -18,10 +18,12 @@ import { Contact } from './pages/Contact'
 
 // buyer
 import { BuyerDashboard } from './pages/buyer/BuyerDashboard'
+import { BuyerRequests } from './pages/buyer/BuyerRequests'
 import { BuyerRequestDetail } from './pages/buyer/BuyerRequestDetail'
 
 // owner
 import { OwnerDashboard } from './pages/owner/OwnerDashboard'
+import { OwnerProperties } from './pages/owner/OwnerProperties'
 import { PropertyForm } from './pages/owner/PropertyForm'
 import { OwnerRequests } from './pages/owner/OwnerRequests'
 
@@ -53,12 +55,14 @@ function App() {
               {/* Buyer Routes */}
               <Route path="/buyer" element={<ProtectedRoute role="buyer"><DashboardShell /></ProtectedRoute>}>
                 <Route path="dashboard" element={<BuyerDashboard />} />
+                <Route path="requests" element={<BuyerRequests />} />
                 <Route path="requests/:id" element={<BuyerRequestDetail />} />
               </Route>
 
               {/* Owner Routes */}
               <Route path="/owner" element={<ProtectedRoute role="owner"><DashboardShell /></ProtectedRoute>}>
                 <Route path="dashboard" element={<OwnerDashboard />} />
+                <Route path="properties" element={<OwnerProperties />} />
                 <Route path="properties/new" element={<PropertyForm />} />
                 <Route path="properties/:id/edit" element={<PropertyForm />} />
                 <Route path="requests" element={<OwnerRequests />} />

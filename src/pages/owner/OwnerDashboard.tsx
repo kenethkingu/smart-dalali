@@ -51,7 +51,14 @@ export function OwnerDashboard() {
       </div>
 
       {/* My Properties */}
-      <h2 className="text-xl font-bold text-pl-ink mb-4">My Properties</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold text-pl-ink">Recent Properties</h2>
+        {myProperties.length > 3 && (
+          <Link to="/owner/properties" className="text-sm font-semibold text-pl-accent hover:text-pl-accent-dark">
+            View All Properties →
+          </Link>
+        )}
+      </div>
 
       {myProperties.length === 0 ? (
         <motion.div
@@ -74,7 +81,7 @@ export function OwnerDashboard() {
         </motion.div>
       ) : (
         <div className="space-y-3">
-          {myProperties.map(p => {
+          {myProperties.slice(0, 3).map(p => {
             const openRequests = siteVisitRequests.filter(r => r.propertyId === p.id && r.status === 'pending').length
             return (
               <div key={p.id} className="bg-white rounded-2xl border border-pl-line p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -108,6 +115,15 @@ export function OwnerDashboard() {
               </div>
             )
           })}
+          {myProperties.length > 3 && (
+            <div className="pt-2">
+              <Link to="/owner/properties">
+                <PrimaryButton className="w-full text-sm font-semibold bg-white text-pl-ink border border-pl-line hover:bg-pl-surface hover:text-pl-ink">
+                  View All {myProperties.length} Properties
+                </PrimaryButton>
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </div>

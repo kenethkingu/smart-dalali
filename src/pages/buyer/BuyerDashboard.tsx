@@ -58,7 +58,14 @@ export function BuyerDashboard() {
       </div>
 
       {/* Requests list or empty state */}
-      <h2 className="text-xl font-bold text-pl-ink mb-4">My Site Visit Requests</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold text-pl-ink">Recent Site Visit Requests</h2>
+        {requests.length > 3 && (
+          <Link to="/buyer/requests" className="text-sm font-semibold text-pl-accent hover:text-pl-accent-dark">
+            View All Requests →
+          </Link>
+        )}
+      </div>
 
       {requests.length === 0 ? (
         <motion.div
@@ -80,7 +87,7 @@ export function BuyerDashboard() {
       ) : (
         <div className="space-y-4">
           <AnimatePresence>
-            {requests.map(req => (
+            {requests.slice(0, 3).map(req => (
               <VisitRequestCard
                 key={req.id}
                 request={req}
@@ -89,6 +96,15 @@ export function BuyerDashboard() {
               />
             ))}
           </AnimatePresence>
+          {requests.length > 3 && (
+            <div className="pt-2">
+              <Link to="/buyer/requests">
+                <PrimaryButton className="w-full text-sm font-semibold bg-white text-pl-ink border border-pl-line hover:bg-pl-surface hover:text-pl-ink">
+                  View All {requests.length} Requests
+                </PrimaryButton>
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </div>

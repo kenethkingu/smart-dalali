@@ -65,12 +65,8 @@ export function PropertyForm() {
             <CheckCircle className="w-10 h-10 text-pl-accent" />
           </div>
           <h2 className="text-2xl font-heading font-bold text-pl-ink mb-3">Listing Submitted!</h2>
-          <p className="text-pl-muted mb-4">
-            Your property has been submitted for review with <strong>Pending</strong> status.
-            It <strong>won't appear on the public listings</strong> until a Proland admin approves it — usually within 24 hours.
-          </p>
-          <p className="text-sm text-pl-muted mb-8">
-            You'll be able to track its status on your Owner Dashboard.
+          <p className="text-pl-muted mb-8">
+            Your listing is under review — we'll notify you once it's approved.
           </p>
           <PrimaryButton onClick={() => navigate('/owner/dashboard')} className="h-12 px-8">
             Back to Dashboard
