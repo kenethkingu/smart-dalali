@@ -44,29 +44,21 @@ export function useTypewriterPlaceholder({
     }
 
     const currentPhrase = phrases[phraseIndex]
+    let timeout: NodeJS.Timeout
 
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
-        // Typing forward
-        setText(currentPhrase.substring(0, text.length + 1))
-        
-        // Reached end of current phrase
-        if (text.length === currentPhrase.length) {
-          // Pause before deleting
-          setTimeout(() => setIsDeleting(true), pauseDuration)
-        }
-      } else {
-        // Deleting backward
-        // Optimization: only delete back to the common prefix if we wanted to be fancy,
-        // but fully deleting is fine for a placeholder.
-        setText(currentPhrase.substring(0, text.length - 1))
-        
-        if (text.length === 0) {
-          setIsDeleting(false)
-          setPhraseIndex(i => (i + 1) % phrases.length)
-        }
-      }
-    }, isDeleting ? deletingSpeed : typingSpeed)
+    if (!isDeleting && text === currentPhrase) {
+      // Pause at the end of typing before deleting
+      timeout = setTimeout(() => setIsDeleting(true), pauseDuration)
+    } else if (isDeleting && text === '') {
+      // Move to the next phrase after deleting is done
+      setIsDeleting(false)
+      setPhraseIndex((i) => (i + 1) % phrases.length)
+    } else {
+      // Typing or deleting characters
+      timeout = setTimeout(() => {
+        setText(currentPhrase.substring(0, text.length + (isDeleting ? -1 : 1)))
+      }, isDeleting ? deletingSpeed : typingSpeed)
+    }
 
     return () => clearTimeout(timeout)
   }, [text, isDeleting, phraseIndex, phrases, typingSpeed, deletingSpeed, pauseDuration, isDisabled, shouldReduce])
