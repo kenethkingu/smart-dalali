@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Logo } from '@/components/shared/Logo'
 import { Globe, AtSign, Share2, Briefcase } from 'lucide-react'
+import { HoverText } from '@/components/shared/HoverText'
 
 const columns = [
   {
@@ -69,7 +70,7 @@ export function Footer() {
                       to={link.to}
                       className="text-sm text-white/70 hover:text-white transition-colors flex items-center gap-1"
                     >
-                      {link.label}
+                      <HoverText text={link.label} />
                       {(link as any).soon && (
                         <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-white/10 text-white/40 uppercase tracking-wide">
                           Soon

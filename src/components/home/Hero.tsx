@@ -2,12 +2,21 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { Search, MapPin } from 'lucide-react'
 import { PrimaryButton, Pill } from '../shared/Bits'
+import { RotatingWord } from '../shared/RotatingWord'
+import { useTypewriterPlaceholder } from '@/hooks/useTypewriterPlaceholder'
 
 export function Hero() {
   const navigate = useNavigate()
   const [location, setLocation] = useState('')
   const [activePurpose, setActivePurpose] = useState<'rent' | 'buy'>('rent')
   const [activeType, setActiveType] = useState<string | null>(null)
+
+  const placeholderText = useTypewriterPlaceholder({
+    phrases: ["Try 'Masaki'…", "Try '3-bedroom house'…"],
+    typingSpeed: 60,
+    deletingSpeed: 30,
+    pauseDuration: 1500,
+  })
 
   const handleSearch = () => {
     const params = new URLSearchParams()
@@ -36,8 +45,9 @@ export function Hero() {
             className="text-display font-heading font-bold text-white mb-6 tracking-[-0.02em] leading-[1.05]"
             style={{ fontSize: 'clamp(2.75rem, 7vw, 5.5rem)' }}
           >
-            Find the Home<br />
-            or Plot You Want.
+            Find the <RotatingWord words={['House', 'Plot', 'Office']} className="text-white" />
+            <br />
+            You Want.
             <span className="block text-pl-accent mt-1" style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.75rem)' }}>
               Book a visit. Pay securely.
             </span>
@@ -57,7 +67,7 @@ export function Hero() {
                 value={location}
                 onChange={e => setLocation(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleSearch()}
-                placeholder="Location, neighborhood or city…"
+                placeholder={placeholderText}
                 className="w-full bg-transparent outline-none text-pl-ink placeholder:text-pl-muted text-sm font-medium"
               />
             </div>

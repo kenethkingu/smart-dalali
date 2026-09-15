@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Logo } from '../shared/Logo'
 import { PrimaryButton, GhostButton } from '../shared/Bits'
+import { HoverText } from '../shared/HoverText'
 import { useAuth } from '@/lib/auth'
 
 export function Navbar() {
@@ -15,11 +16,11 @@ export function Navbar() {
             <Logo size={24} />
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-pl-ink/80">
-            <Link to="/" className="hover:text-pl-ink transition-colors">Home</Link>
-            <Link to="/about" className="hover:text-pl-ink transition-colors">About Us</Link>
-            <Link to="/properties" className="hover:text-pl-ink transition-colors">Properties</Link>
-            <Link to="/how-it-works" className="hover:text-pl-ink transition-colors">How It Works</Link>
-            <Link to="/contact" className="hover:text-pl-ink transition-colors">Contact</Link>
+            <Link to="/" className="text-pl-ink/80 transition-colors"><HoverText text="Home" /></Link>
+            <Link to="/about" className="text-pl-ink/80 transition-colors"><HoverText text="About Us" /></Link>
+            <Link to="/properties" className="text-pl-ink/80 transition-colors"><HoverText text="Properties" /></Link>
+            <Link to="/#how-it-works" className="text-pl-ink/80 transition-colors"><HoverText text="How It Works" /></Link>
+            <Link to="/contact" className="text-pl-ink/80 transition-colors"><HoverText text="Contact" /></Link>
           </nav>
         </div>
 

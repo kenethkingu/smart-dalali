@@ -174,7 +174,23 @@ export function Home() {
                 <div className="w-10 h-10 rounded-md bg-pl-ink flex items-center justify-center mb-5">
                   <item.icon className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="font-bold text-pl-ink mb-2 text-base">{item.title}</h3>
+                <h3 className="font-bold text-pl-ink mb-2 text-base">
+                  {item.title === 'Verified Listings' ? (
+                    <>
+                      <motion.span
+                        initial={{ color: 'var(--pl-ink)' }}
+                        whileInView={{ color: 'var(--pl-accent)' }}
+                        viewport={{ once: true, margin: '-10%' }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                      >
+                        Verified
+                      </motion.span>{' '}
+                      Listings
+                    </>
+                  ) : (
+                    item.title
+                  )}
+                </h3>
                 <p className="text-pl-muted text-sm leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
