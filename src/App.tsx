@@ -14,6 +14,7 @@ import { Properties } from './pages/Properties'
 import { PropertyDetail } from './pages/PropertyDetail'
 import { HowItWorks } from './pages/HowItWorks'
 import { Login } from './pages/Login'
+import { Contact } from './pages/Contact'
 
 // buyer
 import { BuyerDashboard } from './pages/buyer/BuyerDashboard'
@@ -45,6 +46,7 @@ function App() {
               <Route path="/properties/:id" element={<PropertyDetail />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/contact" element={<Contact />} />
 
               {/* Buyer Routes */}
               <Route path="/buyer" element={<ProtectedRoute role="buyer"><DashboardShell /></ProtectedRoute>}>

@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, type ReactNode } from 'react'
-import type { User, UserRole } from '@/types'
+import type { User } from '@/types'
 
 interface AuthContextValue {
   user: User | null
-  login: (role: UserRole, name: string, phone: string) => void
+  login: (user: User) => void
   logout: () => void
 }
 
@@ -12,9 +12,7 @@ const AuthContext = createContext<AuthContextValue | null>(null)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
 
-  const login = (role: UserRole, name: string, phone: string) => {
-    setUser({ id: crypto.randomUUID(), name, phone, role })
-  }
+  const login = (user: User) => setUser(user)
 
   const logout = () => setUser(null)
 

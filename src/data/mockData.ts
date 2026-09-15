@@ -55,3 +55,12 @@ export const siteVisitRequests: SiteVisitRequest[] = [
     status: 'payment_confirmed', paymentConfirmedAt: hoursAgo(150),
   },
 ]
+
+// Demo accounts — IDs deliberately match the ownerId/buyerId values used
+// throughout the mock data above, so logging in as one of these immediately
+// shows a populated dashboard (real requests, real properties) rather than empty.
+export const demoUsers = {
+  buyer: { id: 'buyer1', name: 'Amina Hassan', phone: '+255712000111', role: 'buyer' as const },
+  owner: { id: 'owner1', name: 'John Mwakalinga', phone: '+255712000222', role: 'owner' as const },
+  admin: { id: 'admin1', name: 'Proland Admin', phone: '+255712000333', role: 'admin' as const },
+}
