@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import {
   Dialog,
   DialogContent,
@@ -12,9 +13,15 @@ interface LoginModalProps {
 }
 
 export function LoginModal({ isOpen, onOpenChange, onSuccess, contextProperty }: LoginModalProps) {
-  const handleSuccess = () => {
+  const navigate = useNavigate()
+  
+  const handleSuccess = (dest?: string) => {
     onOpenChange(false)
-    onSuccess?.()
+    if (dest) {
+      navigate(dest)
+    } else {
+      onSuccess?.()
+    }
   }
 
   return (

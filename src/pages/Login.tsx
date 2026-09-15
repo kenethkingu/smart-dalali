@@ -1,9 +1,10 @@
-import { useSearchParams, Link } from 'react-router-dom'
+import { useSearchParams, Link, useNavigate } from 'react-router-dom'
 import { Logo } from '@/components/shared/Logo'
 import { LoginForm } from '@/components/auth/LoginForm'
 
 export function Login() {
   const [params] = useSearchParams()
+  const navigate = useNavigate()
   const redirectTo = params.get('redirectTo') || '/'
   const contextProperty = params.get('propertyTitle')
 
@@ -21,9 +22,9 @@ export function Login() {
           contextProperty={contextProperty || undefined} 
           onSuccess={(dest) => {
             if (dest) {
-              window.location.href = dest
+              navigate(dest)
             } else {
-              window.location.href = redirectTo
+              navigate(redirectTo)
             }
           }}
         />
