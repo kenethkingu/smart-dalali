@@ -2,6 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { ShieldCheck, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { PropertyStatus } from '@/types'
+import { MagneticButton } from '../ui/magnetic-button'
 
 export function VerifiedBadge({ className }: { className?: string }) {
   return (
@@ -63,16 +64,17 @@ export function PrimaryButton({
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <button
-      type="button"
-      className={cn(
-        'inline-flex items-center justify-center gap-2 bg-pl-accent hover:bg-pl-accent-dark text-white font-semibold text-sm rounded-xl px-5 py-2.5 transition-colors disabled:opacity-40 disabled:pointer-events-none',
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </button>
+    <MagneticButton className={className}>
+      <button
+        type="button"
+        className={cn(
+          'inline-flex w-full items-center justify-center gap-2 bg-pl-accent hover:bg-pl-accent-dark text-white font-semibold text-sm rounded-xl px-5 py-2.5 transition-colors disabled:opacity-40 disabled:pointer-events-none',
+        )}
+        {...props}
+      >
+        {children}
+      </button>
+    </MagneticButton>
   )
 }
 

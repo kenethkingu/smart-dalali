@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { ShieldCheck, Calendar, Phone } from 'lucide-react'
 import { Hero } from '../components/home/Hero'
 import { PropertyCard } from '../components/properties/PropertyCard'
 import { PrimaryButton, GhostButton } from '../components/shared/Bits'
+import { Timeline } from '@/components/ui/timeline'
 import { properties } from '../data/mockData'
-import { ShieldCheck, Calendar, Phone } from 'lucide-react'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -96,64 +97,30 @@ export function Home() {
         </div>
       </section>
 
-      {/* ── How Proland Works ───────────────────────────────────────────────── */}
-      <section className="py-24 bg-pl-ink grain overflow-hidden" id="how-it-works">
-        <div className="container mx-auto px-4">
-          <motion.h2
-            {...fadeUp()}
-            className="font-heading font-bold text-white mb-20"
-            style={{ fontSize: 'clamp(1.75rem, 3.5vw, 3rem)', letterSpacing: '-0.015em' }}
-          >
-            How Proland Works
-          </motion.h2>
-
-          {/* Asymmetric staggered steps — no equal columns, no filled circles */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.n}
-                {...fadeUp(i * 0.15)}
-                className={`relative px-6 lg:px-8 pb-16 lg:pb-0 ${step.offset}`}
-              >
-                {/* Ghost numeral — background layer, typographic device */}
-                <div
-                  className="absolute -top-4 left-4 lg:left-6 font-heading font-bold text-white select-none pointer-events-none"
-                  style={{ fontSize: 'clamp(6rem, 12vw, 10rem)', opacity: 0.06, lineHeight: 1, letterSpacing: '-0.04em' }}
-                  aria-hidden="true"
-                >
-                  {step.n}
-                </div>
-
-                {/* Step content sits on top of the ghost numeral */}
-                <div className="relative">
-                  <div className="text-pl-accent text-xs font-bold uppercase tracking-[0.2em] mb-4">
-                    Step {step.n}
-                  </div>
-                  <h3
-                    className="font-heading font-bold text-white mb-4"
-                    style={{ fontSize: 'clamp(1.1rem, 2vw, 1.4rem)' }}
-                  >
-                    {step.title}
-                  </h3>
-                  <p className="text-white/55 text-sm leading-relaxed max-w-xs">{step.desc}</p>
-                </div>
-
-                {/* Vertical hairline divider between steps on desktop */}
-                {i < steps.length - 1 && (
-                  <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-px bg-white/10" />
-                )}
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div {...fadeUp(0.5)} className="mt-20 pt-12 border-t border-white/10">
-            <Link to="/properties">
-              <PrimaryButton className="h-13 px-10">Browse Properties</PrimaryButton>
-            </Link>
-          </motion.div>
-        </div>
+      {/* ── How Proland Works ──────────────────────────────────────────────── */}
+      <section className="bg-pl-surface" id="how-it-works">
+        <Timeline
+          data={steps.map(step => ({
+            title: `Step ${step.n}`,
+            content: (
+              <div>
+                <h3 className="font-heading font-bold text-pl-ink mb-4 text-2xl">
+                  {step.title}
+                </h3>
+                <p className="text-pl-muted text-sm leading-relaxed max-w-sm">
+                  {step.desc}
+                </p>
+              </div>
+            )
+          }))}
+        />
+        
+        <motion.div {...fadeUp(0.5)} className="mt-20 pt-12 border-t border-pl-line flex justify-center pb-20">
+          <Link to="/properties">
+            <PrimaryButton className="h-13 px-10">Browse Properties</PrimaryButton>
+          </Link>
+        </motion.div>
       </section>
-
       {/* ── Why Proland ────────────────────────────────────────────────────── */}
       <section className="py-20 bg-pl-surface">
         <div className="container mx-auto px-4 max-w-5xl">

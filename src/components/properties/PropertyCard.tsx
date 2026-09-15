@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { MapPin, ArrowRight } from 'lucide-react'
 import { PropertyStatusBadge, formatPrice } from '../shared/Bits'
+import { CardContainer, CardBody, CardItem } from '../ui/3d-card'
 import type { Property } from '@/types'
 import { cn } from '@/lib/utils'
 
@@ -12,17 +13,19 @@ interface PropertyCardProps {
 
 export function PropertyCard({ property, featured = false }: PropertyCardProps) {
   return (
-    <Link
-      to={`/properties/${property.id}`}
-      className={cn(
-        // Base: hairline border only at rest — shadow on hover via card-hover utility
-        'card-hover group block bg-white overflow-hidden border border-pl-line rounded-lg',
-        property.sponsored && 'border-t-2 border-t-pl-accent',
-        featured && 'flex flex-col'
-      )}
-    >
-      {/* Image */}
-      <div className={cn('bg-zinc-100 relative overflow-hidden', featured ? 'aspect-[16/10]' : 'aspect-[4/3]')}>
+    <CardContainer containerClassName="w-full h-full p-0">
+      <CardBody className="w-full h-full">
+        <Link
+          to={`/properties/${property.id}`}
+          className={cn(
+            // Base: hairline border only at rest — shadow on hover via card-hover utility
+            'card-hover group block bg-white overflow-hidden border border-pl-line rounded-lg w-full h-full',
+            property.sponsored && 'border-t-2 border-t-pl-accent',
+            featured && 'flex flex-col'
+          )}
+        >
+          {/* Image */}
+          <CardItem translateZ={20} className={cn('bg-zinc-100 relative overflow-hidden w-full', featured ? 'aspect-[16/10]' : 'aspect-[4/3]')}>
         <img
           src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
           alt={property.title}
@@ -41,11 +44,11 @@ export function PropertyCard({ property, featured = false }: PropertyCardProps) 
           {property.type}
           {property.bedrooms ? ` · ${property.bedrooms} bed` : ''}
         </div>
-      </div>
+          </CardItem>
 
-      {/* Info */}
-      <div className={cn('p-4 flex flex-col', featured && 'flex-1')}>
-        <div className="text-2xl font-bold font-heading text-pl-ink tracking-tight mb-0.5">
+          {/* Info */}
+          <CardItem translateZ={30} className={cn('p-4 flex flex-col w-full', featured && 'flex-1')}>
+            <div className="text-2xl font-bold font-heading text-pl-ink tracking-tight mb-0.5">
           TSh {formatPrice(property.price)}
           <span className="text-sm font-normal text-pl-muted ml-1">
             {property.priceUnit === 'month' ? '/ mo' : ''}
@@ -72,8 +75,10 @@ export function PropertyCard({ property, featured = false }: PropertyCardProps) 
           <div className="flex items-center text-pl-accent text-xs font-bold group-hover:translate-x-0.5 transition-transform">
             View <ArrowRight className="w-3 h-3 ml-0.5" />
           </div>
-        </div>
-      </div>
-    </Link>
+          </div>
+        </CardItem>
+      </Link>
+      </CardBody>
+    </CardContainer>
   )
 }

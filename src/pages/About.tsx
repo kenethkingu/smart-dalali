@@ -36,6 +36,8 @@ const whyUs = [
   },
 ]
 
+import { TracingBeam } from '@/components/ui/tracing-beam'
+
 export function About() {
   return (
     <div className="bg-white min-h-screen">
@@ -58,37 +60,37 @@ export function About() {
         </div>
       </section>
 
-      {/* Our Story */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-3xl">
-          <motion.h2 {...fadeUp()} className="text-3xl font-heading font-bold text-pl-ink mb-6">
-            Our Story
-          </motion.h2>
-          <motion.div {...fadeUp(0.1)} className="space-y-4 text-pl-muted text-lg leading-relaxed">
-            <p>
-              Property searching in Tanzania has a trust problem. Buyers routinely encounter listings
-              that don't exist at the posted price, agents who collect "viewing fees" and disappear,
-              and owners who receive low-quality inquiries from people who never intended to pay.
-              The complaints are consistent across every major platform — and they stem from the same
-              root cause: <strong className="text-pl-ink">no one is verifying anything before it goes live.</strong>
-            </p>
-            <p>
-              Proland was built to fix that. Before any listing appears on our platform, a member of
-              our admin team reviews it — confirming the property exists, the price is real, and the
-              owner is legitimate. It takes longer than a self-serve classifieds upload, and that's
-              the point: every listing that clears our queue is one fewer scam for a buyer to navigate.
-            </p>
-            <p>
-              We also built the booking side from scratch: request a site visit, see the property in
-              person, then confirm payment. In that order. Never the other way around.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <TracingBeam className="px-6">
+        {/* Our Story */}
+        <section className="py-20">
+          <div className="container mx-auto max-w-3xl">
+            <motion.h2 {...fadeUp()} className="text-3xl font-heading font-bold text-pl-ink mb-6">
+              Our Story
+            </motion.h2>
+            <motion.div {...fadeUp(0.1)} className="space-y-4 text-pl-muted text-lg leading-relaxed">
+              <p>
+                Property searching in Tanzania has a trust problem. Buyers routinely encounter listings
+                that don't exist at the posted price, agents who collect "viewing fees" and disappear,
+                and owners who receive low-quality inquiries from people who never intended to pay.
+                The complaints are consistent across every major platform — and they stem from the same
+                root cause: <strong className="text-pl-ink">no one is verifying anything before it goes live.</strong>
+              </p>
+              <p>
+                Proland was built to fix that. Before any listing appears on our platform, a member of
+                our admin team reviews it — confirming the property exists, the price is real, and the
+                owner is legitimate. It takes longer than a self-serve classifieds upload, and that's
+                the point: every listing that clears our queue is one fewer scam for a buyer to navigate.
+              </p>
+              <p>
+                We also built the booking side from scratch: request a site visit, see the property in
+                person, then confirm payment. In that order. Never the other way around.
+              </p>
+            </motion.div>
+          </div>
+        </section>
 
-      {/* Why Proland */}
-      <section className="py-20 px-4 bg-pl-surface">
-        <div className="container mx-auto max-w-5xl">
+        {/* Why Proland */}
+        <section className="py-20 rounded-3xl bg-pl-surface px-6 md:px-12 mx-auto max-w-5xl mb-20">
           <motion.h2 {...fadeUp()} className="text-3xl font-heading font-bold text-pl-ink mb-12 text-center">
             Why Choose Proland
           </motion.h2>
@@ -103,25 +105,25 @@ export function About() {
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Statistics */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <motion.h2 {...fadeUp()} className="text-3xl font-heading font-bold text-pl-ink mb-12 text-center">
-            Proland by the Numbers
-          </motion.h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((s, i) => (
-              <motion.div key={s.label} {...fadeUp(i * 0.1)} className="text-center">
-                <div className="text-4xl font-heading font-bold text-pl-ink mb-2">{s.value}</div>
-                <div className="text-sm font-medium text-pl-muted">{s.label}</div>
-              </motion.div>
-            ))}
+        {/* Statistics */}
+        <section className="py-20 mb-20">
+          <div className="container mx-auto max-w-4xl">
+            <motion.h2 {...fadeUp()} className="text-3xl font-heading font-bold text-pl-ink mb-12 text-center">
+              Proland by the Numbers
+            </motion.h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {stats.map((s, i) => (
+                <motion.div key={s.label} {...fadeUp(i * 0.1)} className="text-center">
+                  <div className="text-4xl font-heading font-bold text-pl-ink mb-2">{s.value}</div>
+                  <div className="text-sm font-medium text-pl-muted">{s.label}</div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </TracingBeam>
 
       {/* CTA */}
       <section className="py-20 px-4 bg-pl-ink text-white">
