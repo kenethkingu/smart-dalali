@@ -17,9 +17,12 @@ interface ConfirmPaymentDialogProps {
   property: Property
   onConfirm: () => void
   triggerClassName?: string
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  children?: React.ReactNode
 }
 
-export function ConfirmPaymentDialog({ property, onConfirm, triggerClassName }: ConfirmPaymentDialogProps) {
+export function ConfirmPaymentDialog({ property, onConfirm, triggerClassName, open, onOpenChange, children }: ConfirmPaymentDialogProps) {
   const handleConfirmPayment = () => {
     onConfirm()
 
@@ -47,10 +50,16 @@ export function ConfirmPaymentDialog({ property, onConfirm, triggerClassName }: 
   }
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <PrimaryButton className={triggerClassName}>Confirm Payment</PrimaryButton>
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      {children ? (
+        <AlertDialogTrigger asChild>
+          {children}
+        </AlertDialogTrigger>
+      ) : (
+        <AlertDialogTrigger asChild>
+          <PrimaryButton className={triggerClassName}>Confirm Payment</PrimaryButton>
+        </AlertDialogTrigger>
+      )}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Confirm payment for {property.title}?</AlertDialogTitle>

@@ -1,12 +1,52 @@
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { MapPin, Shield, ArrowLeft } from 'lucide-react'
 import { PrimaryButton, GhostButton, PropertyStatusBadge, formatPrice } from '../components/shared/Bits'
 import { PropertyImage } from '../components/shared/PropertyImage'
 import { properties } from '../data/mockData'
+import { useAuth } from '@/lib/auth'
+import { LoginModal } from '@/components/auth/LoginModal'
+import { ConfirmPaymentDialog } from '@/components/buyer/ConfirmPaymentDialog'
+import { RequestVisitDialog } from '@/components/buyer/RequestVisitDialog'
 
 export function PropertyDetail() {
   const { id } = useParams()
   const property = properties.find(p => p.id === id) || properties[0]
+  const { user } = useAuth()
+  
+  const [loginModalOpen, setLoginModalOpen] = useState(false)
+  const [pendingAction, setPendingAction] = useState<'visit' | 'pay' | null>(null)
+  
+  const [isRequestModalOpen, setIsRequestModalOpen] = useState(false)
+  const [isPayModalOpen, setIsPayModalOpen] = useState(false)
+
+  const handleRequestVisitClick = () => {
+    if (!user) {
+      setPendingAction('visit')
+      setLoginModalOpen(true)
+      return
+    }
+    setIsRequestModalOpen(true)
+  }
+
+  const handlePayConfirmClick = () => {
+    if (!user) {
+      setPendingAction('pay')
+      setLoginModalOpen(true)
+      return
+    }
+    setIsPayModalOpen(true)
+  }
+
+  const handleLoginSuccess = () => {
+    setLoginModalOpen(false)
+    if (pendingAction === 'visit') {
+      setIsRequestModalOpen(true)
+    } else if (pendingAction === 'pay') {
+      setIsPayModalOpen(true)
+    }
+    setPendingAction(null)
+  }
 
   return (
     <div className="grain-texture bg-pl-surface min-h-screen pb-20">
@@ -96,13 +136,28 @@ export function PropertyDetail() {
 
               {/* Actions */}
               <div className="space-y-3">
-                <PrimaryButton className="w-full h-14 text-lg">
+                <PrimaryButton className="w-full h-14 text-lg" onClick={handleRequestVisitClick}>
                   Request Site Visit
                 </PrimaryButton>
                 <div className="flex gap-3">
-                  <GhostButton className="flex-1 h-12">
-                    Pay / Confirm
-                  </GhostButton>
+                  <ConfirmPaymentDialog 
+                    property={property} 
+                    open={isPayModalOpen}
+                    onOpenChange={setIsPayModalOpen}
+                    onConfirm={() => {
+                      setIsPayModalOpen(false)
+                    }}
+                  >
+                    <GhostButton 
+                      className="flex-1 h-12"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handlePayConfirmClick()
+                      }}
+                    >
+                      Pay / Confirm
+                    </GhostButton>
+                  </ConfirmPaymentDialog>
                   <GhostButton 
                     className="w-12 h-12 p-0 flex items-center justify-center border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
                     onClick={() => {
@@ -122,6 +177,19 @@ export function PropertyDetail() {
 
         </div>
       </div>
+      
+      <RequestVisitDialog 
+        property={property} 
+        open={isRequestModalOpen}
+        onOpenChange={setIsRequestModalOpen}
+      />
+      
+      <LoginModal 
+        isOpen={loginModalOpen} 
+        onOpenChange={setLoginModalOpen} 
+        onSuccess={handleLoginSuccess}
+        contextProperty={property.title}
+      />
     </div>
   )
 }

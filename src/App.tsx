@@ -14,6 +14,7 @@ import { About } from './pages/About'
 import { Properties } from './pages/Properties'
 import { PropertyDetail } from './pages/PropertyDetail'
 import { HowItWorks } from './pages/HowItWorks'
+import { Pricing } from './pages/Pricing'
 import { Login } from './pages/Login'
 import { Contact } from './pages/Contact'
 import { NotFound } from './pages/NotFound'
@@ -56,6 +57,7 @@ function App() {
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/pricing" element={<Pricing />} />
               <Route path="/properties" element={<Properties />} />
               <Route path="/properties/:id" element={<PropertyDetail />} />
               <Route path="/how-it-works" element={<HowItWorks />} />

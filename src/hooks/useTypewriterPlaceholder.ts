@@ -1,29 +1,47 @@
 import { useState, useEffect } from 'react'
+import { useReducedMotion } from 'framer-motion'
 
 interface TypewriterOptions {
   phrases: string[]
   typingSpeed?: number
   deletingSpeed?: number
   pauseDuration?: number
+  isDisabled?: boolean
 }
 
 /**
- * Types out a sequence of phrases exactly once, then stays on the last phrase.
+ * Types out a sequence of phrases continuously.
  * Used for the search bar placeholder hint.
  */
 export function useTypewriterPlaceholder({
   phrases,
-  typingSpeed = 60,
-  deletingSpeed = 30,
-  pauseDuration = 1500,
+  typingSpeed = 50,
+  deletingSpeed = 25,
+  pauseDuration = 1800,
+  isDisabled = false,
 }: TypewriterOptions) {
   const [text, setText] = useState('')
   const [phraseIndex, setPhraseIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isDone, setIsDone] = useState(false)
+  const [showCursor, setShowCursor] = useState(true)
+  const shouldReduce = useReducedMotion()
+
+  // Blinking cursor effect
+  useEffect(() => {
+    if (isDisabled || shouldReduce) return
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev)
+    }, 500)
+    return () => clearInterval(cursorInterval)
+  }, [isDisabled, shouldReduce])
 
   useEffect(() => {
-    if (isDone || phrases.length === 0) return
+    if (isDisabled || phrases.length === 0 || shouldReduce) {
+      // Respect reduced motion or disabled state by just showing the first phrase statically
+      setText(phrases[0] || '')
+      setShowCursor(false)
+      return
+    }
 
     const currentPhrase = phrases[phraseIndex]
 
@@ -34,11 +52,6 @@ export function useTypewriterPlaceholder({
         
         // Reached end of current phrase
         if (text.length === currentPhrase.length) {
-          if (phraseIndex === phrases.length - 1) {
-            // Reached end of all phrases
-            setIsDone(true)
-            return
-          }
           // Pause before deleting
           setTimeout(() => setIsDeleting(true), pauseDuration)
         }
@@ -50,13 +63,13 @@ export function useTypewriterPlaceholder({
         
         if (text.length === 0) {
           setIsDeleting(false)
-          setPhraseIndex(i => i + 1)
+          setPhraseIndex(i => (i + 1) % phrases.length)
         }
       }
     }, isDeleting ? deletingSpeed : typingSpeed)
 
     return () => clearTimeout(timeout)
-  }, [text, isDeleting, phraseIndex, isDone, phrases, typingSpeed, deletingSpeed, pauseDuration])
+  }, [text, isDeleting, phraseIndex, phrases, typingSpeed, deletingSpeed, pauseDuration, isDisabled, shouldReduce])
 
-  return text
+  return `${text}${showCursor ? '|' : ''}`
 }

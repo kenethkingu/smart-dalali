@@ -63,11 +63,18 @@ export function Hero() {
   const navigate = useNavigate()
   const [location, setLocation] = useState('')
 
+  const searchExamples = [
+    "Try '3-bedroom house'...",
+    "Try 'Plot in Kigamboni'...",
+    "Try 'Apartment in Mikocheni'...",
+    "Try 'Sinza Mori'...",
+    "Try 'Office space'...",
+    "Try 'Houses under 1,000,000'...",
+  ]
+
   const placeholderText = useTypewriterPlaceholder({
-    phrases: ["Try 'Masaki'…", "Try '3-bedroom house'…"],
-    typingSpeed: 60,
-    deletingSpeed: 30,
-    pauseDuration: 1500,
+    phrases: searchExamples,
+    isDisabled: location.length > 0
   })
 
   const handleSearch = () => {

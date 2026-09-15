@@ -2,50 +2,44 @@ import { Link } from 'react-router-dom'
 import { Logo } from '@/components/shared/Logo'
 import { Globe, AtSign, Share2, Briefcase } from 'lucide-react'
 import { HoverText } from '@/components/shared/HoverText'
-
-const columns = [
-  {
-    title: 'Company',
-    links: [
-      { label: 'About Us', to: '/about' },
-      { label: 'Contact', to: '/contact' },
-      { label: 'How It Works', to: '/#how-it-works' },
-    ],
-  },
-  {
-    title: 'For Buyers',
-    links: [
-      { label: 'Browse Properties', to: '/properties' },
-      { label: 'How Booking Works', to: '/#how-it-works' },
-      { label: 'My Requests', to: '/buyer/dashboard' },
-    ],
-  },
-  {
-    title: 'For Owners',
-    links: [
-      { label: 'List Your Property', to: '/login' },
-      { label: 'Owner Dashboard', to: '/owner/dashboard' },
-      { label: 'Pricing Plans', to: '#' },
-    ],
-  },
-  {
-    title: 'Legal',
-    links: [
-      { label: 'Terms of Service', to: '#', soon: true },
-      { label: 'Privacy Policy', to: '#', soon: true },
-    ],
-  },
-]
+import { useAuth } from '@/lib/auth'
 
 const socials = [
-  { icon: Globe, href: '#', label: 'Website' },
-  { icon: AtSign, href: '#', label: 'Twitter / X' },
-  { icon: Share2, href: '#', label: 'Facebook' },
-  { icon: Briefcase, href: '#', label: 'LinkedIn' },
+  { icon: Globe, href: 'https://proland.co.tz', label: 'Website' },
+  { icon: AtSign, href: 'https://twitter.com/proland', label: 'Twitter / X' },
+  { icon: Share2, href: 'https://facebook.com/proland', label: 'Facebook' },
+  { icon: Briefcase, href: 'https://linkedin.com/company/proland', label: 'LinkedIn' },
 ]
 
 export function Footer() {
+  const { user } = useAuth()
   const year = new Date().getFullYear()
+
+  const columns = [
+    {
+      title: 'Company',
+      links: [
+        { label: 'About Us', to: '/about' },
+        { label: 'Contact', to: '/contact' },
+        { label: 'Pricing', to: '/pricing' },
+      ],
+    },
+    {
+      title: 'For Buyers',
+      links: [
+        { label: 'Browse Properties', to: '/properties' },
+        { label: 'How It Works', to: '/how-it-works' },
+        ...(user?.role === 'buyer' ? [{ label: 'My Requests', to: '/buyer/dashboard' }] : []),
+      ],
+    },
+    {
+      title: 'For Owners',
+      links: [
+        { label: 'List Your Property', to: '/login' },
+        ...(user?.role === 'owner' ? [{ label: 'Owner Dashboard', to: '/owner/dashboard' }] : []),
+      ],
+    },
+  ]
 
   return (
     <footer className="grain-texture bg-pl-ink text-white">
@@ -71,11 +65,6 @@ export function Footer() {
                       className="text-sm text-white/70 hover:text-white transition-colors flex items-center gap-1"
                     >
                       <HoverText text={link.label} />
-                      {(link as any).soon && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-white/10 text-white/40 uppercase tracking-wide">
-                          Soon
-                        </span>
-                      )}
                     </Link>
                   </li>
                 ))}
