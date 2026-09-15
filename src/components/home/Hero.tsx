@@ -1,15 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { Search, MapPin } from 'lucide-react'
-import { PrimaryButton, Pill } from '../shared/Bits'
+import { PrimaryButton } from '../shared/Bits'
 import { RotatingWord } from '../shared/RotatingWord'
 import { useTypewriterPlaceholder } from '@/hooks/useTypewriterPlaceholder'
 
 export function Hero() {
   const navigate = useNavigate()
   const [location, setLocation] = useState('')
-  const [activePurpose, setActivePurpose] = useState<'rent' | 'buy'>('rent')
-  const [activeType, setActiveType] = useState<string | null>(null)
 
   const placeholderText = useTypewriterPlaceholder({
     phrases: ["Try 'Masaki'…", "Try '3-bedroom house'…"],
@@ -20,8 +18,7 @@ export function Hero() {
 
   const handleSearch = () => {
     const params = new URLSearchParams()
-    if (activePurpose) params.set('purpose', activePurpose)
-    if (activeType) params.set('type', activeType)
+    if (location) params.set('location', location)
     navigate(`/properties?${params.toString()}`)
   }
 
@@ -82,30 +79,27 @@ export function Hero() {
           {/* Quick-filter pills */}
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-semibold text-white/40 uppercase tracking-widest mr-1">Filter</span>
-            <Pill
-              active={activePurpose === 'rent'}
-              onClick={() => setActivePurpose('rent')}
-              className="border-white/20 text-white/70 data-[active]:bg-white data-[active]:text-pl-ink"
+            <button
+              onClick={() => navigate('/properties?purpose=rent')}
+              className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/70 hover:bg-white/10"
             >
               Rent
-            </Pill>
-            <Pill
-              active={activePurpose === 'buy'}
-              onClick={() => setActivePurpose('buy')}
-              className="border-white/20 text-white/70"
+            </button>
+            <button
+              onClick={() => navigate('/properties?purpose=buy')}
+              className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/70 hover:bg-white/10"
             >
               Buy
-            </Pill>
+            </button>
             <div className="w-px h-4 bg-white/20 mx-1" />
             {['house', 'plot', 'office'].map(t => (
-              <Pill
+              <button
                 key={t}
-                active={activeType === t}
-                onClick={() => setActiveType(activeType === t ? null : t)}
-                className="border-white/20 text-white/70 capitalize"
+                onClick={() => navigate(`/properties?type=${t}`)}
+                className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/70 hover:bg-white/10 capitalize"
               >
                 {t === 'house' ? 'Houses' : t === 'plot' ? 'Plots' : 'Offices'}
-              </Pill>
+              </button>
             ))}
           </div>
         </div>

@@ -127,12 +127,6 @@ export function Contact() {
               </div>
             </div>
 
-            <div className="bg-pl-ink text-white p-6 rounded-2xl">
-              <h3 className="font-bold mb-2">Quick Response via WhatsApp</h3>
-              <p className="text-white/70 text-sm mb-4">
-                Prefer WhatsApp? Use the floating button in the bottom right — we're available Monday–Saturday, 8am–7pm.
-              </p>
-            </div>
           </div>
         </div>
       </div>

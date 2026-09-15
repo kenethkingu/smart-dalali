@@ -11,9 +11,8 @@ import type { UserRole } from '@/types'
 type Tab = 'login' | 'signup'
 
 const demoConfig = [
-  { key: 'buyer' as const, label: 'Continue as Buyer', sub: 'Browse properties, request site visits', dest: '/buyer/dashboard' },
-  { key: 'owner' as const, label: 'Continue as Property Owner', sub: 'Manage listings, view visit requests', dest: '/owner/dashboard' },
-  { key: 'admin' as const, label: 'Continue as Admin', sub: 'Approve listings, oversee platform', dest: '/admin/dashboard' },
+  { key: 'buyer' as const, label: 'Continue as Buyer', dest: '/buyer/dashboard' },
+  { key: 'owner' as const, label: 'Continue as Property Owner', dest: '/owner/dashboard' },
 ]
 
 export function Login() {
@@ -68,20 +67,18 @@ export function Login() {
               real yet for it to be a shortcut around. */}
           <div className="p-6 border-b border-pl-line bg-pl-surface/60">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-sm font-bold text-pl-ink">Quick Demo Access</span>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 uppercase tracking-wider">No backend yet</span>
+              <span className="text-sm font-bold text-pl-ink">Try Proland</span>
             </div>
-            <p className="text-xs text-pl-muted mb-4">Jump straight into any role — no sign-up required.</p>
+            <p className="text-xs text-pl-muted mb-4">See what it's like as a buyer or property owner.</p>
             <div className="space-y-2">
-              {demoConfig.map(({ key, label, sub, dest }) => (
+              {demoConfig.map(({ key, label, dest }) => (
                 <button
                   key={key}
                   onClick={() => handleDemoLogin(key, dest)}
                   className="w-full text-left flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-pl-line bg-white hover:border-pl-ink/30 hover:bg-pl-surface transition-colors group"
                 >
-                  <div>
-                    <div className="text-sm font-semibold text-pl-ink group-hover:text-pl-accent transition-colors">{label}</div>
-                    <div className="text-xs text-pl-muted mt-0.5">{sub}</div>
+                  <div className="text-sm font-semibold text-pl-ink group-hover:text-pl-accent transition-colors">
+                    {label}
                   </div>
                   <ChevronRight className="w-4 h-4 text-pl-muted group-hover:text-pl-accent shrink-0 transition-colors" />
                 </button>
@@ -92,7 +89,7 @@ export function Login() {
           {/* Divider */}
           <div className="flex items-center gap-3 px-6 py-4">
             <div className="flex-1 h-px bg-pl-line" />
-            <span className="text-xs font-semibold text-pl-muted whitespace-nowrap">or sign in normally</span>
+            <span className="text-xs font-semibold text-pl-muted whitespace-nowrap">or sign in with your account</span>
             <div className="flex-1 h-px bg-pl-line" />
           </div>
 
@@ -153,7 +150,7 @@ export function Login() {
                       className="w-full border border-pl-line rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-pl-accent"
                     />
                   </div>
-                  <p className="text-xs text-pl-muted mt-1.5">Pre-filled with a demo number — submit to sign in without OTP (no backend yet).</p>
+                  <p className="text-xs text-pl-muted mt-1.5">You will receive an SMS with a one-time code.</p>
                 </div>
 
                 {tab === 'signup' && (

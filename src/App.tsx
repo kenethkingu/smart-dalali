@@ -31,6 +31,8 @@ import { AdminProperties } from './pages/admin/AdminProperties'
 import { AdminUsers } from './pages/admin/AdminUsers'
 import { AdminRequests } from './pages/admin/AdminRequests'
 
+import { FloatingWhatsApp } from './components/shared/FloatingWhatsApp'
+
 function App() {
   return (
     <BrowserRouter>
@@ -71,6 +73,7 @@ function App() {
               </Route>
             </Routes>
           </main>
+          <FloatingWhatsApp />
           <Footer />
         </div>
       </AuthProvider>
