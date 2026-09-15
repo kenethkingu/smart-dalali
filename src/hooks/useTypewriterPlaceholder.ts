@@ -17,9 +17,11 @@ export function useTypewriterPlaceholder({
   phrases,
   typingSpeed = 50,
   deletingSpeed = 25,
-  pauseDuration = 1800,
+  pauseDuration = 4000,
+  nextPhraseDelay = 500,
   isDisabled = false,
-}: TypewriterOptions) {
+}: TypewriterOptions & { nextPhraseDelay?: number }) {
+  
   const [text, setText] = useState('')
   const [phraseIndex, setPhraseIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -50,9 +52,11 @@ export function useTypewriterPlaceholder({
       // Pause at the end of typing before deleting
       timeout = setTimeout(() => setIsDeleting(true), pauseDuration)
     } else if (isDeleting && text === '') {
-      // Move to the next phrase after deleting is done
-      setIsDeleting(false)
-      setPhraseIndex((i) => (i + 1) % phrases.length)
+      // Move to the next phrase after deleting is done, with a small pause
+      timeout = setTimeout(() => {
+        setIsDeleting(false)
+        setPhraseIndex((i) => (i + 1) % phrases.length)
+      }, nextPhraseDelay)
     } else {
       // Typing or deleting characters
       timeout = setTimeout(() => {
@@ -61,7 +65,8 @@ export function useTypewriterPlaceholder({
     }
 
     return () => clearTimeout(timeout)
-  }, [text, isDeleting, phraseIndex, phrases, typingSpeed, deletingSpeed, pauseDuration, isDisabled, shouldReduce])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text, isDeleting, phraseIndex, phrases.join('|'), typingSpeed, deletingSpeed, pauseDuration, nextPhraseDelay, isDisabled, shouldReduce])
 
   return `${text}${showCursor ? '|' : ''}`
 }
