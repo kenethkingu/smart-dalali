@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { useState } from 'react'
-import { PrimaryButton, formatPrice } from '@/components/shared/Bits'
+import { PrimaryButton } from '@/components/shared/Bits'
 import type { Property } from '@/types'
 import confetti from 'canvas-confetti'
 
@@ -21,7 +21,7 @@ interface ConfirmPaymentDialogProps {
   children?: React.ReactNode
 }
 
-export function ConfirmPaymentDialog({ property, onConfirm, triggerClassName, open, onOpenChange, children }: ConfirmPaymentDialogProps) {
+export function ConfirmPaymentDialog({ onConfirm, triggerClassName, open, onOpenChange, children }: ConfirmPaymentDialogProps) {
   const [method, setMethod] = useState<string | null>(null)
   
   const handleConfirmPayment = () => {
