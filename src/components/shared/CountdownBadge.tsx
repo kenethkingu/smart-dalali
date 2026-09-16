@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { canDecline, formatCountdown } from '@/lib/dates'
+import { canDecline, formatCountdown, hoursLeftToDecline } from '@/lib/dates'
 import type { SiteVisitRequest } from '@/types'
 
 export function CountdownBadge({ request }: { request: SiteVisitRequest }) {
@@ -16,10 +16,11 @@ export function CountdownBadge({ request }: { request: SiteVisitRequest }) {
     )
   }
 
-  // Determine urgency color: > 24h = green, 8–24h = amber, < 8h = red
-  const hoursLeft = parseInt(countdown)
+  const hoursLeft = hoursLeftToDecline(request)
+  const isAwaitingOwner = countdown === 'Awaiting owner confirmation'
+
   const color =
-    countdown.startsWith('Window') ? 'bg-zinc-100 text-pl-muted border-zinc-200'
+    isAwaitingOwner ? 'bg-zinc-100 text-pl-muted border-zinc-200'
     : hoursLeft < 8 ? 'bg-red-50 text-pl-danger border-red-200'
     : hoursLeft < 24 ? 'bg-amber-50 text-amber-700 border-amber-200'
     : 'bg-emerald-50 text-pl-accent-dark border-emerald-200'

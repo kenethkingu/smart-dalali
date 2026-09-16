@@ -56,11 +56,23 @@ export function BuyerRequestDetail() {
       icon: Clock,
     },
     {
-      label: request.status === 'payment_confirmed' ? 'Payment Confirmed' : 'Awaiting Payment',
+      label: 'Owner Confirmed',
+      date: request.ownerConfirmedAt,
+      done: !!request.ownerConfirmedAt,
+      icon: CheckCircle,
+    },
+    {
+      label: request.status === 'payment_confirmed' ? 'Payment Received' : 'Awaiting Payment',
       date: request.paymentConfirmedAt,
       done: request.status === 'payment_confirmed',
       icon: CheckCircle,
     },
+    request.status === 'payment_confirmed' ? {
+      label: 'Visit Scheduled',
+      date: request.visitDate,
+      done: false,
+      icon: Clock,
+    } : null,
     request.status === 'declined' ? {
       label: 'Declined',
       date: request.declinedAt,
@@ -105,7 +117,10 @@ export function BuyerRequestDetail() {
 
         {request.status === 'pending' && canStillDecline && (
           <p className="text-sm text-pl-muted mb-4">
-            You have {formatCountdown(request)} to decline this request at no cost.
+            {formatCountdown(request) === 'Awaiting owner confirmation' 
+              ? 'Your request is awaiting owner confirmation.' 
+              : `You have ${formatCountdown(request).replace(' left to decline', '')} left to decline this request at no cost.`}
+            <br />
             After that, cancellation is no longer available — Proland's policy, not a legal requirement.
           </p>
         )}

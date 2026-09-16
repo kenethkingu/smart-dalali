@@ -8,6 +8,7 @@ import { useAuth } from '@/lib/auth'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { ConfirmPaymentDialog } from '@/components/buyer/ConfirmPaymentDialog'
 import { RequestVisitDialog } from '@/components/buyer/RequestVisitDialog'
+import { useTranslation } from 'react-i18next'
 
 export function PropertyDetail() {
   const { id } = useParams()
@@ -19,6 +20,7 @@ export function PropertyDetail() {
   
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false)
   const [isPayModalOpen, setIsPayModalOpen] = useState(false)
+  const { t } = useTranslation()
 
   const handleRequestVisitClick = () => {
     if (!user) {
@@ -66,8 +68,13 @@ export function PropertyDetail() {
           <div className="w-full lg:w-3/5 space-y-4">
             <div className="aspect-[4/3] bg-zinc-200 rounded-2xl overflow-hidden relative">
               <PropertyImage property={property} className="w-full h-full object-cover" alt={`Main photo of ${property.title}`} />
-              <div className="absolute top-4 left-4">
+              <div className="absolute top-4 left-4 flex flex-col items-start gap-2">
                 <PropertyStatusBadge status={property.status} />
+                {property.titleVerified && (
+                  <div className="bg-[#16A97C] text-white text-xs font-bold px-3 py-1 rounded-md tracking-wider uppercase flex items-center gap-1.5 shadow-md">
+                    <span className="w-2.5 h-2.5 rounded-full bg-white block" /> Title Verified
+                  </div>
+                )}
               </div>
             </div>
             
@@ -83,12 +90,38 @@ export function PropertyDetail() {
 
             {/* Description & Details (Below Gallery on Mobile, Part of Left Scroll on Desktop) */}
             <div className="bg-white p-8 rounded-2xl shadow-sm mt-8">
-              <h2 className="text-2xl font-bold mb-4">About this property</h2>
+              <h2 className="text-2xl font-bold mb-6">{t('property.about', 'About this property')}</h2>
+              
+              <div className="flex flex-wrap gap-8 mb-6 pb-6 border-b border-pl-line">
+                <div className="flex flex-col">
+                  <span className="text-[11px] text-pl-muted uppercase tracking-wider font-bold mb-1">Type</span>
+                  <span className="font-semibold text-pl-ink capitalize">{property.type}</span>
+                </div>
+                {property.bedrooms && (
+                  <div className="flex flex-col">
+                    <span className="text-[11px] text-pl-muted uppercase tracking-wider font-bold mb-1">Bedrooms</span>
+                    <span className="font-semibold text-pl-ink">{property.bedrooms}</span>
+                  </div>
+                )}
+                {property.areaSqm && (
+                  <div className="flex flex-col">
+                    <span className="text-[11px] text-pl-muted uppercase tracking-wider font-bold mb-1">Size</span>
+                    <span className="font-semibold text-pl-ink">{property.areaSqm} sqm</span>
+                  </div>
+                )}
+                {property.titleType && (
+                  <div className="flex flex-col">
+                    <span className="text-[11px] text-pl-muted uppercase tracking-wider font-bold mb-1">Title</span>
+                    <span className="font-semibold text-pl-ink">{property.titleType}</span>
+                  </div>
+                )}
+              </div>
+
               <p className="text-pl-muted leading-relaxed whitespace-pre-line">
                 {property.description}
               </p>
 
-              <h3 className="text-lg font-bold mt-8 mb-4">Amenities</h3>
+              <h3 className="text-lg font-bold mt-8 mb-4">{t('property.amenities', 'Amenities')}</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-2">
                 {property.amenities.map(amenity => (
                   <div key={amenity} className="flex items-center gap-2 text-sm font-medium text-pl-ink">
@@ -137,7 +170,7 @@ export function PropertyDetail() {
               {/* Actions */}
               <div className="space-y-3">
                 <PrimaryButton className="w-full h-14 text-lg" onClick={handleRequestVisitClick}>
-                  Request Site Visit
+                  {t('property.requestVisit', 'Request Site Visit')}
                 </PrimaryButton>
                 <div className="flex gap-3">
                   <ConfirmPaymentDialog 
@@ -155,7 +188,7 @@ export function PropertyDetail() {
                         handlePayConfirmClick()
                       }}
                     >
-                      Pay / Confirm
+                      {t('property.payConfirm', 'Pay / Confirm')}
                     </GhostButton>
                   </ConfirmPaymentDialog>
                   <GhostButton 

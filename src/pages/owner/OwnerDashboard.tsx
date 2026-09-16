@@ -4,6 +4,15 @@ import { motion } from 'framer-motion'
 import { useAuth } from '@/lib/auth'
 import { properties, siteVisitRequests } from '@/data/mockData'
 import { PrimaryButton, PropertyStatusBadge, GhostButton, formatPrice } from '@/components/shared/Bits'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { useState } from 'react'
 
 export function OwnerDashboard() {
   const { user } = useAuth()
@@ -16,6 +25,15 @@ export function OwnerDashboard() {
 
   const approved = myProperties.filter(p => p.status === 'approved').length
   const pending = myProperties.filter(p => p.status === 'pending').length
+
+  const [verificationStatus, setVerificationStatus] = useState<'unverified' | 'pending'>('unverified')
+  const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false)
+
+  const handleVerifySubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setVerificationStatus('pending')
+    setIsVerifyModalOpen(false)
+  }
 
   return (
     <div className="max-w-4xl">
@@ -31,6 +49,27 @@ export function OwnerDashboard() {
           </PrimaryButton>
         </Link>
       </div>
+
+      {verificationStatus === 'unverified' && (
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h3 className="font-bold text-amber-900 mb-1">Verify Your Identity</h3>
+            <p className="text-sm text-amber-700">Get the "Title Verified" badge on your properties by verifying your identity.</p>
+          </div>
+          <PrimaryButton onClick={() => setIsVerifyModalOpen(true)} className="shrink-0 bg-amber-600 hover:bg-amber-700 text-white">
+            Verify Now
+          </PrimaryButton>
+        </div>
+      )}
+
+      {verificationStatus === 'pending' && (
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-8 flex items-center justify-between">
+          <div>
+            <h3 className="font-bold text-blue-900 mb-1">Verification Pending</h3>
+            <p className="text-sm text-blue-700">We are reviewing your uploaded documents. This usually takes 24 hours.</p>
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-10">
@@ -126,6 +165,42 @@ export function OwnerDashboard() {
           )}
         </div>
       )}
+
+      <Dialog open={isVerifyModalOpen} onOpenChange={setIsVerifyModalOpen}>
+        <DialogContent>
+          <form onSubmit={handleVerifySubmit}>
+            <DialogHeader>
+              <DialogTitle>Verify Your Identity</DialogTitle>
+              <DialogDescription>
+                Please provide your National ID details. This helps us verify property ownership and build trust with buyers.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-pl-ink">National ID Number (NIDA)</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g., 199012345-67890-12345-67" 
+                  className="w-full h-12 px-4 rounded-xl border border-pl-line bg-pl-surface focus:outline-none focus:ring-2 focus:ring-pl-accent"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-pl-ink">ID Photo (Front & Back)</label>
+                <div className="border-2 border-dashed border-pl-line rounded-xl p-8 text-center bg-pl-surface hover:bg-pl-line/30 transition-colors cursor-pointer">
+                  <Plus className="w-8 h-8 text-pl-muted mx-auto mb-2" />
+                  <p className="text-sm text-pl-muted">Click to upload photos or drag and drop</p>
+                </div>
+              </div>
+            </div>
+            <DialogFooter>
+              <PrimaryButton type="submit" className="w-full">
+                Submit Verification
+              </PrimaryButton>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

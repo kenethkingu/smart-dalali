@@ -23,6 +23,8 @@ export interface Property {
   type: PropertyType
   bedrooms?: number
   areaSqm?: number
+  titleVerified?: boolean
+  titleType?: string
   amenities: string[]
   status: PropertyStatus
   sponsored?: boolean
@@ -43,6 +45,7 @@ export interface SiteVisitRequest {
   buyerId: string
   requestedAt: string
   status: VisitStatus
+  ownerConfirmedAt?: string
   visitDate?: string
   declinedAt?: string
   paymentConfirmedAt?: string

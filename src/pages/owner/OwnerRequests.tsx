@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { siteVisitRequests, properties } from '@/data/mockData'
 
 const statusLabel: Record<string, string> = {
@@ -13,8 +14,16 @@ const statusClasses: Record<string, string> = {
 }
 
 export function OwnerRequests() {
+  const [requests, setRequests] = useState(siteVisitRequests)
+
+  const handleConfirm = (id: string) => {
+    setRequests(prev => prev.map(r => 
+      r.id === id ? { ...r, ownerConfirmedAt: new Date().toISOString(), visitDate: new Date(Date.now() + 86400000).toISOString() } : r
+    ))
+  }
+
   // Mock: show all requests across all properties
-  const enriched = siteVisitRequests.map(r => ({
+  const enriched = requests.map(r => ({
     ...r,
     property: properties.find(p => p.id === r.propertyId),
   }))
@@ -41,6 +50,7 @@ export function OwnerRequests() {
                   <th className="text-left px-5 py-3 text-xs font-bold text-pl-muted uppercase tracking-wide">Buyer</th>
                   <th className="text-left px-5 py-3 text-xs font-bold text-pl-muted uppercase tracking-wide">Status</th>
                   <th className="text-left px-5 py-3 text-xs font-bold text-pl-muted uppercase tracking-wide">Requested</th>
+                  <th className="text-left px-5 py-3 text-xs font-bold text-pl-muted uppercase tracking-wide">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -58,6 +68,16 @@ export function OwnerRequests() {
                     </td>
                     <td className="px-5 py-4 text-pl-muted text-xs">
                       {new Date(r.requestedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </td>
+                    <td className="px-5 py-4">
+                      {r.status === 'pending' && !r.ownerConfirmedAt && (
+                        <button 
+                          onClick={() => handleConfirm(r.id)}
+                          className="bg-pl-ink text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-pl-ink/90 transition-colors"
+                        >
+                          Confirm This Visit
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -79,6 +99,14 @@ export function OwnerRequests() {
                     {new Date(r.requestedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                   </span>
                 </div>
+                {r.status === 'pending' && !r.ownerConfirmedAt && (
+                  <button 
+                    onClick={() => handleConfirm(r.id)}
+                    className="mt-3 w-full bg-pl-ink text-white px-3 py-2 rounded-xl text-sm font-semibold hover:bg-pl-ink/90 transition-colors"
+                  >
+                    Confirm This Visit
+                  </button>
+                )}
               </div>
             ))}
           </div>

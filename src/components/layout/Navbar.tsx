@@ -3,9 +3,15 @@ import { Logo } from '../shared/Logo'
 import { PrimaryButton, GhostButton } from '../shared/Bits'
 import { HoverText } from '../shared/HoverText'
 import { useAuth } from '@/lib/auth'
+import { useTranslation } from 'react-i18next'
 
 export function Navbar() {
   const { user, logout } = useAuth()
+  const { t, i18n } = useTranslation()
+
+  const toggleLanguage = () => {
+    i18n.changeLanguage(i18n.language.startsWith('en') ? 'sw' : 'en')
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
@@ -16,9 +22,9 @@ export function Navbar() {
             <Logo size={24} />
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-pl-ink/80">
-            <Link to="/" className="text-pl-ink/80 transition-colors"><HoverText text="Home" /></Link>
-            <Link to="/about" className="text-pl-ink/80 transition-colors"><HoverText text="About Us" /></Link>
-            <Link to="/properties" className="text-pl-ink/80 transition-colors"><HoverText text="Properties" /></Link>
+            <Link to="/" className="text-pl-ink/80 transition-colors"><HoverText text={t('nav.home', 'Home')} /></Link>
+            <Link to="/about" className="text-pl-ink/80 transition-colors"><HoverText text={t('nav.about', 'About Us')} /></Link>
+            <Link to="/properties" className="text-pl-ink/80 transition-colors"><HoverText text={t('nav.properties', 'Properties')} /></Link>
             <Link to="/#how-it-works" className="text-pl-ink/80 transition-colors"><HoverText text="How It Works" /></Link>
             <Link to="/contact" className="text-pl-ink/80 transition-colors"><HoverText text="Contact" /></Link>
           </nav>
@@ -26,19 +32,25 @@ export function Navbar() {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-4">
+          <button 
+            onClick={toggleLanguage}
+            className="text-xs font-bold uppercase tracking-wider text-pl-muted hover:text-pl-ink transition-colors px-2"
+          >
+            {i18n.language.startsWith('en') ? 'SW' : 'EN'}
+          </button>
           {!user ? (
             <>
               <Link to="/login?role=owner">
                 <GhostButton className="hidden md:inline-flex rounded-full">List Your Property</GhostButton>
               </Link>
               <Link to="/login">
-                <PrimaryButton className="rounded-full">Log In / Sign Up</PrimaryButton>
+                <PrimaryButton className="rounded-full">{t('nav.login', 'Log In')}</PrimaryButton>
               </Link>
             </>
           ) : (
             <div className="flex items-center gap-4">
               <Link to={`/${user.role}/dashboard`} className="text-sm font-semibold hover:underline">
-                Dashboard
+                {t('nav.dashboard', 'Dashboard')}
               </Link>
               <GhostButton onClick={logout} className="rounded-full px-4 py-1.5 h-auto text-xs">
                 Log Out

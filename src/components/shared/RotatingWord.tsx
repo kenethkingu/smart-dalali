@@ -53,7 +53,7 @@ export function RotatingWord({ words, interval = 2800, className = '' }: Rotatin
         onMouseLeave={() => setPaused(false)}
       >
         {/* Invisible spacer that locks the width */}
-        <span className="invisible" aria-hidden="true">{longestWord}</span>
+        <span className="invisible whitespace-pre-line" aria-hidden="true">{longestWord}</span>
 
         {/* Animated word, absolutely positioned over the spacer */}
         <span className="absolute inset-0 flex items-center">
@@ -67,7 +67,7 @@ export function RotatingWord({ words, interval = 2800, className = '' }: Rotatin
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -14, opacity: 0 }}
                 transition={{ duration: 0.32, ease: 'easeOut' }}
-                className="block"
+                className="block whitespace-pre-line"
               >
                 {words[index]}
               </motion.span>

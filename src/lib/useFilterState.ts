@@ -9,6 +9,7 @@ export interface FilterState {
   maxPrice: number | null
   bedrooms: string | null // 'any', '1', '2', '3', '4'
   amenities: string[]
+  titleType: string[]
 }
 
 export function useFilterState() {
@@ -21,7 +22,8 @@ export function useFilterState() {
       minPrice: searchParams.has('minPrice') ? Number(searchParams.get('minPrice')) : null,
       maxPrice: searchParams.has('maxPrice') ? Number(searchParams.get('maxPrice')) : null,
       bedrooms: searchParams.get('bedrooms') || null,
-      amenities: searchParams.get('amenities') ? searchParams.get('amenities')!.split(',') : []
+      amenities: searchParams.get('amenities') ? searchParams.get('amenities')!.split(',') : [],
+      titleType: searchParams.get('titleType') ? searchParams.get('titleType')!.split(',') : []
     }
   }, [searchParams])
 

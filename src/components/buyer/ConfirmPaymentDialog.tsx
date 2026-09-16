@@ -1,14 +1,13 @@
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { useState } from 'react'
 import { PrimaryButton, formatPrice } from '@/components/shared/Bits'
 import type { Property } from '@/types'
 import confetti from 'canvas-confetti'
@@ -23,7 +22,10 @@ interface ConfirmPaymentDialogProps {
 }
 
 export function ConfirmPaymentDialog({ property, onConfirm, triggerClassName, open, onOpenChange, children }: ConfirmPaymentDialogProps) {
+  const [method, setMethod] = useState<string | null>(null)
+  
   const handleConfirmPayment = () => {
+    if (!method) return
     onConfirm()
 
     // Trigger confetti from the left and right edges
@@ -50,32 +52,50 @@ export function ConfirmPaymentDialog({ property, onConfirm, triggerClassName, op
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       {children ? (
-        <AlertDialogTrigger asChild>
+        <DialogTrigger asChild>
           {children}
-        </AlertDialogTrigger>
+        </DialogTrigger>
       ) : (
-        <AlertDialogTrigger asChild>
+        <DialogTrigger asChild>
           <PrimaryButton className={triggerClassName}>Confirm Payment</PrimaryButton>
-        </AlertDialogTrigger>
+        </DialogTrigger>
       )}
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Confirm payment for {property.title}?</AlertDialogTitle>
-          <AlertDialogDescription>
-            TSh {formatPrice(property.price)}{property.priceUnit === 'month' ? '/mo' : ''} —
-            you're confirming you've inspected the property and want to proceed.
-            This cannot be undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirmPayment}>
-            Yes, Confirm Payment
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Select Payment Method</DialogTitle>
+          <DialogDescription>
+            Your payment is held securely until your visit is confirmed.
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div className="grid grid-cols-2 gap-3 py-4">
+          {['M-Pesa', 'Tigo Pesa', 'Airtel Money', 'Bank / Card'].map((m) => (
+            <button
+              key={m}
+              onClick={() => setMethod(m)}
+              className={`p-4 border rounded-xl font-semibold text-sm transition-colors ${
+                method === m 
+                  ? 'border-pl-ink bg-pl-ink text-white' 
+                  : 'border-pl-line bg-white text-pl-ink hover:border-pl-muted'
+              }`}
+            >
+              {m}
+            </button>
+          ))}
+        </div>
+
+        <DialogFooter>
+          <PrimaryButton 
+            disabled={!method} 
+            onClick={handleConfirmPayment}
+            className="w-full sm:w-auto"
+          >
+            Continue with {method || '...'}
+          </PrimaryButton>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

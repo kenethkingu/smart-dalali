@@ -17,6 +17,7 @@ export function FiltersSidebar() {
       if (key === 'type' && p.type !== val) return false
       if (key === 'bedrooms' && val !== 'any' && (p.bedrooms || 0) < parseInt(val)) return false
       if (key === 'amenities' && !p.amenities.includes(val)) return false
+      if (key === 'titleType' && p.titleType !== val) return false
       return true
     }).length
   }
@@ -111,7 +112,7 @@ export function FiltersSidebar() {
         <div>
           <h3 className="font-bold text-pl-ink mb-3">Amenities</h3>
           <div className="space-y-3">
-            {['WiFi', 'Parking', '24/7 Security', 'Reliable Water', 'Elevator', 'Generator Backup'].map(a => (
+            {['WiFi', 'Parking', '24/7 Security', 'Reliable Water', 'Elevator', 'Generator Backup', 'Fenced Compound', 'Borehole/Water Source', 'Servant Quarters', 'Distance to Main Road'].map(a => (
               <label key={a} className="flex items-center gap-3 cursor-pointer group">
                 <Checkbox 
                   checked={filters.amenities.includes(a)}
@@ -126,6 +127,29 @@ export function FiltersSidebar() {
             <button className="text-sm font-bold text-pl-accent hover:text-pl-accent-dark pt-1 transition-colors">
               Show more
             </button>
+          </div>
+        </div>
+
+        {/* Title Type */}
+        <div>
+          <h3 className="font-bold text-pl-ink mb-3">Title Type</h3>
+          <div className="flex flex-wrap gap-2">
+            {['CCRO', 'Residential', 'Commercial'].map(t => (
+              <Pill 
+                key={t} 
+                active={filters.titleType?.includes(t)}
+                onClick={() => {
+                  const current = filters.titleType || []
+                  if (current.includes(t)) {
+                    setFilter('titleType', current.filter(v => v !== t))
+                  } else {
+                    setFilter('titleType', [...current, t])
+                  }
+                }}
+              >
+                {t} <span className="opacity-60 text-[10px] ml-1">({getCount('titleType', t)})</span>
+              </Pill>
+            ))}
           </div>
         </div>
 

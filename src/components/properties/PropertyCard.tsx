@@ -30,8 +30,13 @@ export function PropertyCard({ property, featured = false }: PropertyCardProps) 
             <div className="w-full h-full motion-safe:group-hover:scale-[1.03] transition-transform duration-500 ease-out">
               <PropertyImage property={property} className="w-full h-full object-cover" />
             </div>
-        <div className="absolute top-3 left-3">
+        <div className="absolute top-3 left-3 flex flex-col items-start gap-1">
           <PropertyStatusBadge status={property.status} />
+          {property.titleVerified && (
+            <div className="bg-[#16A97C] text-white text-[10px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-white block" /> Title Verified
+            </div>
+          )}
         </div>
         {property.sponsored && (
           <div className="absolute top-3 right-3 bg-pl-ink text-white text-[10px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">
@@ -39,9 +44,17 @@ export function PropertyCard({ property, featured = false }: PropertyCardProps) 
           </div>
         )}
         {/* Property type pill — bottom of image */}
-        <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-pl-ink text-[11px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider">
-          {property.type}
-          {property.type === 'house' && property.bedrooms ? ` · ${property.bedrooms} bed` : ''}
+        <div className="absolute bottom-3 left-3 flex flex-wrap gap-1">
+          <div className="bg-white/90 backdrop-blur-sm text-pl-ink text-[11px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider">
+            {property.type}
+            {property.type === 'house' && property.bedrooms ? ` · ${property.bedrooms} bed` : ''}
+            {property.areaSqm ? ` · ${property.areaSqm} sqm` : ''}
+          </div>
+          {property.titleType && (
+            <div className="bg-white/90 backdrop-blur-sm text-pl-ink text-[11px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider">
+              Title: {property.titleType}
+            </div>
+          )}
         </div>
           </CardItem>
 
