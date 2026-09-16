@@ -83,7 +83,6 @@ export function VisitRequestCard({ request, onDecline, onPay }: VisitRequestCard
                 )}
                 {property && (
                   <ConfirmPaymentDialog
-                    property={property}
                     onConfirm={() => onPay?.(request.id)}
                     triggerClassName="text-sm h-11 px-4"
                   />

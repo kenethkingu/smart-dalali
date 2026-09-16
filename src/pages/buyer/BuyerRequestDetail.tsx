@@ -165,7 +165,7 @@ export function BuyerRequestDetail() {
                 </AlertDialogContent>
               </AlertDialog>
             )}
-            <ConfirmPaymentDialog property={property} onConfirm={handlePay} />
+            <ConfirmPaymentDialog onConfirm={handlePay} />
           </div>
         )}
       </div>
