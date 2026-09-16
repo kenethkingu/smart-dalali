@@ -8,12 +8,11 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { useState } from 'react'
-import { PrimaryButton } from '@/components/shared/Bits'
+import { PrimaryButton, GhostButton } from '@/components/shared/Bits'
 import type { Property } from '@/types'
 import confetti from 'canvas-confetti'
 
 interface ConfirmPaymentDialogProps {
-  property: Property
   onConfirm: () => void
   triggerClassName?: string
   open?: boolean
