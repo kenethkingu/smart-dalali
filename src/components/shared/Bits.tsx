@@ -1,5 +1,5 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
-import { ShieldCheck, Clock } from 'lucide-react'
+import { ShieldCheck, Clock, Wifi, ArrowUpDown, Zap, Route, Fence, Home, Droplets, Dumbbell, Wind, CheckCircle2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { PropertyStatus } from '@/types'
 import { MagneticButton } from '../ui/magnetic-button'
@@ -122,4 +122,21 @@ export function DangerButton({ children, className, ...props }: ButtonHTMLAttrib
 
 export function formatPrice(n: number) {
   return new Intl.NumberFormat('en-US').format(n)
+}
+
+export function AmenityIcon({ amenity, className }: { amenity: string; className?: string }) {
+  const name = amenity.toLowerCase()
+  if (name.includes('wifi') || name.includes('internet')) return <Wifi className={className} />
+  if (name.includes('elevator') || name.includes('lift')) return <ArrowUpDown className={className} />
+  if (name.includes('security') || name.includes('guard')) return <ShieldCheck className={className} />
+  if (name.includes('generator') || name.includes('power')) return <Zap className={className} />
+  if (name.includes('road') || name.includes('distance')) return <Route className={className} />
+  if (name.includes('fence') || name.includes('wall')) return <Fence className={className} />
+  if (name.includes('servant') || name.includes('bq') || name.includes('quarters')) return <Home className={className} />
+  if (name.includes('borehole') || name.includes('water')) return <Droplets className={className} />
+  if (name.includes('pool') || name.includes('swim')) return <Droplets className={className} />
+  if (name.includes('gym') || name.includes('fitness')) return <Dumbbell className={className} />
+  if (name.includes('air cond') || name.includes('ac')) return <Wind className={className} />
+  
+  return <CheckCircle2 className={className} />
 }

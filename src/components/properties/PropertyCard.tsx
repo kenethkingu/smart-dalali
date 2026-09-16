@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { MapPin, ArrowRight } from 'lucide-react'
-import { PropertyStatusBadge, formatPrice } from '../shared/Bits'
+import { PropertyStatusBadge, formatPrice, AmenityIcon } from '../shared/Bits'
 import { CardContainer, CardBody, CardItem } from '../ui/3d-card'
 import type { Property } from '@/types'
 import { cn } from '@/lib/utils'
@@ -79,7 +79,8 @@ export function PropertyCard({ property, featured = false }: PropertyCardProps) 
         <div className={cn('flex items-center justify-between pt-3 border-t border-pl-line', featured && 'mt-auto')}>
           <div className="flex gap-1.5">
             {property.amenities.slice(0, 2).map(a => (
-              <span key={a} className="text-[10px] font-semibold px-1.5 py-0.5 bg-pl-surface text-pl-muted rounded-sm">
+              <span key={a} className="flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 bg-pl-surface text-pl-muted rounded-sm">
+                <AmenityIcon amenity={a} className="w-3 h-3" />
                 {a}
               </span>
             ))}

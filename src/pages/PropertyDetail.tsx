@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { MapPin, Shield, ArrowLeft } from 'lucide-react'
-import { PrimaryButton, GhostButton, PropertyStatusBadge, formatPrice } from '../components/shared/Bits'
+import { MapPin, ArrowLeft } from 'lucide-react'
+import { PrimaryButton, GhostButton, PropertyStatusBadge, formatPrice, AmenityIcon } from '../components/shared/Bits'
 import { PropertyImage } from '../components/shared/PropertyImage'
 import { properties } from '../data/mockData'
 import { useAuth } from '@/lib/auth'
@@ -126,7 +126,7 @@ export function PropertyDetail() {
                 {property.amenities.map(amenity => (
                   <div key={amenity} className="flex items-center gap-2 text-sm font-medium text-pl-ink">
                     <div className="w-8 h-8 rounded-full bg-pl-surface flex items-center justify-center shrink-0">
-                      <Shield className="w-4 h-4 text-pl-muted" />
+                      <AmenityIcon amenity={amenity} className="w-4 h-4 text-pl-muted" />
                     </div>
                     {amenity}
                   </div>
