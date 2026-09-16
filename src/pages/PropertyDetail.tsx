@@ -8,7 +8,6 @@ import { useAuth } from '@/lib/auth'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { ConfirmPaymentDialog } from '@/components/buyer/ConfirmPaymentDialog'
 import { RequestVisitDialog } from '@/components/buyer/RequestVisitDialog'
-import { useTranslation } from 'react-i18next'
 
 export function PropertyDetail() {
   const { id } = useParams()
@@ -20,7 +19,6 @@ export function PropertyDetail() {
   
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false)
   const [isPayModalOpen, setIsPayModalOpen] = useState(false)
-  const { t } = useTranslation()
 
   const handleRequestVisitClick = () => {
     if (!user) {
@@ -90,7 +88,7 @@ export function PropertyDetail() {
 
             {/* Description & Details (Below Gallery on Mobile, Part of Left Scroll on Desktop) */}
             <div className="bg-white p-8 rounded-2xl shadow-sm mt-8">
-              <h2 className="text-2xl font-bold mb-6">{t('property.about', 'About this property')}</h2>
+              <h2 className="text-2xl font-bold mb-6">About this property</h2>
               
               <div className="flex flex-wrap gap-8 mb-6 pb-6 border-b border-pl-line">
                 <div className="flex flex-col">
@@ -121,7 +119,7 @@ export function PropertyDetail() {
                 {property.description}
               </p>
 
-              <h3 className="text-lg font-bold mt-8 mb-4">{t('property.amenities', 'Amenities')}</h3>
+              <h3 className="text-lg font-bold mt-8 mb-4">Amenities</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-2">
                 {property.amenities.map(amenity => (
                   <div key={amenity} className="flex items-center gap-2 text-sm font-medium text-pl-ink">
@@ -170,11 +168,10 @@ export function PropertyDetail() {
               {/* Actions */}
               <div className="space-y-3">
                 <PrimaryButton className="w-full h-14 text-lg" onClick={handleRequestVisitClick}>
-                  {t('property.requestVisit', 'Request Site Visit')}
+                  Request Site Visit
                 </PrimaryButton>
                 <div className="flex gap-3">
                   <ConfirmPaymentDialog 
-                    property={property} 
                     open={isPayModalOpen}
                     onOpenChange={setIsPayModalOpen}
                     onConfirm={() => {
@@ -188,7 +185,7 @@ export function PropertyDetail() {
                         handlePayConfirmClick()
                       }}
                     >
-                      {t('property.payConfirm', 'Pay / Confirm')}
+                      Pay / Confirm
                     </GhostButton>
                   </ConfirmPaymentDialog>
                   <GhostButton 

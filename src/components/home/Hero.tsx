@@ -6,7 +6,6 @@ import { PrimaryButton, PropertyStatusBadge, formatPrice } from '../shared/Bits'
 import { RotatingWord } from '../shared/RotatingWord'
 import { useTypewriterPlaceholder } from '@/hooks/useTypewriterPlaceholder'
 import { PropertyImage } from '../shared/PropertyImage'
-import { useTranslation } from 'react-i18next'
 
 import { publicProperties } from '@/data/mockData'
 import type { Property } from '@/types'
@@ -62,7 +61,6 @@ function MiniPropertyCard({
 
 export function Hero() {
   const navigate = useNavigate()
-  const { t } = useTranslation()
   const [location, setLocation] = useState('')
 
   const searchExamples = [
@@ -108,16 +106,11 @@ export function Hero() {
               className="text-display font-heading font-bold text-white mb-6 tracking-[-0.02em] leading-[1.05]"
               style={{ fontSize: 'clamp(2.75rem, 7vw, 5.5rem)' }}
             >
-              <RotatingWord 
-                words={[
-                  t('home.hero.phrase1', 'Find the House\nYou Want.'),
-                  t('home.hero.phrase2', 'Find the Plot\nYou Want.'),
-                  t('home.hero.phrase3', 'Find the Office\nYou Want.')
-                ]} 
-                className="text-white" 
-              />
+              Find the <RotatingWord words={['House', 'Plot', 'Office']} className="text-white" />
+              <br />
+              You Want.
               <span className="block text-pl-accent mt-1" style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.75rem)' }}>
-                {t('home.hero.subtitle', 'Book a visit. Pay securely.')}
+                Book a visit. Pay securely.
               </span>
             </h1>
 

@@ -8,7 +8,6 @@ import { Timeline } from '@/components/ui/timeline'
 import { publicProperties } from '../data/mockData'
 
 import { useReducedMotion } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
 
 export function useFadeUp() {
   const shouldReduce = useReducedMotion()
@@ -49,7 +48,6 @@ const trustItems = [
 
 export function Home() {
   const fadeUp = useFadeUp()
-  const { t } = useTranslation()
   // Use all approved properties for the editorial grid
   const [featured, ...rest] = publicProperties
 
@@ -66,14 +64,14 @@ export function Home() {
                 className="font-heading font-bold text-pl-ink"
                 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 3rem)', letterSpacing: '-0.015em', lineHeight: 1.15 }}
               >
-                {t('home.featuredProperties', 'Featured Properties')}
+                Featured Properties
               </h2>
               <p className="text-pl-muted mt-2 max-w-md">
-                {t('home.featuredDesc', 'Hand-picked listings from verified owners — each reviewed before going live.')}
+                Hand-picked listings from verified owners — each reviewed before going live.
               </p>
             </div>
             <Link to="/properties" className="hidden sm:block shrink-0 ml-8">
-              <GhostButton>{t('home.viewAll', 'View All')}</GhostButton>
+              <GhostButton>View All</GhostButton>
             </Link>
           </motion.div>
 
@@ -98,7 +96,7 @@ export function Home() {
 
           <div className="mt-6 sm:hidden">
             <Link to="/properties">
-              <PrimaryButton className="w-full">{t('home.viewAll', 'View All')}</PrimaryButton>
+              <PrimaryButton className="w-full">View All Properties</PrimaryButton>
             </Link>
           </div>
         </div>
@@ -124,7 +122,7 @@ export function Home() {
         
         <motion.div {...fadeUp(0.5)} className="mt-20 pt-12 border-t border-white/20 flex justify-center pb-20">
           <Link to="/properties">
-            <PrimaryButton className="h-13 px-10">{t('home.browseProperties', 'Browse Properties')}</PrimaryButton>
+            <PrimaryButton className="h-13 px-10">Browse Properties</PrimaryButton>
           </Link>
         </motion.div>
       </section>
@@ -176,21 +174,21 @@ export function Home() {
       <section className="grain-texture py-20 px-4 bg-pl-surface border-t border-pl-line">
         <div className="container mx-auto max-w-3xl text-center">
           <motion.p {...fadeUp()} className="text-xs font-bold uppercase tracking-[0.2em] text-pl-muted mb-4">
-            {t('home.forOwners', 'For Property Owners')}
+            For Property Owners
           </motion.p>
           <motion.h2
             {...fadeUp(0.1)}
             className="font-heading font-bold text-pl-ink mb-4"
             style={{ fontSize: 'clamp(1.75rem, 3.5vw, 3rem)', letterSpacing: '-0.015em' }}
           >
-            {t('home.haveProperty', 'Have a Property to Sell or Rent?')}
+            Have a Property to Sell or Rent?
           </motion.h2>
           <motion.p {...fadeUp(0.15)} className="text-pl-muted mb-8 max-w-md mx-auto">
             List for free. Once our team approves your listing, it's live to thousands of verified buyers.
           </motion.p>
           <motion.div {...fadeUp(0.2)}>
             <Link to="/login">
-              <PrimaryButton className="h-13 px-10 text-base">{t('home.listForFree', 'List Your Property Free')}</PrimaryButton>
+              <PrimaryButton className="h-13 px-10 text-base">List Your Property Free</PrimaryButton>
             </Link>
           </motion.div>
         </div>
