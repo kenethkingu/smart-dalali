@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { siteVisitRequests, properties } from '@/data/mockData'
+import { useEvents } from '@/lib/events'
+import { useAuth } from '@/lib/auth'
 
 const statusLabel: Record<string, string> = {
   pending: 'Pending',
@@ -15,11 +17,23 @@ const statusClasses: Record<string, string> = {
 
 export function OwnerRequests() {
   const [requests, setRequests] = useState(siteVisitRequests)
+  const { addEvent } = useEvents()
+  const { user } = useAuth()
 
   const handleConfirm = (id: string) => {
     setRequests(prev => prev.map(r => 
       r.id === id ? { ...r, ownerConfirmedAt: new Date().toISOString(), visitDate: new Date(Date.now() + 86400000).toISOString() } : r
     ))
+    const req = requests.find(r => r.id === id)
+    if (req) {
+      addEvent({
+        propertyId: req.propertyId,
+        type: 'visit_confirmed',
+        actorId: user?.id ?? 'owner1',
+        summary: `${user?.name ?? 'Property Owner'} confirmed the site visit.`,
+        requestId: id,
+      })
+    }
   }
 
   // Mock: show all requests across all properties

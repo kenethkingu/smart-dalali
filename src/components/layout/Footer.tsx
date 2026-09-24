@@ -39,6 +39,12 @@ export function Footer() {
         ...(user?.role === 'owner' ? [{ label: 'Owner Dashboard', to: '/owner/dashboard' }] : []),
       ],
     },
+    {
+      title: 'For Agents',
+      links: [
+        { label: 'Dalali Workspace', to: user?.role === 'agent' ? '/agent/dashboard' : '/login' },
+      ],
+    },
   ]
 
   return (

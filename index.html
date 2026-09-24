@@ -7,7 +7,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>Proland</title>
+    <title>Proland — Find Your Property in Tanzania</title>
+    <!-- Blocking theme script: runs before React mounts, no flash of wrong theme -->
+    <script>
+      (function () {
+        var stored = localStorage.getItem('proland-theme')
+        var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        var theme = stored || (systemDark ? 'dark' : 'light')
+        if (theme === 'dark') document.documentElement.classList.add('dark')
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

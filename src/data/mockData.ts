@@ -1,4 +1,14 @@
-import type { Property, SiteVisitRequest } from '@/types'
+import type { Property, SiteVisitRequest, TransactionEvent, Building, Lead } from '@/types'
+
+export const buildings: Building[] = [
+  {
+    id: 'b1',
+    name: 'Mikocheni Heights',
+    location: 'Mikocheni B, Dar es Salaam',
+    ownerId: 'owner2',
+    totalUnits: 12,
+  },
+]
 
 export const properties: Property[] = [
   {
@@ -18,7 +28,7 @@ export const properties: Property[] = [
     lat: -6.7789, lng: 39.2245,
   },
   {
-    id: 'p2', ownerId: 'owner2', title: 'Apartment — Mikocheni',
+    id: 'p2', ownerId: 'owner2', buildingId: 'b1', unitNumber: '3B', title: 'Apartment — Mikocheni',
     location: 'Mikocheni B, Dar es Salaam', price: 900_000, priceUnit: 'month',
     purpose: 'rent', type: 'house', bedrooms: 3, areaSqm: 120, titleVerified: true, titleType: 'Commercial',
     amenities: ['WiFi', 'Elevator', '24/7 Security', 'Generator Backup', 'Distance to Main Road'],
@@ -64,27 +74,85 @@ export const properties: Property[] = [
 const hoursAgo = (h: number) => new Date(Date.now() - h * 60 * 60 * 1000).toISOString()
 
 export const siteVisitRequests: SiteVisitRequest[] = [
-  // requested 5 hours ago — well within the 3-day decline window
   { id: 'v1', propertyId: 'p1', buyerId: 'buyer1', requestedAt: hoursAgo(5), status: 'pending', ownerConfirmedAt: hoursAgo(4) },
-  // requested 70 hours ago — decline window closing very soon (used to test the color-shift/urgency state)
   { id: 'v2', propertyId: 'p2', buyerId: 'buyer1', requestedAt: hoursAgo(70), status: 'pending', ownerConfirmedAt: hoursAgo(69) },
-  // requested 100 hours ago — window already closed, decline no longer possible
   { id: 'v3', propertyId: 'p3', buyerId: 'buyer1', requestedAt: hoursAgo(100), status: 'pending', ownerConfirmedAt: hoursAgo(99) },
-  // already paid
   {
     id: 'v4', propertyId: 'p1', buyerId: 'buyer1', requestedAt: hoursAgo(200),
     status: 'payment_confirmed', paymentConfirmedAt: hoursAgo(150), ownerConfirmedAt: hoursAgo(190)
   },
 ]
 
-// Demo accounts — IDs deliberately match the ownerId/buyerId values used
-// throughout the mock data above, so logging in as one of these immediately
-// shows a populated dashboard (real requests, real properties) rather than empty.
 export const demoUsers = {
   buyer: { id: 'buyer1', name: 'Amina Hassan', phone: '+255712000111', role: 'buyer' as const },
   owner: { id: 'owner1', name: 'John Mwakalinga', phone: '+255712000222', role: 'owner' as const },
+  agent: { id: 'agent1', name: 'Juma Hassan (Dalali)', phone: '+255712000444', role: 'agent' as const },
   admin: { id: 'admin1', name: 'Proland Admin', phone: '+255712000333', role: 'admin' as const },
 }
 
-// Only approved properties should ever be shown on public routes
+export const mockLeads: Lead[] = [
+  { id: 'l1', agentId: 'agent1', name: 'Kassim Majaliwa', phone: '+255713111222', interestedPropertyId: 'p1', stage: 'new', createdAt: hoursAgo(12) },
+  { id: 'l2', agentId: 'agent1', name: 'Neema Mollel', phone: '+255714333444', interestedPropertyId: 'p2', stage: 'contacted', createdAt: hoursAgo(36) },
+  { id: 'l3', agentId: 'agent1', name: 'Rashid Ali', phone: '+255715555666', interestedPropertyId: 'p1', stage: 'viewing_scheduled', createdAt: hoursAgo(48) },
+  { id: 'l4', agentId: 'agent1', name: 'Sarah Kimaro', phone: '+255716777888', interestedPropertyId: 'p3', stage: 'negotiating', createdAt: hoursAgo(96) },
+  { id: 'l5', agentId: 'agent1', name: 'David Massawe', phone: '+255717999000', interestedPropertyId: 'p2', stage: 'closed', createdAt: hoursAgo(140) },
+]
+
 export const publicProperties = properties.filter(p => p.status === 'approved')
+
+export const transactionEvents: TransactionEvent[] = [
+  {
+    id: 'evt-001', propertyId: 'p1', type: 'visit_requested',
+    timestamp: hoursAgo(5), actorId: 'buyer1',
+    summary: 'Amina Hassan requested a site visit.',
+    requestId: 'v1',
+  },
+  {
+    id: 'evt-002', propertyId: 'p1', type: 'visit_confirmed',
+    timestamp: hoursAgo(4), actorId: 'owner1',
+    summary: 'John Mwakalinga confirmed the site visit.',
+    requestId: 'v1',
+  },
+  {
+    id: 'evt-003', propertyId: 'p1', type: 'visit_requested',
+    timestamp: hoursAgo(200), actorId: 'buyer1',
+    summary: 'Amina Hassan requested a site visit.',
+    requestId: 'v4',
+  },
+  {
+    id: 'evt-004', propertyId: 'p1', type: 'visit_confirmed',
+    timestamp: hoursAgo(190), actorId: 'owner1',
+    summary: 'John Mwakalinga confirmed the site visit.',
+    requestId: 'v4',
+  },
+  {
+    id: 'evt-005', propertyId: 'p1', type: 'payment_confirmed',
+    timestamp: hoursAgo(150), actorId: 'buyer1',
+    summary: 'Amina Hassan confirmed payment for the site visit.',
+    requestId: 'v4',
+  },
+  {
+    id: 'evt-006', propertyId: 'p2', type: 'visit_requested',
+    timestamp: hoursAgo(70), actorId: 'buyer1',
+    summary: 'Amina Hassan requested a site visit.',
+    requestId: 'v2',
+  },
+  {
+    id: 'evt-007', propertyId: 'p2', type: 'visit_confirmed',
+    timestamp: hoursAgo(69), actorId: 'owner2',
+    summary: 'Grace Kileo confirmed the site visit.',
+    requestId: 'v2',
+  },
+  {
+    id: 'evt-008', propertyId: 'p3', type: 'visit_requested',
+    timestamp: hoursAgo(100), actorId: 'buyer1',
+    summary: 'Amina Hassan requested a site visit.',
+    requestId: 'v3',
+  },
+  {
+    id: 'evt-009', propertyId: 'p3', type: 'visit_confirmed',
+    timestamp: hoursAgo(99), actorId: 'owner2',
+    summary: 'Hamis Rajabu confirmed the site visit.',
+    requestId: 'v3',
+  },
+]

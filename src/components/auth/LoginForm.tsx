@@ -11,6 +11,7 @@ type Tab = 'login' | 'signup'
 const demoConfig = [
   { key: 'buyer' as const, label: 'Continue as Buyer', dest: '/buyer/dashboard' },
   { key: 'owner' as const, label: 'Continue as Property Owner', dest: '/owner/dashboard' },
+  { key: 'agent' as const, label: 'Continue as Agent / Dalali', dest: '/agent/dashboard' },
 ]
 
 interface LoginFormProps {
@@ -24,7 +25,7 @@ export function LoginForm({ onSuccess, contextProperty }: LoginFormProps) {
   const [tab, setTab] = useState<Tab>('login')
   const [phone, setPhone] = useState('+255712000111')
   const [name, setName] = useState('')
-  const [role, setRole] = useState<'buyer' | 'owner'>('buyer')
+  const [role, setRole] = useState<'buyer' | 'owner' | 'agent'>('buyer')
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -44,7 +45,7 @@ export function LoginForm({ onSuccess, contextProperty }: LoginFormProps) {
     const userRole: UserRole = tab === 'login' ? 'buyer' : role
     const userId = tab === 'login' ? 'buyer1' : crypto.randomUUID()
     login({ id: userId, name: userName, phone, role: userRole })
-    onSuccess?.('/')
+    onSuccess?.(userRole === 'agent' ? '/agent/dashboard' : userRole === 'owner' ? '/owner/dashboard' : '/')
   }
 
   return (
@@ -60,7 +61,7 @@ export function LoginForm({ onSuccess, contextProperty }: LoginFormProps) {
           <div className="flex items-center gap-2 mb-1">
             <span className="text-sm font-bold text-pl-ink">Try Proland</span>
           </div>
-          <p className="text-xs text-pl-muted mb-4">See what it's like as a buyer or property owner.</p>
+          <p className="text-xs text-pl-muted mb-4">See what it's like as a buyer, owner, or agent (dalali).</p>
           <div className="space-y-2">
             {demoConfig.map(({ key, label, dest }) => (
               <button
@@ -126,20 +127,27 @@ export function LoginForm({ onSuccess, contextProperty }: LoginFormProps) {
 
                 <div>
                   <label className="block text-xs font-bold text-pl-muted uppercase tracking-wider mb-2">I want to</label>
-                  <div className="flex bg-pl-surface p-1 rounded-xl">
+                  <div className="grid grid-cols-3 bg-pl-surface p-1 rounded-xl gap-1">
                     <button
                       type="button"
                       onClick={() => setRole('buyer')}
-                      className={`flex-1 py-2 px-3 text-xs font-bold rounded-lg transition-colors ${role === 'buyer' ? 'bg-white shadow-sm text-pl-ink' : 'text-pl-muted hover:text-pl-ink'}`}
+                      className={`py-2 px-2 text-xs font-bold rounded-lg transition-colors text-center ${role === 'buyer' ? 'bg-white shadow-sm text-pl-ink' : 'text-pl-muted hover:text-pl-ink'}`}
                     >
                       Buy / Rent
                     </button>
                     <button
                       type="button"
                       onClick={() => setRole('owner')}
-                      className={`flex-1 py-2 px-3 text-xs font-bold rounded-lg transition-colors ${role === 'owner' ? 'bg-white shadow-sm text-pl-ink' : 'text-pl-muted hover:text-pl-ink'}`}
+                      className={`py-2 px-2 text-xs font-bold rounded-lg transition-colors text-center ${role === 'owner' ? 'bg-white shadow-sm text-pl-ink' : 'text-pl-muted hover:text-pl-ink'}`}
                     >
-                      List a Property
+                      List Property
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRole('agent')}
+                      className={`py-2 px-2 text-xs font-bold rounded-lg transition-colors text-center ${role === 'agent' ? 'bg-white shadow-sm text-pl-ink' : 'text-pl-muted hover:text-pl-ink'}`}
+                    >
+                      Agent/Dalali
                     </button>
                   </div>
                 </div>

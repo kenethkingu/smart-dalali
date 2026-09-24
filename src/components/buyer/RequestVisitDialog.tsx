@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/alert-dialog'
 import { PrimaryButton } from '@/components/shared/Bits'
 import type { Property } from '@/types'
+import { useEvents } from '@/lib/events'
+import { useAuth } from '@/lib/auth'
 
 interface RequestVisitDialogProps {
   property: Property
@@ -19,13 +21,22 @@ interface RequestVisitDialogProps {
 
 export function RequestVisitDialog({ property, open, onOpenChange }: RequestVisitDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { addEvent } = useEvents()
+  const { user } = useAuth()
 
   const handleRequest = async () => {
     setIsSubmitting(true)
     await new Promise(r => setTimeout(r, 600))
     setIsSubmitting(false)
     onOpenChange(false)
-    // Optional: could add a toast here
+
+    // Append event to the shared timeline
+    addEvent({
+      propertyId: property.id,
+      type: 'visit_requested',
+      actorId: user?.id ?? 'buyer1',
+      summary: `${user?.name ?? 'A buyer'} requested a site visit for ${property.title}.`,
+    })
   }
 
   return (
@@ -48,3 +59,4 @@ export function RequestVisitDialog({ property, open, onOpenChange }: RequestVisi
     </AlertDialog>
   )
 }
+

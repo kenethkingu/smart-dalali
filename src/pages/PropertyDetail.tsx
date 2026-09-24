@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { MapPin, ArrowLeft } from 'lucide-react'
 import { PrimaryButton, GhostButton, PropertyStatusBadge, formatPrice, AmenityIcon } from '../components/shared/Bits'
 import { PropertyImage } from '../components/shared/PropertyImage'
-import { properties } from '../data/mockData'
+import { PropertyLightbox, type LightboxImage } from '../components/shared/PropertyLightbox'
+import { GradientThumb } from '../components/shared/GradientThumb'
+import { properties, buildings } from '../data/mockData'
 import { useAuth } from '@/lib/auth'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { ConfirmPaymentDialog } from '@/components/buyer/ConfirmPaymentDialog'
@@ -12,6 +14,7 @@ import { RequestVisitDialog } from '@/components/buyer/RequestVisitDialog'
 export function PropertyDetail() {
   const { id } = useParams()
   const property = properties.find(p => p.id === id) || properties[0]
+  const building = property.buildingId ? buildings.find(b => b.id === property.buildingId) : undefined
   const { user } = useAuth()
   
   const [loginModalOpen, setLoginModalOpen] = useState(false)
@@ -19,6 +22,37 @@ export function PropertyDetail() {
   
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false)
   const [isPayModalOpen, setIsPayModalOpen] = useState(false)
+
+  // ── Lightbox state ─────────────────────────────────────────────────────────
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
+  /** Ref to the element that triggered opening (for focus return on close) */
+  const lightboxReturnRef = useRef<HTMLElement | null>(null)
+  const mainImageBtnRef = useRef<HTMLButtonElement>(null)
+
+  // Build the ordered image array: main image first, then gallery images
+  const lightboxImages: LightboxImage[] = [
+    {
+      src: property.imageUrl ?? '',
+      alt: `${property.title} — ${property.location}, main exterior view`,
+      fallback: <GradientThumb tone={property.tone} className="w-full h-full" alt={`${property.title} — ${property.location}`} />,
+    },
+    ...(property.galleryUrls ?? []).map((url, i) => ({
+      src: url,
+      alt: `${property.title} — ${property.location}, photo ${i + 2}`,
+      fallback: <GradientThumb tone={property.tone} className="w-full h-full" alt={`${property.title} — ${property.location}, photo ${i + 2}`} />,
+    })),
+  ]
+
+  const openLightbox = useCallback((index: number, triggerEl?: HTMLElement | null) => {
+    setLightboxIndex(index)
+    if (triggerEl) lightboxReturnRef.current = triggerEl
+    setLightboxOpen(true)
+  }, [])
+
+  const closeLightbox = useCallback(() => {
+    setLightboxOpen(false)
+  }, [])
 
   const isOwnListing = user?.id === property.ownerId
 
@@ -66,8 +100,26 @@ export function PropertyDetail() {
           
           {/* LEFT PANEL: Gallery (~60%) */}
           <div className="w-full lg:w-3/5 space-y-4">
-            <div className="aspect-[4/3] bg-zinc-200 rounded-2xl overflow-hidden relative">
-              <PropertyImage property={property} className="w-full h-full object-cover" alt={`Main photo of ${property.title}`} />
+            {/* Main image — clickable */}
+            <button
+              ref={mainImageBtnRef}
+              type="button"
+              className="w-full aspect-[4/3] bg-zinc-200 rounded-2xl overflow-hidden relative group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pl-accent focus-visible:ring-offset-2 cursor-zoom-in"
+              aria-label={`View all photos of ${property.title} in full screen`}
+              onClick={() => openLightbox(0, mainImageBtnRef.current)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(0, mainImageBtnRef.current) } }}
+            >
+              <PropertyImage
+                property={property}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                alt={`${property.title} — ${property.location}, main exterior view`}
+              />
+              {/* "View photos" hint overlay */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-end justify-end p-4">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/70 text-white text-xs font-semibold px-3 py-1.5 rounded-lg backdrop-blur-sm">
+                  View all photos
+                </span>
+              </div>
               <div className="absolute top-4 left-4 flex flex-col items-start gap-2">
                 <PropertyStatusBadge status={property.status} />
                 {property.titleVerified && (
@@ -76,21 +128,53 @@ export function PropertyDetail() {
                   </div>
                 )}
               </div>
-            </div>
+              {/* Photo count badge */}
+              {lightboxImages.length > 1 && (
+                <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs font-semibold px-2.5 py-1 rounded-md backdrop-blur-sm pointer-events-none">
+                  1 / {lightboxImages.length}
+                </div>
+              )}
+            </button>
             
+            {/* Thumbnail strip */}
             {property.galleryUrls && property.galleryUrls.length > 0 && (
-              <div className="grid grid-cols-4 gap-4">
-                {property.galleryUrls.map((url, i) => (
-                  <div key={i} className="aspect-[4/3] bg-zinc-200 rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
-                    <PropertyImage property={{ ...property, imageUrl: url }} className="w-full h-full object-cover" alt={`Gallery photo ${i + 1} of ${property.title}`} />
-                  </div>
-                ))}
+              <div className="grid grid-cols-4 gap-4" role="list" aria-label="Property photo thumbnails">
+                {property.galleryUrls.map((url, i) => {
+                  // +1 because index 0 is the main image
+                  const lightboxIdx = i + 1
+                  const thumbRef = { current: null as HTMLButtonElement | null }
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      ref={(el) => { thumbRef.current = el }}
+                      role="listitem"
+                      aria-label={`View photo ${lightboxIdx + 1} of ${lightboxImages.length}: ${property.title} — ${property.location}, photo ${lightboxIdx + 1}`}
+                      className="aspect-[4/3] bg-zinc-200 rounded-xl overflow-hidden cursor-zoom-in group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pl-accent focus-visible:ring-offset-1"
+                      onClick={(e) => openLightbox(lightboxIdx, e.currentTarget)}
+                    >
+                      <PropertyImage
+                        property={{ ...property, imageUrl: url }}
+                        className="w-full h-full object-cover transition-all duration-200 group-hover:scale-105 group-hover:brightness-90"
+                        alt={`${property.title} — ${property.location}, photo ${lightboxIdx + 1}`}
+                      />
+                    </button>
+                  )
+                })}
               </div>
             )}
 
-            {/* Description & Details (Below Gallery on Mobile, Part of Left Scroll on Desktop) */}
+            {/* Description & Details */}
             <div className="bg-white p-8 rounded-2xl shadow-sm mt-8">
-              <h2 className="text-2xl font-bold mb-6">About this property</h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold">About this property</h2>
+                <Link
+                  to={`/properties/${property.id}/history`}
+                  className="text-sm font-semibold text-pl-accent hover:text-pl-accent-dark transition-colors flex items-center gap-1"
+                >
+                  View History →
+                </Link>
+              </div>
               
               <div className="flex flex-wrap gap-8 mb-6 pb-6 border-b border-pl-line">
                 <div className="flex flex-col">
@@ -142,10 +226,15 @@ export function PropertyDetail() {
                 <h1 className="text-2xl md:text-3xl font-heading font-bold text-pl-ink leading-tight mb-2">
                   {property.title}
                 </h1>
-                <div className="flex items-center text-pl-muted font-medium mb-4">
-                  <MapPin className="w-4 h-4 mr-1" />
+                <div className="flex items-center text-pl-muted font-medium mb-2">
+                  <MapPin className="w-4 h-4 mr-1 shrink-0 text-pl-accent" />
                   {property.location}
                 </div>
+                {building && (
+                  <div className="text-xs font-semibold text-pl-accent bg-pl-accent/10 px-2.5 py-1 rounded-md inline-flex items-center gap-1.5 mb-4 w-fit">
+                    Unit {property.unitNumber ? `${property.unitNumber} in ` : ''}{building.name}
+                  </div>
+                )}
                 <div className="text-4xl font-bold tracking-tight text-pl-ink">
                   TSh {formatPrice(property.price)}
                   <span className="text-lg font-normal text-pl-muted ml-1">
@@ -236,6 +325,15 @@ export function PropertyDetail() {
         onOpenChange={setLoginModalOpen} 
         onSuccess={handleLoginSuccess}
         contextProperty={property.title}
+      />
+
+      {/* ── Photo Gallery Lightbox ──────────────────────────────────────────── */}
+      <PropertyLightbox
+        images={lightboxImages}
+        initialIndex={lightboxIndex}
+        isOpen={lightboxOpen}
+        onClose={closeLightbox}
+        returnFocusRef={lightboxReturnRef as React.RefObject<HTMLElement>}
       />
     </div>
   )

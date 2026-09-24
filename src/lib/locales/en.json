@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "properties": "Properties",
+    "how_it_works": "How It Works",
+    "contact": "Contact",
+    "list_property": "List Your Property",
+    "login": "Log In / Sign Up",
+    "dashboard": "Dashboard",
+    "logout": "Log Out"
+  },
+  "lang": {
+    "english": "English",
+    "swahili": "Kiswahili"
+  },
+  "hero": {
+    "headline": {
+      "house": "Find the House You Want.",
+      "plot": "Find the Plot You Want.",
+      "office": "Find the Office You Want."
+    },
+    "subheadline": "Book a visit. Pay securely.",
+    "body": "Every listing on Proland is reviewed by our team before going public. No ghost properties, no payment before you've seen the place.",
+    "search_button": "Search",
+    "filter": {
+      "rent": "Rent",
+      "buy": "Buy",
+      "houses": "Houses",
+      "plots": "Plots",
+      "offices": "Offices"
+    }
+  },
+  "home": {
+    "featured_title": "Featured Properties",
+    "featured_desc": "Hand-picked listings from verified owners — each reviewed before going live.",
+    "view_all": "View All",
+    "view_all_props": "View All Properties"
+  },
+  "steps": {
+    "step1": {
+      "title": "Find a Property",
+      "desc": "Browse our curated list of verified homes and plots across Tanzania. Every listing has been reviewed by our team before it goes live."
+    },
+    "step2": {
+      "title": "Request a Visit",
+      "desc": "Schedule a site visit in one click and communicate directly with the verified owner via WhatsApp. No agents, no middlemen, no commission conversations."
+    },
+    "step3": {
+      "title": "Secure Your Deal",
+      "desc": "Confirm payment only after you've inspected the property. You have 3 days to decline at no cost — Proland's site-visit policy, not a legal disclaimer."
+    }
+  },
+  "trust": {
+    "title": "Why Proland",
+    "verified_title": "Verified Listings",
+    "verified_desc": "Every property is admin-reviewed before going public.",
+    "visit_title": "Visit Before You Pay",
+    "visit_desc": "Book a site visit, inspect the property, then decide.",
+    "contact_title": "Direct Owner Contact",
+    "contact_desc": "WhatsApp the owner directly — no intermediary fees."
+  },
+  "cta": {
+    "owner_label": "For Property Owners",
+    "owner_title": "Have a Property to Sell or Rent?",
+    "owner_desc": "List for free. Once our team approves your listing, it's live to thousands of verified buyers.",
+    "list_free": "List Your Property Free"
+  },
+  "common": {
+    "browse_properties": "Browse Properties",
+    "view": "View",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "close": "Close",
+    "loading": "Loading..."
+  }
+}

@@ -19,21 +19,39 @@ import {
 } from '@/components/ui/alert-dialog'
 import { ConfirmPaymentDialog } from '@/components/buyer/ConfirmPaymentDialog'
 import { useRequests } from '@/lib/requests'
+import { useEvents } from '@/lib/events'
+import { useAuth } from '@/lib/auth'
 
 export function BuyerRequestDetail() {
   const { id } = useParams()
   const { requests, updateRequest } = useRequests()
+  const { addEvent } = useEvents()
+  const { user } = useAuth()
   const request = requests.find(r => r.id === id)
   const property = request ? properties.find(p => p.id === request.propertyId) : null
 
   const handleDecline = () => {
     if (!request) return
     updateRequest(id!, { status: 'declined', declinedAt: new Date().toISOString() })
+    addEvent({
+      propertyId: request.propertyId,
+      type: 'visit_declined',
+      actorId: user?.id ?? request.buyerId,
+      summary: `${user?.name ?? 'Buyer'} declined the site visit request.`,
+      requestId: request.id,
+    })
   }
 
   const handlePay = () => {
     if (!request) return
     updateRequest(id!, { status: 'payment_confirmed', paymentConfirmedAt: new Date().toISOString() })
+    addEvent({
+      propertyId: request.propertyId,
+      type: 'payment_confirmed',
+      actorId: user?.id ?? request.buyerId,
+      summary: `${user?.name ?? 'Buyer'} confirmed payment for the site visit.`,
+      requestId: request.id,
+    })
   }
 
   if (!request || !property) {

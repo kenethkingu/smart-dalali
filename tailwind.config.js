@@ -53,9 +53,11 @@ module.exports = {
         pl: {
           ink: "var(--pl-ink)",
           white: "var(--pl-white)",
+          bg: "var(--pl-bg)",
           surface: "var(--pl-surface)",
           line: "var(--pl-line)",
           muted: "var(--pl-muted)",
+          text: "var(--pl-text)",
           accent: "var(--pl-accent)",
           "accent-dark": "var(--pl-accent-dark)",
           danger: "var(--pl-danger)",

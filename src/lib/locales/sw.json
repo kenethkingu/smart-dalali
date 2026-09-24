@@ -1,0 +1,81 @@
+{
+  "_note": "DRAFT — all strings need native speaker review before production. See review-priority notes in src/lib/i18n.ts",
+  "_review_priority": "HIGH: hero.body, trust.verified_desc, trust.visit_desc, steps.step3.desc (payment/trust copy). LOW: nav labels, common buttons.",
+  "nav": {
+    "home": "Nyumbani",
+    "about": "Kuhusu Sisi",
+    "properties": "Mali",
+    "how_it_works": "Jinsi Inavyofanya Kazi",
+    "contact": "Wasiliana",
+    "list_property": "Taja Mali Yako",
+    "login": "Ingia / Jisajili",
+    "dashboard": "Dashibodi",
+    "logout": "Toka"
+  },
+  "lang": {
+    "english": "Kiingereza",
+    "swahili": "Kiswahili"
+  },
+  "hero": {
+    "headline": {
+      "house": "Tafuta Nyumba Unayotaka.",
+      "plot": "Tafuta Kiwanja Unachotaka.",
+      "office": "Tafuta Ofisi Unayoitaka."
+    },
+    "subheadline": "Panga ziara. Lipa kwa usalama.",
+    "body": "Kila mali kwenye Proland inapitiwa na timu yetu kabla ya kwenda hadharani. Hakuna mali za uongo, hakuna malipo kabla hujaona mahali.",
+    "search_button": "Tafuta",
+    "filter": {
+      "rent": "Kukodi",
+      "buy": "Kununua",
+      "houses": "Nyumba",
+      "plots": "Viwanja",
+      "offices": "Ofisi"
+    }
+  },
+  "home": {
+    "featured_title": "Mali Zilizochaguliwa",
+    "featured_desc": "Orodha zilizochaguliwa kutoka kwa wamiliki waliothibitishwa — kila moja inapitiwa kabla ya kuendeshwa.",
+    "view_all": "Ona Zote",
+    "view_all_props": "Ona Mali Zote"
+  },
+  "steps": {
+    "step1": {
+      "title": "Tafuta Mali",
+      "desc": "Tazama orodha yetu iliyochaguliwa ya nyumba na viwanja vilivyothibitishwa kote Tanzania. Kila orodha imepitia timu yetu kabla haijaonekana."
+    },
+    "step2": {
+      "title": "Omba Ziara",
+      "desc": "Panga ziara ya tovuti kwa kubonyeza mara moja na wasiliana moja kwa moja na mmiliki aliyethibitishwa kupitia WhatsApp. Hakuna mawakala, hakuna wasuluhishi, hakuna mazungumzo ya kamisheni."
+    },
+    "step3": {
+      "title": "Hakikisha Mkakati Wako",
+      "desc": "Thibitisha malipo tu baada ya kukagua mali. Una siku 3 za kukataa bila gharama — sera ya ziara ya tovuti ya Proland, si kanusho la kisheria."
+    }
+  },
+  "trust": {
+    "title": "Kwa Nini Proland",
+    "verified_title": "Orodha Zilizothibitishwa",
+    "verified_desc": "Kila mali inapitiwa na msimamizi kabla ya kwenda hadharani.",
+    "visit_title": "Tembelea Kabla ya Kulipa",
+    "visit_desc": "Panga ziara ya tovuti, kagua mali, kisha amua.",
+    "contact_title": "Mawasiliano ya Moja na Mmiliki",
+    "contact_desc": "Piga WhatsApp mmiliki moja kwa moja — hakuna ada ya wasuluhishi."
+  },
+  "cta": {
+    "owner_label": "Kwa Wamiliki wa Mali",
+    "owner_title": "Una Mali ya Kuuza au Kukodisha?",
+    "owner_desc": "Orodhesha bure. Mara timu yetu ikipitisha orodha yako, itaonekana kwa maelfu ya wanunuzi waliothibitishwa.",
+    "list_free": "Orodhesha Mali Yako Bure"
+  },
+  "common": {
+    "browse_properties": "Tazama Mali",
+    "view": "Tazama",
+    "edit": "Hariri",
+    "cancel": "Ghairi",
+    "confirm": "Thibitisha",
+    "back": "Rudi",
+    "close": "Funga",
+    "loading": "Inapakia..."
+  }
+}

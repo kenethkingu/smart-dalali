@@ -1,5 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/lib/auth'
+import { canAccess } from '@/lib/rbac'
 import { LayoutDashboard, List, Users, Bell, LogOut, FileText } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -10,6 +11,14 @@ export function DashboardShell() {
   if (!user) return null
 
   const getLinks = () => {
+    if (canAccess(user.role, 'manage_leads')) {
+      return [
+        { label: 'Overview', path: '/agent/dashboard', icon: LayoutDashboard },
+        { label: 'Lead Pipeline', path: '/agent/leads', icon: Users },
+        { label: 'Managed Listings', path: '/agent/listings', icon: FileText },
+      ]
+    }
+
     switch(user.role) {
       case 'buyer': return [
         { label: 'Overview', path: '/buyer/dashboard', icon: LayoutDashboard },
@@ -32,13 +41,21 @@ export function DashboardShell() {
 
   const links = getLinks()
 
+  const formatRoleLabel = (role: string) => {
+    switch (role) {
+      case 'agent': return 'Agent / Dalali'
+      case 'property_manager': return 'Property Manager'
+      default: return role
+    }
+  }
+
   return (
     <div className="flex min-h-[calc(100vh-64px)] bg-pl-surface">
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-pl-line hidden md:block">
         <div className="p-6">
           <div className="font-bold text-pl-ink text-lg truncate">{user.name}</div>
-          <div className="text-sm text-pl-muted capitalize">{user.role} Account</div>
+          <div className="text-sm text-pl-muted capitalize">{formatRoleLabel(user.role)} Account</div>
         </div>
         <nav className="px-4 py-2 space-y-1">
           {links.map((link) => {

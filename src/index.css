@@ -20,39 +20,42 @@
     --secondary-foreground: 240 5.9% 10%;
 
     --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%; /* --pl-mutedish */
+    --muted-foreground: 240 3.8% 46.1%;
 
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
 
-    --destructive: 0 84.2% 60.2%; /* --pl-danger */
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 5.9% 90%; /* --pl-line */
+    --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 161 77% 37%;
 
     --radius: 0.5rem;
 
-    /* Proland Specific Tokens */
-    --pl-ink: #0B0B0C;
-    --pl-white: #FFFFFF;
-    --pl-surface: #F6F6F5;
-    --pl-line: #E5E5E4;
-    --pl-muted: #6B6B6D;
-    --pl-accent: #16A97C;
-    --pl-accent-dark: #0F8563;
-    --pl-danger: #C0392B;
+    /* ── Proland Design Tokens (light mode) ─────────────────────────────── */
+    --pl-ink:          #0B0B0C;
+    --pl-white:        #FFFFFF;
+    --pl-bg:           #FFFFFF;        /* semantic: page background */
+    --pl-surface:      #F6F6F5;        /* semantic: card / section surface */
+    --pl-line:         #E5E5E4;
+    --pl-muted:        #6B6B6D;
+    --pl-text:         #0B0B0C;        /* semantic: primary text */
+    --pl-accent:       #16A97C;
+    --pl-accent-dark:  #0F8563;
+    --pl-danger:       #C0392B;
   }
 
+  /* ── Shadcn dark tokens ─────────────────────────────────────────────── */
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
 
-    --card: 240 10% 3.9%;
+    --card: 23 7% 8%;          /* matches --pl-surface dark */
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 10% 3.9%;
+    --popover: 23 7% 8%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 161 77% 37%;
@@ -73,6 +76,16 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 161 77% 37%;
+
+    /* ── Proland Design Tokens (dark mode) ──────────────────────────────── */
+    /* --pl-accent does NOT change — green reads well on both dark and light */
+    --pl-ink:      #FFFFFF;           /* ink flips to white in dark */
+    --pl-bg:       #0B0B0C;           /* page background: near-black */
+    --pl-surface:  #17171A;           /* card surface: slightly lighter than bg */
+    --pl-line:     #2A2A2E;           /* hairline borders */
+    --pl-muted:    #8A8A8D;           /* secondary text — lightened for contrast */
+    --pl-text:     #FFFFFF;
+    /* --pl-white stays white — used where white is always needed */
   }
 }
 
@@ -80,9 +93,15 @@
   * {
     @apply border-border;
   }
+  html {
+    /* Smooth theme transition on the page-level elements only, not all children */
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
   body {
     @apply bg-background text-foreground;
     font-family: 'Archivo', sans-serif;
+    background-color: var(--pl-bg);
+    color: var(--pl-text);
   }
 
   :root {
@@ -94,8 +113,7 @@
 }
 
 @layer utilities {
-  /* Grain texture — apply to large flat hero/section backgrounds */
-  /* Barely perceptible at ~3.5% opacity; adds tactile warmth to monochrome palette */
+  /* Grain texture — works on both light and dark backgrounds */
   .grain-texture {
     position: relative;
   }
@@ -108,7 +126,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  /* Layered hover elevation — physically realistic lift */
+  /* Layered hover elevation */
   .card-hover {
     transition: box-shadow 0.2s ease, transform 0.2s ease;
   }
@@ -118,8 +136,13 @@
       0 8px 24px rgba(11, 11, 12, 0.1);
     transform: translateY(-2px);
   }
+  .dark .card-hover:hover {
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.2),
+      0 8px 24px rgba(0, 0, 0, 0.35);
+  }
 
-  /* Display-scale headline — use font-size inline via var() */
+  /* Display-scale headline */
   .text-display {
     font-size: var(--text-display);
     line-height: 1.05;
@@ -131,3 +154,4 @@
     letter-spacing: -0.015em;
   }
 }
+

@@ -6,10 +6,12 @@ import { VisitRequestCard } from '@/components/buyer/VisitRequestCard'
 import { PrimaryButton } from '@/components/shared/Bits'
 
 import { useRequests } from '@/lib/requests'
+import { useEvents } from '@/lib/events'
 
 export function BuyerDashboard() {
   const { user } = useAuth()
   const { requests: allRequests, updateRequest } = useRequests()
+  const { addEvent } = useEvents()
   
   // mock: show buyer1's requests
   const requests = allRequests.filter(r => r.buyerId === 'buyer1')
@@ -19,10 +21,30 @@ export function BuyerDashboard() {
 
   const handleDecline = (id: string) => {
     updateRequest(id, { status: 'declined', declinedAt: new Date().toISOString() })
+    const req = allRequests.find(r => r.id === id)
+    if (req) {
+      addEvent({
+        propertyId: req.propertyId,
+        type: 'visit_declined',
+        actorId: user?.id ?? 'buyer1',
+        summary: `${user?.name ?? 'Buyer'} declined the site visit request.`,
+        requestId: id,
+      })
+    }
   }
 
   const handlePay = (id: string) => {
     updateRequest(id, { status: 'payment_confirmed', paymentConfirmedAt: new Date().toISOString() })
+    const req = allRequests.find(r => r.id === id)
+    if (req) {
+      addEvent({
+        propertyId: req.propertyId,
+        type: 'payment_confirmed',
+        actorId: user?.id ?? 'buyer1',
+        summary: `${user?.name ?? 'Buyer'} confirmed payment for the site visit.`,
+        requestId: id,
+      })
+    }
   }
 
   return (

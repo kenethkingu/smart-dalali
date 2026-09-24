@@ -16,6 +16,10 @@ const roleColors: Record<UserRole, string> = {
   admin: 'bg-purple-50 text-purple-700 border-purple-200',
   owner: 'bg-blue-50 text-blue-700 border-blue-200',
   buyer: 'bg-zinc-100 text-pl-muted border-zinc-200',
+  agent: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  property_manager: 'bg-amber-50 text-amber-700 border-amber-200',
+  tenant: 'bg-teal-50 text-teal-700 border-teal-200',
+  inspector: 'bg-indigo-50 text-indigo-700 border-indigo-200',
 }
 
 export function AdminUsers() {
