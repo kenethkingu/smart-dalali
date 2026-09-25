@@ -21,9 +21,6 @@ function LanguageSelector() {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
-  // Bug fix 2: use resolvedLanguage, not language.
-  // i18n.language can be 'sw-TZ' or 'en-US' from the navigator, which won't
-  // strictly equal 'sw' or 'en' and makes the active-state check silently fail.
   const current = i18n.resolvedLanguage ?? i18n.language
 
   const handleChange = async (code: string) => {
@@ -31,7 +28,6 @@ function LanguageSelector() {
     setOpen(false)
   }
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
@@ -40,7 +36,6 @@ function LanguageSelector() {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  // Keyboard: close on Escape
   useEffect(() => {
     if (!open) return
     const handler = (e: KeyboardEvent) => {
@@ -52,7 +47,6 @@ function LanguageSelector() {
 
   return (
     <div ref={ref} className="relative">
-      {/* Bug fix 3: explicit type="button" prevents accidental form submission */}
       <button
         type="button"
         id="lang-selector-trigger"
@@ -64,8 +58,8 @@ function LanguageSelector() {
         className={cn(
           'flex items-center gap-1 px-2.5 py-1.5 rounded-lg',
           'text-xs font-bold uppercase tracking-wider',
-          'text-pl-muted hover:text-pl-ink dark:hover:text-pl-white',
-          'hover:bg-pl-surface dark:hover:bg-pl-surface',
+          'text-pl-muted hover:text-pl-text',
+          'hover:bg-pl-surface',
           'transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pl-accent',
         )}
       >
@@ -84,7 +78,7 @@ function LanguageSelector() {
           className={cn(
             'absolute right-0 top-full mt-1.5 z-[60]',
             'w-36 rounded-xl border border-pl-line',
-            'bg-pl-bg dark:bg-pl-surface shadow-lg shadow-black/10',
+            'bg-pl-bg shadow-lg shadow-black/10',
             'py-1 overflow-hidden',
             'animate-in fade-in-0 zoom-in-95 duration-100',
           )}
@@ -93,7 +87,6 @@ function LanguageSelector() {
             const isActive = current === lang.code
             return (
               <div key={lang.code} role="option" aria-selected={isActive}>
-                {/* Bug fix 3: type="button", explicit aria-pressed */}
                 <button
                   type="button"
                   aria-pressed={isActive}
@@ -103,7 +96,7 @@ function LanguageSelector() {
                     'w-full text-left px-4 py-2.5 text-sm font-medium transition-colors',
                     isActive
                       ? 'text-pl-accent font-semibold cursor-default'
-                      : 'text-pl-ink dark:text-pl-white/80 hover:bg-pl-surface dark:hover:bg-pl-line cursor-pointer',
+                      : 'text-pl-text hover:bg-pl-surface cursor-pointer',
                   )}
                 >
                   {lang.label}
@@ -133,8 +126,8 @@ function ThemeToggle() {
       aria-pressed={isDark}
       className={cn(
         'w-8 h-8 rounded-lg flex items-center justify-center',
-        'text-pl-muted hover:text-pl-ink dark:hover:text-pl-white',
-        'hover:bg-pl-surface dark:hover:bg-pl-surface',
+        'text-pl-muted hover:text-pl-text',
+        'hover:bg-pl-surface',
         'transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pl-accent',
       )}
     >
@@ -167,7 +160,7 @@ export function Navbar() {
   ] as const
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-pl-line bg-pl-bg/80 dark:bg-pl-ink/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-pl-line bg-pl-bg/90 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
 
         {/* Left: Logo + desktop nav */}
@@ -191,8 +184,8 @@ export function Navbar() {
                   className={cn(
                     'transition-colors',
                     isActive
-                      ? 'text-pl-ink dark:text-pl-white font-semibold'
-                      : 'text-pl-ink/70 dark:text-pl-white/60 hover:text-pl-ink dark:hover:text-pl-white',
+                      ? 'text-pl-text font-semibold'
+                      : 'text-pl-muted hover:text-pl-text',
                   )}
                 >
                   <HoverText text={t(link.key)} />
@@ -222,7 +215,7 @@ export function Navbar() {
               <>
                 <Link
                   to={`/${user.role}/dashboard`}
-                  className="text-sm font-semibold text-pl-ink dark:text-pl-white hover:underline"
+                  className="text-sm font-semibold text-pl-text hover:underline"
                 >
                   {t('nav.dashboard')}
                 </Link>
@@ -237,7 +230,7 @@ export function Navbar() {
           <button
             type="button"
             id="mobile-menu-toggle"
-            className="md:hidden ml-1 p-2 rounded-lg text-pl-ink dark:text-pl-white hover:bg-pl-surface dark:hover:bg-pl-surface transition-colors"
+            className="md:hidden ml-1 p-2 rounded-lg text-pl-text hover:bg-pl-surface transition-colors"
             onClick={() => setMobileOpen(o => !o)}
             aria-label="Toggle mobile menu"
             aria-expanded={mobileOpen}
@@ -250,13 +243,13 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div id="mobile-nav" className="md:hidden border-t border-pl-line bg-pl-bg dark:bg-pl-ink px-4 py-4 space-y-1">
+        <div id="mobile-nav" className="md:hidden border-t border-pl-line bg-pl-bg px-4 py-4 space-y-1">
           {navLinks.map(link => (
             <Link
               key={link.key}
               to={link.to}
               onClick={() => setMobileOpen(false)}
-              className="block py-2 text-sm font-medium text-pl-ink dark:text-pl-white/80 hover:text-pl-accent transition-colors"
+              className="block py-2 text-sm font-medium text-pl-text/80 hover:text-pl-accent transition-colors"
             >
               {t(link.key)}
             </Link>
@@ -276,7 +269,7 @@ export function Navbar() {
                 <Link
                   to={`/${user.role}/dashboard`}
                   onClick={() => setMobileOpen(false)}
-                  className="block py-2 text-sm font-semibold text-pl-ink dark:text-pl-white hover:underline"
+                  className="block py-2 text-sm font-semibold text-pl-text hover:underline"
                 >
                   {t('nav.dashboard')}
                 </Link>

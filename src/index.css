@@ -79,7 +79,7 @@
 
     /* ── Proland Design Tokens (dark mode) ──────────────────────────────── */
     /* --pl-accent does NOT change — green reads well on both dark and light */
-    --pl-ink:      #FFFFFF;           /* ink flips to white in dark */
+    --pl-ink:      #0B0B0C;           /* fixed brand black ink for dark sections */
     --pl-bg:       #0B0B0C;           /* page background: near-black */
     --pl-surface:  #17171A;           /* card surface: slightly lighter than bg */
     --pl-line:     #333338;           /* hairline borders — slightly lighter for visibility */

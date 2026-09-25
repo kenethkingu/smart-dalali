@@ -25,7 +25,7 @@ function MiniPropertyCard({
   const { t } = useTranslation()
   return (
     <motion.div
-      className={`absolute bg-pl-surface dark:bg-pl-surface rounded-xl overflow-hidden shadow-2xl p-2 w-56 sm:w-64 z-10 border border-pl-line ${className}`}
+      className={`absolute bg-white dark:bg-pl-surface rounded-xl overflow-hidden shadow-2xl p-2 w-56 sm:w-64 z-10 border border-white/20 dark:border-pl-line ${className}`}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: entranceDelay, ease: "easeOut" }}
@@ -35,7 +35,7 @@ function MiniPropertyCard({
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: floatDelay }}
       >
         <Link to={`/properties/${property.id}`} className="block group">
-          <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-3 bg-pl-bg">
+          <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-3 bg-pl-surface">
             <div className="w-full h-full group-hover:scale-[1.03] transition-transform duration-500 ease-out">
               <PropertyImage property={property} className="w-full h-full object-cover" alt={property.title} />
             </div>
@@ -49,11 +49,11 @@ function MiniPropertyCard({
             )}
           </div>
           <div className="px-1 pb-1">
-            <div className="font-heading font-bold text-pl-text tracking-tight mb-0.5">
+            <div className="font-heading font-bold text-[#0B0B0C] dark:text-white tracking-tight mb-0.5">
               TSh {formatPrice(property.price)}
               {property.priceUnit === 'month' && <span className="text-[10px] font-normal text-pl-muted ml-1">{t('common.per_month')}</span>}
             </div>
-            <div className="text-xs font-semibold text-pl-text/90 truncate">{property.title}</div>
+            <div className="text-xs font-semibold text-[#0B0B0C]/90 dark:text-white/90 truncate">{property.title}</div>
           </div>
         </Link>
       </motion.div>
@@ -141,7 +141,7 @@ export function Hero() {
             </p>
 
             {/* Search bar */}
-            <div className="w-full bg-pl-bg dark:bg-pl-surface p-1.5 rounded-lg flex flex-col sm:flex-row items-stretch gap-1.5 mb-8 border border-pl-line shadow-xl">
+            <div className="w-full bg-white dark:bg-pl-surface p-1.5 rounded-lg flex flex-col sm:flex-row items-stretch gap-1.5 mb-8 border border-white/20 dark:border-pl-line shadow-xl">
               <div className="flex flex-1 items-center gap-2 px-4 py-3">
                 <MapPin className="text-pl-muted w-4 h-4 shrink-0" />
                 <input
@@ -150,7 +150,7 @@ export function Hero() {
                   onChange={e => setLocation(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleSearch()}
                   placeholder={placeholderText}
-                  className="w-full bg-transparent outline-none text-pl-ink dark:text-pl-white placeholder:text-pl-muted text-sm font-medium"
+                  className="w-full bg-transparent outline-none text-[#0B0B0C] dark:text-white placeholder:text-pl-muted text-sm font-medium"
                 />
               </div>
               <PrimaryButton

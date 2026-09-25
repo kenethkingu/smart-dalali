@@ -49,7 +49,7 @@ export function Pill({
       onClick={onClick}
       className={cn(
         'px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors',
-        active ? 'bg-pl-ink text-pl-white border-pl-ink' : 'bg-pl-bg text-pl-muted border-pl-line hover:border-pl-ink/40 dark:hover:border-pl-white/30',
+        active ? 'bg-pl-text text-pl-bg border-pl-text' : 'bg-pl-bg text-pl-muted border-pl-line hover:border-pl-text/40',
         className,
       )}
     >
@@ -95,7 +95,7 @@ export function GhostButton({ children, className, ...props }: ButtonHTMLAttribu
     <button
       type="button"
       className={cn(
-        'inline-flex items-center justify-center gap-2 bg-transparent border border-pl-ink text-pl-ink font-semibold text-sm rounded-xl px-5 py-2.5 hover:bg-pl-ink hover:text-white transition-colors',
+        'inline-flex items-center justify-center gap-2 bg-transparent border border-pl-text text-pl-text font-semibold text-sm rounded-xl px-5 py-2.5 hover:bg-pl-text hover:text-pl-bg transition-colors',
         className,
       )}
       {...props}
