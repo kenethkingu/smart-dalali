@@ -1,44 +1,46 @@
 import { useState } from 'react'
 import { MessageSquare, ChevronRight, Phone, Home, Filter } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useLeads } from '@/lib/leads'
 import { properties } from '@/data/mockData'
 import type { LeadStage } from '@/types'
 
-const STAGES: { key: LeadStage | 'all'; label: string }[] = [
-  { key: 'all', label: 'All Leads' },
-  { key: 'new', label: 'New' },
-  { key: 'contacted', label: 'Contacted' },
-  { key: 'viewing_scheduled', label: 'Viewing Scheduled' },
-  { key: 'negotiating', label: 'Negotiating' },
-  { key: 'closed', label: 'Closed' },
-]
-
-const stageBadgeColors: Record<LeadStage, string> = {
-  new: 'bg-blue-50 text-blue-700 border-blue-200',
-  contacted: 'bg-purple-50 text-purple-700 border-purple-200',
-  viewing_scheduled: 'bg-amber-50 text-amber-700 border-amber-200',
-  negotiating: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  closed: 'bg-zinc-100 text-pl-muted border-zinc-200',
-}
-
 export function AgentLeads() {
+  const { t } = useTranslation()
   const { leads, updateLeadStage, advanceLeadStage } = useLeads()
   const [filter, setFilter] = useState<LeadStage | 'all'>('all')
+
+  const STAGES: { key: LeadStage | 'all'; label: string }[] = [
+    { key: 'all', label: t('common.all') },
+    { key: 'new', label: t('agent_dashboard.lead_stages.new') },
+    { key: 'contacted', label: t('agent_dashboard.lead_stages.contacted') },
+    { key: 'viewing_scheduled', label: t('agent_dashboard.lead_stages.visit_scheduled') },
+    { key: 'negotiating', label: t('agent_dashboard.lead_stages.negotiating') },
+    { key: 'closed', label: t('agent_dashboard.lead_stages.closed') },
+  ]
+
+  const stageBadgeColors: Record<LeadStage, string> = {
+    new: 'bg-blue-500/10 text-blue-500 border-blue-500/30',
+    contacted: 'bg-purple-500/10 text-purple-500 border-purple-500/30',
+    viewing_scheduled: 'bg-amber-500/10 text-amber-500 border-amber-500/30',
+    negotiating: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30',
+    closed: 'bg-pl-bg text-pl-muted border-pl-line',
+  }
 
   const filteredLeads = leads.filter(lead => filter === 'all' || lead.stage === filter)
 
   const getPropertyTitle = (propertyId?: string) => {
-    if (!propertyId) return 'General Inquiry'
+    if (!propertyId) return t('common.details')
     const prop = properties.find(p => p.id === propertyId)
-    return prop ? prop.title : 'Property Listing'
+    return prop ? prop.title : t('nav.properties')
   }
 
   return (
-    <div className="max-w-6xl space-y-8">
+    <div className="max-w-6xl space-y-8 text-pl-text">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-heading font-bold text-pl-ink mb-1">Lead Pipeline</h1>
-        <p className="text-pl-muted">Track and manage client leads through every stage of the transaction.</p>
+        <h1 className="text-3xl font-heading font-bold text-pl-text mb-1">{t('agent_dashboard.tabs.leads')}</h1>
+        <p className="text-pl-muted">{t('agent_dashboard.subtitle')}</p>
       </div>
 
       {/* Stage Filter Tabs */}
@@ -49,15 +51,16 @@ export function AgentLeads() {
           return (
             <button
               key={key}
+              type="button"
               onClick={() => setFilter(key)}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors border flex items-center gap-2 ${
                 active
-                  ? 'bg-pl-ink text-white border-pl-ink shadow-sm'
-                  : 'bg-white text-pl-muted border-pl-line hover:border-pl-ink/40 hover:text-pl-ink'
+                  ? 'bg-pl-accent text-white border-pl-accent shadow-sm'
+                  : 'bg-pl-surface text-pl-muted border-pl-line hover:text-pl-text'
               }`}
             >
               <span>{label}</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${active ? 'bg-white/20 text-white' : 'bg-pl-surface text-pl-muted'}`}>
+              <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${active ? 'bg-white/20 text-white' : 'bg-pl-bg text-pl-muted'}`}>
                 {count}
               </span>
             </button>
@@ -68,10 +71,10 @@ export function AgentLeads() {
       {/* Leads List */}
       <div className="space-y-4">
         {filteredLeads.length === 0 ? (
-          <div className="bg-white p-12 rounded-2xl border border-pl-line text-center">
+          <div className="bg-pl-surface p-12 rounded-2xl border border-pl-line text-center text-pl-text">
             <Filter className="w-8 h-8 text-pl-muted mx-auto mb-3" />
-            <h3 className="text-base font-bold text-pl-ink mb-1">No leads match this stage filter</h3>
-            <p className="text-xs text-pl-muted">Try selecting "All Leads" to view your full pipeline.</p>
+            <h3 className="text-base font-bold text-pl-text mb-1">{t('properties.zero_results_title')}</h3>
+            <p className="text-xs text-pl-muted">{t('properties.zero_results_desc')}</p>
           </div>
         ) : (
           filteredLeads.map(lead => {
@@ -79,14 +82,13 @@ export function AgentLeads() {
             return (
               <div
                 key={lead.id}
-                className="bg-white p-6 rounded-2xl border border-pl-line shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-pl-ink/30 transition-all"
+                className="bg-pl-surface p-6 rounded-2xl border border-pl-line shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-pl-accent/50 transition-all text-pl-text"
               >
-                {/* Left details */}
                 <div className="space-y-2 flex-1">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <h3 className="text-lg font-bold text-pl-ink">{lead.name}</h3>
+                    <h3 className="text-lg font-bold text-pl-text">{lead.name}</h3>
                     <span className={`px-3 py-1 rounded-full text-xs font-bold border capitalize ${stageBadgeColors[lead.stage]}`}>
-                      {lead.stage.replace('_', ' ')}
+                      {t(`agent_dashboard.lead_stages.${lead.stage === 'viewing_scheduled' ? 'visit_scheduled' : lead.stage}`, lead.stage.replace('_', ' '))}
                     </span>
                   </div>
 
@@ -101,39 +103,35 @@ export function AgentLeads() {
                   </div>
                 </div>
 
-                {/* Right controls */}
                 <div className="flex items-center gap-3 shrink-0 flex-wrap sm:flex-nowrap">
-                  {/* Select dropdown to update stage directly */}
                   <select
                     value={lead.stage}
                     onChange={(e) => updateLeadStage(lead.id, e.target.value as LeadStage)}
-                    className="border border-pl-line rounded-xl px-3 py-2 text-xs font-bold bg-pl-surface text-pl-ink outline-none focus:border-pl-accent"
+                    className="border border-pl-line rounded-xl px-3 py-2 text-xs font-bold bg-pl-bg text-pl-text outline-none focus:border-pl-accent"
                   >
-                    <option value="new">New</option>
-                    <option value="contacted">Contacted</option>
-                    <option value="viewing_scheduled">Viewing Scheduled</option>
-                    <option value="negotiating">Negotiating</option>
-                    <option value="closed">Closed</option>
+                    <option value="new">{t('agent_dashboard.lead_stages.new')}</option>
+                    <option value="contacted">{t('agent_dashboard.lead_stages.contacted')}</option>
+                    <option value="viewing_scheduled">{t('agent_dashboard.lead_stages.visit_scheduled')}</option>
+                    <option value="negotiating">{t('agent_dashboard.lead_stages.negotiating')}</option>
+                    <option value="closed">{t('agent_dashboard.lead_stages.closed')}</option>
                   </select>
 
-                  {/* WhatsApp Quick Action */}
                   <a
-                    href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Habari ${lead.name}, I am your Proland agent following up on ${propTitle}.`)}`}
+                    href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Habari ${lead.name}, mimi ni wakala wako wa Proland.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5"
+                    className="px-4 py-2 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5"
                   >
                     <MessageSquare className="w-4 h-4" /> WhatsApp
                   </a>
 
-                  {/* Quick Advance Button */}
                   {lead.stage !== 'closed' && (
                     <button
                       type="button"
                       onClick={() => advanceLeadStage(lead.id)}
-                      className="px-4 py-2 bg-pl-ink text-white hover:bg-black rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1"
+                      className="px-4 py-2 bg-pl-accent text-white hover:bg-pl-accent-dark rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1"
                     >
-                      Advance <ChevronRight className="w-4 h-4" />
+                      Next <ChevronRight className="w-4 h-4" />
                     </button>
                   )}
                 </div>

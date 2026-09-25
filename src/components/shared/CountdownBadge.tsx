@@ -10,7 +10,7 @@ export function CountdownBadge({ request }: { request: SiteVisitRequest }) {
 
   if (!canStillDecline) {
     return (
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-zinc-100 text-pl-muted border border-pl-line">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-pl-surface text-pl-muted border border-pl-line">
         Cancellation window closed
       </span>
     )
@@ -20,10 +20,10 @@ export function CountdownBadge({ request }: { request: SiteVisitRequest }) {
   const isAwaitingOwner = countdown === 'Awaiting owner confirmation'
 
   const color =
-    isAwaitingOwner ? 'bg-zinc-100 text-pl-muted border-zinc-200'
-    : hoursLeft < 8 ? 'bg-red-50 text-pl-danger border-red-200'
-    : hoursLeft < 24 ? 'bg-amber-50 text-amber-700 border-amber-200'
-    : 'bg-emerald-50 text-pl-accent-dark border-emerald-200'
+    isAwaitingOwner ? 'bg-pl-surface text-pl-muted border-pl-line'
+    : hoursLeft < 8 ? 'bg-red-500/10 text-pl-danger dark:text-red-400 border-red-500/30'
+    : hoursLeft < 24 ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30'
+    : 'bg-emerald-500/10 text-pl-accent-dark dark:text-emerald-400 border-emerald-500/30'
 
   return (
     <span className={cn('inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border', color)}>

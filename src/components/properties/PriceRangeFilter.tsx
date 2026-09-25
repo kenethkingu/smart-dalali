@@ -16,7 +16,6 @@ export function PriceRangeFilter({ minPrice, maxPrice, onChange }: PriceRangeFil
     maxPrice ?? DEFAULT_MAX
   ])
 
-  // Sync internal state if props change from outside (like URL load or clear all)
   useEffect(() => {
     setLocalRange([minPrice ?? DEFAULT_MIN, maxPrice ?? DEFAULT_MAX])
   }, [minPrice, maxPrice])
@@ -42,7 +41,6 @@ export function PriceRangeFilter({ minPrice, maxPrice, onChange }: PriceRangeFil
   }
 
   const handleInputBlur = () => {
-    // Ensure min isn't greater than max
     let newMin = localRange[0]
     let newMax = localRange[1]
     
@@ -58,7 +56,7 @@ export function PriceRangeFilter({ minPrice, maxPrice, onChange }: PriceRangeFil
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-pl-text">
       <div className="px-2">
         <Slider
           min={DEFAULT_MIN}
@@ -80,7 +78,7 @@ export function PriceRangeFilter({ minPrice, maxPrice, onChange }: PriceRangeFil
             onChange={handleMinInputChange}
             onBlur={handleInputBlur}
             placeholder="0"
-            className="w-full bg-white border border-pl-line rounded-lg px-3 py-2 text-sm outline-none focus:border-pl-accent"
+            className="w-full bg-pl-bg text-pl-text placeholder:text-pl-muted border border-pl-line rounded-lg px-3 py-2 text-sm outline-none focus:border-pl-accent"
           />
         </div>
         <div className="text-pl-muted font-bold mt-5">-</div>
@@ -92,13 +90,10 @@ export function PriceRangeFilter({ minPrice, maxPrice, onChange }: PriceRangeFil
             onChange={handleMaxInputChange}
             onBlur={handleInputBlur}
             placeholder="5,000,000+"
-            className="w-full bg-white border border-pl-line rounded-lg px-3 py-2 text-sm outline-none focus:border-pl-accent"
+            className="w-full bg-pl-bg text-pl-text placeholder:text-pl-muted border border-pl-line rounded-lg px-3 py-2 text-sm outline-none focus:border-pl-accent"
           />
         </div>
       </div>
-      <p className="text-xs text-pl-muted">
-        {/* Future v2 enhancement: Price distribution histogram here */}
-      </p>
     </div>
   )
 }

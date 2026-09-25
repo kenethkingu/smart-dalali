@@ -8,7 +8,7 @@ export function VerifiedBadge({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 bg-emerald-50 text-pl-accent-dark text-[11px] font-bold px-2 py-0.5 rounded-full border border-emerald-200',
+        'inline-flex items-center gap-1 bg-emerald-500/10 text-pl-accent-dark text-[11px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-400 dark:border-emerald-500/25',
         className,
       )}
     >
@@ -21,12 +21,12 @@ export function PropertyStatusBadge({ status }: { status: PropertyStatus }) {
   if (status === 'approved') return <VerifiedBadge />
   if (status === 'pending')
     return (
-      <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded-full border border-amber-200">
+      <span className="inline-flex items-center gap-1 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-[11px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30">
         <Clock className="w-3 h-3" /> Pending Review
       </span>
     )
   return (
-    <span className="inline-flex items-center gap-1 bg-red-50 text-pl-danger text-[11px] font-bold px-2 py-0.5 rounded-full border border-red-200">
+    <span className="inline-flex items-center gap-1 bg-red-500/10 text-pl-danger dark:text-red-400 text-[11px] font-bold px-2 py-0.5 rounded-full border border-red-500/30">
       Rejected
     </span>
   )
@@ -49,7 +49,7 @@ export function Pill({
       onClick={onClick}
       className={cn(
         'px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors',
-        active ? 'bg-pl-ink text-white border-pl-ink' : 'bg-white text-pl-muted border-pl-line hover:border-pl-ink/40',
+        active ? 'bg-pl-ink text-pl-white border-pl-ink' : 'bg-pl-bg text-pl-muted border-pl-line hover:border-pl-ink/40 dark:hover:border-pl-white/30',
         className,
       )}
     >

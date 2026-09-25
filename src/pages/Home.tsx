@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ShieldCheck, Calendar, Phone } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Hero } from '../components/home/Hero'
 import { PropertyCard } from '../components/properties/PropertyCard'
 import { PrimaryButton, GhostButton } from '../components/shared/Bits'
@@ -19,71 +20,69 @@ export function useFadeUp() {
   })
 }
 
-const steps = [
-  {
-    n: '01',
-    title: 'Find a Property',
-    desc: 'Browse our curated list of verified homes and plots across Tanzania. Every listing has been reviewed by our team before it goes live.',
-    offset: 'mt-0',
-  },
-  {
-    n: '02',
-    title: 'Request a Visit',
-    desc: 'Schedule a site visit in one click and communicate directly with the verified owner via WhatsApp. No agents, no middlemen, no commission conversations.',
-    offset: 'mt-16 lg:mt-24',
-  },
-  {
-    n: '03',
-    title: 'Secure Your Deal',
-    desc: "Confirm payment only after you've inspected the property. You have 3 days to decline at no cost — Proland's site-visit policy, not a legal disclaimer.",
-    offset: 'mt-8 lg:mt-12',
-  },
-]
-
-const trustItems = [
-  { icon: ShieldCheck, title: 'Verified Listings', desc: 'Every property is admin-reviewed before going public.' },
-  { icon: Calendar, title: 'Visit Before You Pay', desc: 'Book a site visit, inspect the property, then decide.' },
-  { icon: Phone, title: 'Direct Owner Contact', desc: 'WhatsApp the owner directly — no intermediary fees.' },
-]
-
 export function Home() {
+  const { t } = useTranslation()
   const fadeUp = useFadeUp()
-  // Use all approved properties for the editorial grid
   const [featured, ...rest] = publicProperties
 
+  const steps = [
+    {
+      n: '01',
+      label: t('home.step_label', { n: '01' }),
+      title: t('steps.step1.title'),
+      desc: t('steps.step1.desc'),
+    },
+    {
+      n: '02',
+      label: t('home.step_label', { n: '02' }),
+      title: t('steps.step2.title'),
+      desc: t('steps.step2.desc'),
+    },
+    {
+      n: '03',
+      label: t('home.step_label', { n: '03' }),
+      title: t('steps.step3.title'),
+      desc: t('steps.step3.desc'),
+    },
+  ]
+
+  const trustItems = [
+    { icon: ShieldCheck, title: t('trust.verified_title'), desc: t('trust.verified_desc') },
+    { icon: Calendar, title: t('trust.visit_title'), desc: t('trust.visit_desc') },
+    { icon: Phone, title: t('trust.contact_title'), desc: t('trust.contact_desc') },
+  ]
+
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-pl-bg text-pl-text min-h-screen">
       <Hero />
 
       {/* ── Featured Properties ─────────────────────────────────────────────── */}
-      <section className="grain-texture py-20 bg-white" id="featured">
+      <section className="grain-texture py-20 bg-pl-bg" id="featured">
         <div className="container mx-auto px-4">
           <motion.div {...fadeUp()} className="flex items-end justify-between mb-10">
             <div>
               <h2
-                className="font-heading font-bold text-pl-ink"
+                className="font-heading font-bold text-pl-text"
                 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 3rem)', letterSpacing: '-0.015em', lineHeight: 1.15 }}
               >
-                Featured Properties
+                {t('home.featured_title')}
               </h2>
               <p className="text-pl-muted mt-2 max-w-md">
-                Hand-picked listings from verified owners — each reviewed before going live.
+                {t('home.featured_desc')}
               </p>
             </div>
             <Link to="/properties" className="hidden sm:block shrink-0 ml-8">
-              <GhostButton>View All</GhostButton>
+              <GhostButton>{t('home.view_all')}</GhostButton>
             </Link>
           </motion.div>
 
-          {/* Editorial asymmetric grid: first card spans 2 cols × 2 rows */}
+          {/* Editorial asymmetric grid */}
           {featured ? (
             <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4">
-              {/* Anchor: large featured card */}
               <motion.div {...fadeUp(0)} className="md:col-span-2 md:row-span-2">
                 <PropertyCard property={featured} featured />
               </motion.div>
 
-              {/* Supporting cards fill the right column */}
               {rest.slice(0, 2).map((p, i) => (
                 <motion.div key={p.id} {...fadeUp(0.1 + i * 0.1)}>
                   <PropertyCard property={p} />
@@ -91,22 +90,22 @@ export function Home() {
               ))}
             </div>
           ) : (
-            <p className="text-pl-muted">No approved properties yet.</p>
+            <p className="text-pl-muted">{t('properties.zero_results_title')}</p>
           )}
 
           <div className="mt-6 sm:hidden">
             <Link to="/properties">
-              <PrimaryButton className="w-full">View All Properties</PrimaryButton>
+              <PrimaryButton className="w-full">{t('home.view_all_props')}</PrimaryButton>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── How Proland Works ──────────────────────────────────────────────── */}
+      {/* ── How Proland Works Timeline ───────────────────────────────────────── */}
       <section className="grain-texture bg-pl-ink text-white" id="how-it-works">
         <Timeline
           data={steps.map(step => ({
-            title: `Step ${step.n}`,
+            title: step.label,
             content: (
               <div>
                 <h3 className="font-heading font-bold text-white mb-4 text-2xl">
@@ -122,46 +121,33 @@ export function Home() {
         
         <motion.div {...fadeUp(0.5)} className="mt-20 pt-12 border-t border-white/20 flex justify-center pb-20">
           <Link to="/properties">
-            <PrimaryButton className="h-13 px-10">Browse Properties</PrimaryButton>
+            <PrimaryButton className="h-13 px-10">{t('common.browse_properties')}</PrimaryButton>
           </Link>
         </motion.div>
       </section>
+
       {/* ── Why Proland ────────────────────────────────────────────────────── */}
-      <section className="grain-texture py-20 bg-white">
+      <section className="grain-texture py-20 bg-pl-bg">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.h2
             {...fadeUp()}
-            className="font-heading font-bold text-pl-ink mb-12"
+            className="font-heading font-bold text-pl-text mb-12"
             style={{ fontSize: 'clamp(1.75rem, 3.5vw, 3rem)', letterSpacing: '-0.015em' }}
           >
-            Why Proland
+            {t('trust.title')}
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {trustItems.map((item, i) => (
               <motion.div
                 key={item.title}
                 {...fadeUp(i * 0.1)}
-                className="card-hover bg-white border border-pl-line rounded-lg p-7"
+                className="card-hover bg-pl-surface border border-pl-line rounded-lg p-7"
               >
-                <div className="w-10 h-10 rounded-md bg-pl-ink flex items-center justify-center mb-5">
+                <div className="w-10 h-10 rounded-md bg-pl-accent flex items-center justify-center mb-5">
                   <item.icon className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="font-bold text-pl-ink mb-2 text-base">
-                  {item.title === 'Verified Listings' ? (
-                    <>
-                      <motion.span
-                        initial={{ color: 'var(--pl-ink)' }}
-                        whileInView={{ color: 'var(--pl-accent)' }}
-                        viewport={{ once: true, margin: '-10%' }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                      >
-                        Verified
-                      </motion.span>{' '}
-                      Listings
-                    </>
-                  ) : (
-                    item.title
-                  )}
+                <h3 className="font-bold text-pl-text mb-2 text-base">
+                  {item.title}
                 </h3>
                 <p className="text-pl-muted text-sm leading-relaxed">{item.desc}</p>
               </motion.div>
@@ -171,24 +157,24 @@ export function Home() {
       </section>
 
       {/* ── Owner CTA ──────────────────────────────────────────────────────── */}
-      <section className="grain-texture py-20 px-4 bg-pl-surface border-t border-pl-line">
+      <section className="grain-texture py-20 px-4 bg-pl-surface border-t border-pl-line text-pl-text">
         <div className="container mx-auto max-w-3xl text-center">
           <motion.p {...fadeUp()} className="text-xs font-bold uppercase tracking-[0.2em] text-pl-muted mb-4">
-            For Property Owners
+            {t('cta.owner_label')}
           </motion.p>
           <motion.h2
             {...fadeUp(0.1)}
-            className="font-heading font-bold text-pl-ink mb-4"
+            className="font-heading font-bold text-pl-text mb-4"
             style={{ fontSize: 'clamp(1.75rem, 3.5vw, 3rem)', letterSpacing: '-0.015em' }}
           >
-            Have a Property to Sell or Rent?
+            {t('cta.owner_title')}
           </motion.h2>
           <motion.p {...fadeUp(0.15)} className="text-pl-muted mb-8 max-w-md mx-auto">
-            List for free. Once our team approves your listing, it's live to thousands of verified buyers.
+            {t('cta.owner_desc')}
           </motion.p>
           <motion.div {...fadeUp(0.2)}>
-            <Link to="/login">
-              <PrimaryButton className="h-13 px-10 text-base">List Your Property Free</PrimaryButton>
+            <Link to="/login?role=owner">
+              <PrimaryButton className="h-13 px-10 text-base">{t('cta.list_free')}</PrimaryButton>
             </Link>
           </motion.div>
         </div>

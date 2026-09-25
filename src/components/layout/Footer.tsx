@@ -3,6 +3,7 @@ import { Logo } from '@/components/shared/Logo'
 import { Globe, AtSign, Share2, Briefcase } from 'lucide-react'
 import { HoverText } from '@/components/shared/HoverText'
 import { useAuth } from '@/lib/auth'
+import { useTranslation } from 'react-i18next'
 
 const socials = [
   { icon: Globe, href: 'https://proland.co.tz', label: 'Website' },
@@ -13,36 +14,40 @@ const socials = [
 
 export function Footer() {
   const { user } = useAuth()
+  const { t } = useTranslation()
   const year = new Date().getFullYear()
 
   const columns = [
     {
-      title: 'Company',
+      title: t('footer.quick_links'),
       links: [
-        { label: 'About Us', to: '/about' },
-        { label: 'Contact', to: '/contact' },
-        { label: 'Pricing', to: '/pricing' },
+        { label: t('nav.about'), to: '/about' },
+        { label: t('nav.contact'), to: '/contact' },
+        { label: t('nav.pricing'), to: '/pricing' },
       ],
     },
     {
-      title: 'For Buyers',
+      title: t('cta.owner_label'),
       links: [
-        { label: 'Browse Properties', to: '/properties' },
-        { label: 'How It Works', to: '/how-it-works' },
-        ...(user?.role === 'buyer' ? [{ label: 'My Requests', to: '/buyer/dashboard' }] : []),
+        { label: t('nav.properties'), to: '/properties' },
+        { label: t('nav.how_it_works'), to: '/#how-it-works' },
+        ...(user?.role === 'buyer' ? [{ label: t('buyer_dashboard.title'), to: '/buyer/dashboard' }] : []),
       ],
     },
     {
-      title: 'For Owners',
+      title: t('cta.owner_title'),
       links: [
-        { label: 'List Your Property', to: '/login' },
-        ...(user?.role === 'owner' ? [{ label: 'Owner Dashboard', to: '/owner/dashboard' }] : []),
+        { label: t('nav.list_property'), to: '/login?role=owner' },
+        ...(user?.role === 'owner' ? [{ label: t('owner_dashboard.title'), to: '/owner/dashboard' }] : []),
       ],
     },
     {
-      title: 'For Agents',
+      title: t('footer.property_types'),
       links: [
-        { label: 'Dalali Workspace', to: user?.role === 'agent' ? '/agent/dashboard' : '/login' },
+        { label: t('hero.filter.houses'), to: '/properties?type=house' },
+        { label: t('hero.filter.plots'), to: '/properties?type=plot' },
+        { label: t('hero.filter.offices'), to: '/properties?type=office' },
+        ...(user?.role === 'agent' ? [{ label: t('agent_dashboard.title'), to: '/agent/dashboard' }] : []),
       ],
     },
   ]
@@ -54,8 +59,8 @@ export function Footer() {
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Logo size={36} tone="light" />
-            <p className="text-white/60 text-sm mt-4 leading-relaxed max-w-[180px]">
-              Every property verified. Every visit booked. Every payment secure.
+            <p className="text-white/60 text-sm mt-4 leading-relaxed max-w-[220px]">
+              {t('footer.tagline')}
             </p>
           </div>
 
@@ -82,7 +87,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-white/40 text-sm">
-            © {year} Proland. All rights reserved.
+            © {year} Proland. {t('footer.rights_reserved')}
           </p>
           <div className="flex items-center gap-4">
             {socials.map(({ icon: Icon, href, label }) => (

@@ -1,4 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/lib/auth'
 import { canAccess } from '@/lib/rbac'
 import { LayoutDashboard, List, Users, Bell, LogOut, FileText } from 'lucide-react'
@@ -6,6 +7,7 @@ import { cn } from '@/lib/utils'
 
 export function DashboardShell() {
   const { user, logout } = useAuth()
+  const { t } = useTranslation()
   const location = useLocation()
   
   if (!user) return null
@@ -13,27 +15,27 @@ export function DashboardShell() {
   const getLinks = () => {
     if (canAccess(user.role, 'manage_leads')) {
       return [
-        { label: 'Overview', path: '/agent/dashboard', icon: LayoutDashboard },
-        { label: 'Lead Pipeline', path: '/agent/leads', icon: Users },
-        { label: 'Managed Listings', path: '/agent/listings', icon: FileText },
+        { label: t('buyer_dashboard.tabs.overview'), path: '/agent/dashboard', icon: LayoutDashboard },
+        { label: t('agent_dashboard.tabs.leads'), path: '/agent/leads', icon: Users },
+        { label: t('agent_dashboard.tabs.listings'), path: '/agent/listings', icon: FileText },
       ]
     }
 
     switch(user.role) {
       case 'buyer': return [
-        { label: 'Overview', path: '/buyer/dashboard', icon: LayoutDashboard },
-        { label: 'My Requests', path: '/buyer/requests', icon: List }
+        { label: t('buyer_dashboard.tabs.overview'), path: '/buyer/dashboard', icon: LayoutDashboard },
+        { label: t('buyer_dashboard.tabs.requests'), path: '/buyer/requests', icon: List }
       ]
       case 'owner': return [
-        { label: 'Overview', path: '/owner/dashboard', icon: LayoutDashboard },
-        { label: 'My Properties', path: '/owner/properties', icon: FileText },
-        { label: 'Visit Requests', path: '/owner/requests', icon: Bell }
+        { label: t('owner_dashboard.tabs.overview'), path: '/owner/dashboard', icon: LayoutDashboard },
+        { label: t('owner_dashboard.tabs.properties'), path: '/owner/properties', icon: FileText },
+        { label: t('owner_dashboard.tabs.requests'), path: '/owner/requests', icon: Bell }
       ]
       case 'admin': return [
-        { label: 'Overview', path: '/admin/dashboard', icon: LayoutDashboard },
-        { label: 'Properties', path: '/admin/properties', icon: FileText },
-        { label: 'Users', path: '/admin/users', icon: Users },
-        { label: 'All Requests', path: '/admin/requests', icon: List }
+        { label: t('admin_dashboard.tabs.overview'), path: '/admin/dashboard', icon: LayoutDashboard },
+        { label: t('admin_dashboard.tabs.properties'), path: '/admin/properties', icon: FileText },
+        { label: t('admin_dashboard.tabs.users'), path: '/admin/users', icon: Users },
+        { label: t('admin_dashboard.tabs.requests'), path: '/admin/requests', icon: List }
       ]
     }
     return []
@@ -43,45 +45,50 @@ export function DashboardShell() {
 
   const formatRoleLabel = (role: string) => {
     switch (role) {
-      case 'agent': return 'Agent / Dalali'
-      case 'property_manager': return 'Property Manager'
+      case 'agent': return t('nav.role_agent')
+      case 'owner': return t('nav.role_owner')
+      case 'admin': return t('nav.role_admin')
+      case 'buyer': return t('nav.role_buyer')
       default: return role
     }
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-64px)] bg-pl-surface">
+    <div className="flex min-h-[calc(100vh-64px)] bg-pl-bg text-pl-text">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-pl-line hidden md:block">
-        <div className="p-6">
-          <div className="font-bold text-pl-ink text-lg truncate">{user.name}</div>
-          <div className="text-sm text-pl-muted capitalize">{formatRoleLabel(user.role)} Account</div>
+      <aside className="w-64 bg-pl-surface border-r border-pl-line hidden md:block text-pl-text shrink-0">
+        <div className="p-6 border-b border-pl-line">
+          <div className="font-bold text-pl-text text-lg truncate">{user.name}</div>
+          <div className="text-xs font-semibold text-pl-accent mt-0.5">{formatRoleLabel(user.role)}</div>
         </div>
-        <nav className="px-4 py-2 space-y-1">
+        <nav className="px-4 py-4 space-y-1">
           {links.map((link) => {
-            const active = location.pathname === link.path || location.pathname.startsWith(link.path + '/')
+            const active = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path + '/'))
             return (
               <Link 
                 key={link.path} 
                 to={link.path}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors",
-                  active ? "bg-pl-surface text-pl-ink font-bold" : "text-pl-muted hover:text-pl-ink hover:bg-pl-surface/50"
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors border border-transparent",
+                  active 
+                    ? "bg-pl-bg text-pl-accent font-bold border-pl-line shadow-sm" 
+                    : "text-pl-muted hover:text-pl-text hover:bg-pl-bg/50"
                 )}
               >
-                <link.icon className="w-4 h-4" />
+                <link.icon className="w-4 h-4 shrink-0" />
                 {link.label}
               </Link>
             )
           })}
         </nav>
-        <div className="p-4 mt-auto border-t border-pl-line absolute bottom-0 w-64">
+        <div className="p-4 border-t border-pl-line sticky bottom-0 bg-pl-surface">
           <button 
+            type="button"
             onClick={logout}
-            className="flex items-center gap-3 px-3 py-2 w-full text-left rounded-xl text-sm font-medium text-pl-danger hover:bg-red-50 transition-colors"
+            className="flex items-center gap-3 px-3 py-2.5 w-full text-left rounded-xl text-sm font-medium text-red-500 hover:bg-red-500/10 transition-colors"
           >
-            <LogOut className="w-4 h-4" />
-            Sign Out
+            <LogOut className="w-4 h-4 shrink-0" />
+            {t('nav.logout')}
           </button>
         </div>
       </aside>

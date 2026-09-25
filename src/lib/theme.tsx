@@ -42,7 +42,24 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       }
     }
     mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
+
+    // Multi-tab storage sync
+    const storageHandler = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY && (e.newValue === 'light' || e.newValue === 'dark')) {
+        setThemeState(e.newValue)
+        if (e.newValue === 'dark') {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+      }
+    }
+    window.addEventListener('storage', storageHandler)
+
+    return () => {
+      mq.removeEventListener('change', handler)
+      window.removeEventListener('storage', storageHandler)
+    }
   }, [])
 
   return (

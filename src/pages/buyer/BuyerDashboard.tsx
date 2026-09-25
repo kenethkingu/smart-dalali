@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Clock, CheckCircle, Search } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/lib/auth'
 import { VisitRequestCard } from '@/components/buyer/VisitRequestCard'
 import { PrimaryButton } from '@/components/shared/Bits'
@@ -10,11 +11,11 @@ import { useEvents } from '@/lib/events'
 
 export function BuyerDashboard() {
   const { user } = useAuth()
+  const { t } = useTranslation()
   const { requests: allRequests, updateRequest } = useRequests()
   const { addEvent } = useEvents()
   
-  // mock: show buyer1's requests
-  const requests = allRequests.filter(r => r.buyerId === 'buyer1')
+  const requests = allRequests.filter(r => r.buyerId === user?.id || r.buyerId === 'buyer1')
 
   const pending = requests.filter(r => r.status === 'pending').length
   const confirmed = requests.filter(r => r.status === 'payment_confirmed').length
@@ -48,40 +49,40 @@ export function BuyerDashboard() {
   }
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-3xl text-pl-text">
       <div className="mb-8">
-        <h1 className="text-3xl font-heading font-bold text-pl-ink mb-1">
-          Welcome back, {user?.name}
+        <h1 className="text-3xl font-heading font-bold text-pl-text mb-1">
+          {t('buyer_dashboard.title')}, {user?.name}
         </h1>
-        <p className="text-pl-muted">Track your site visit requests below.</p>
+        <p className="text-pl-muted">{t('buyer_dashboard.subtitle')}</p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-10">
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-pl-line">
-          <div className="text-xs font-semibold text-pl-muted uppercase tracking-wide mb-2">Total Requests</div>
-          <div className="text-3xl font-bold text-pl-ink">{requests.length}</div>
+        <div className="bg-pl-surface p-5 rounded-2xl shadow-sm border border-pl-line text-pl-text">
+          <div className="text-xs font-semibold text-pl-muted uppercase tracking-wide mb-2">{t('buyer_dashboard.stat_requests')}</div>
+          <div className="text-3xl font-bold text-pl-text">{requests.length}</div>
         </div>
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-pl-line">
+        <div className="bg-pl-surface p-5 rounded-2xl shadow-sm border border-pl-line text-pl-text">
           <div className="text-xs font-semibold text-pl-muted uppercase tracking-wide mb-2 flex items-center gap-1">
-            <Clock className="w-3 h-3" /> Pending
+            <Clock className="w-3.5 h-3.5 text-amber-500" /> {t('status.pending')}
           </div>
-          <div className="text-3xl font-bold text-amber-600">{pending}</div>
+          <div className="text-3xl font-bold text-amber-500">{pending}</div>
         </div>
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-pl-line">
+        <div className="bg-pl-surface p-5 rounded-2xl shadow-sm border border-pl-line text-pl-text">
           <div className="text-xs font-semibold text-pl-muted uppercase tracking-wide mb-2 flex items-center gap-1">
-            <CheckCircle className="w-3 h-3" /> Confirmed
+            <CheckCircle className="w-3.5 h-3.5 text-pl-accent" /> {t('status.verified')}
           </div>
-          <div className="text-3xl font-bold text-pl-accent-dark">{confirmed}</div>
+          <div className="text-3xl font-bold text-pl-accent">{confirmed}</div>
         </div>
       </div>
 
       {/* Requests list or empty state */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-pl-ink">Recent Site Visit Requests</h2>
+        <h2 className="text-xl font-bold text-pl-text">{t('buyer_dashboard.tabs.requests')}</h2>
         {requests.length > 3 && (
-          <Link to="/buyer/requests" className="text-sm font-semibold text-pl-accent hover:text-pl-accent-dark">
-            View All Requests →
+          <Link to="/buyer/requests" className="text-sm font-semibold text-pl-accent hover:underline">
+            {t('home.view_all')} →
           </Link>
         )}
       </div>
@@ -90,17 +91,17 @@ export function BuyerDashboard() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-white rounded-2xl border border-pl-line p-12 text-center"
+          className="bg-pl-surface rounded-2xl border border-pl-line p-12 text-center text-pl-text"
         >
-          <div className="w-16 h-16 rounded-full bg-pl-surface flex items-center justify-center mx-auto mb-5">
+          <div className="w-16 h-16 rounded-full bg-pl-bg flex items-center justify-center mx-auto mb-5 border border-pl-line">
             <Search className="w-7 h-7 text-pl-muted" />
           </div>
-          <h3 className="text-xl font-bold text-pl-ink mb-2">No requests yet</h3>
+          <h3 className="text-xl font-bold text-pl-text mb-2">{t('properties.zero_results_title')}</h3>
           <p className="text-pl-muted mb-6 max-w-sm mx-auto">
-            You haven't requested a site visit yet. Browse properties to get started.
+            {t('properties.zero_results_desc')}
           </p>
           <Link to="/properties">
-            <PrimaryButton>Browse Properties</PrimaryButton>
+            <PrimaryButton>{t('common.browse_properties')}</PrimaryButton>
           </Link>
         </motion.div>
       ) : (
@@ -118,8 +119,8 @@ export function BuyerDashboard() {
           {requests.length > 3 && (
             <div className="pt-2">
               <Link to="/buyer/requests">
-                <PrimaryButton className="w-full text-sm font-semibold bg-white text-pl-ink border border-pl-line hover:bg-pl-surface hover:text-pl-ink">
-                  View All {requests.length} Requests
+                <PrimaryButton className="w-full text-sm font-semibold bg-pl-surface text-pl-text border border-pl-line hover:bg-pl-bg">
+                  {t('home.view_all')} ({requests.length})
                 </PrimaryButton>
               </Link>
             </div>

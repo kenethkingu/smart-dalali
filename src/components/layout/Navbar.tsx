@@ -84,7 +84,7 @@ function LanguageSelector() {
           className={cn(
             'absolute right-0 top-full mt-1.5 z-[60]',
             'w-36 rounded-xl border border-pl-line',
-            'bg-white dark:bg-pl-surface shadow-lg shadow-black/10',
+            'bg-pl-bg dark:bg-pl-surface shadow-lg shadow-black/10',
             'py-1 overflow-hidden',
             'animate-in fade-in-0 zoom-in-95 duration-100',
           )}
@@ -167,7 +167,7 @@ export function Navbar() {
   ] as const
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-pl-line bg-white/80 dark:bg-pl-ink/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-pl-line bg-pl-bg/80 dark:bg-pl-ink/90 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
 
         {/* Left: Logo + desktop nav */}
@@ -250,7 +250,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div id="mobile-nav" className="md:hidden border-t border-pl-line bg-white dark:bg-pl-ink px-4 py-4 space-y-1">
+        <div id="mobile-nav" className="md:hidden border-t border-pl-line bg-pl-bg dark:bg-pl-ink px-4 py-4 space-y-1">
           {navLinks.map(link => (
             <Link
               key={link.key}

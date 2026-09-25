@@ -42,7 +42,7 @@ export function ActiveFilterChips() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             onClick={chip.onRemove}
-            className="flex items-center gap-1.5 bg-pl-ink text-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-black transition-colors"
+            className="flex items-center gap-1.5 bg-pl-ink text-pl-white px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-pl-accent-dark hover:text-white transition-colors"
           >
             <span className="capitalize">{chip.label}</span>
             <X className="w-3.5 h-3.5 opacity-70" />

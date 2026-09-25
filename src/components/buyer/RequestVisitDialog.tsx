@@ -12,6 +12,7 @@ import { PrimaryButton } from '@/components/shared/Bits'
 import type { Property } from '@/types'
 import { useEvents } from '@/lib/events'
 import { useAuth } from '@/lib/auth'
+import { useTranslation } from 'react-i18next'
 
 interface RequestVisitDialogProps {
   property: Property
@@ -23,6 +24,7 @@ export function RequestVisitDialog({ property, open, onOpenChange }: RequestVisi
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { addEvent } = useEvents()
   const { user } = useAuth()
+  const { t } = useTranslation()
 
   const handleRequest = async () => {
     setIsSubmitting(true)
@@ -43,16 +45,15 @@ export function RequestVisitDialog({ property, open, onOpenChange }: RequestVisi
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Request a Site Visit</AlertDialogTitle>
+          <AlertDialogTitle>{t('visit_dialog.title')}</AlertDialogTitle>
           <AlertDialogDescription>
-            You are requesting a site visit for <strong>{property.title}</strong>. 
-            The owner will be notified and will contact you to arrange a time.
+            {t('visit_dialog.desc', { title: property.title })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isSubmitting}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isSubmitting}>{t('common.cancel')}</AlertDialogCancel>
           <PrimaryButton onClick={handleRequest} isLoading={isSubmitting}>
-            Send Request
+            {t('visit_dialog.send')}
           </PrimaryButton>
         </AlertDialogFooter>
       </AlertDialogContent>

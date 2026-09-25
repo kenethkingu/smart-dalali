@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { publicProperties } from '../data/mockData'
 import { PropertyCard } from '../components/properties/PropertyCard'
 import { FiltersSidebar } from '../components/properties/FiltersSidebar'
@@ -8,7 +9,6 @@ import { ActiveFilterChips } from '../components/properties/ActiveFilterChips'
 import { ZeroResultsState } from '../components/properties/ZeroResultsState'
 import { useFilterState } from '@/lib/useFilterState'
 
-// A simple animating number component for the results count
 function AnimatedCount({ value }: { value: number }) {
   return (
     <AnimatePresence mode="popLayout">
@@ -28,6 +28,7 @@ function AnimatedCount({ value }: { value: number }) {
 
 export function Properties() {
   const { filters } = useFilterState()
+  const { t } = useTranslation()
 
   const filteredProperties = useMemo(() => {
     return publicProperties.filter(p => {
@@ -42,7 +43,7 @@ export function Properties() {
   }, [filters])
 
   return (
-    <div className="grain-texture bg-pl-surface min-h-screen">
+    <div className="grain-texture bg-pl-bg text-pl-text min-h-screen">
       <div className="container mx-auto px-4 py-8 lg:py-12">
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           
@@ -50,8 +51,9 @@ export function Properties() {
 
           <main className="flex-1 w-full">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-              <h1 className="text-3xl font-heading font-bold text-pl-ink flex gap-2">
-                <AnimatedCount value={filteredProperties.length} /> properties
+              <h1 className="text-3xl font-heading font-bold text-pl-text flex items-center gap-2">
+                {t('properties.results_count', { count: '' }).replace('{{count}}', '')}
+                <AnimatedCount value={filteredProperties.length} />
               </h1>
               <FiltersSheet />
             </div>

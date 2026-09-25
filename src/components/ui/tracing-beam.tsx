@@ -41,7 +41,7 @@ export const TracingBeam = ({
           animate={{
             boxShadow: scrollYProgress.get() > 0 ? 'none' : 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
           }}
-          className="ml-[27px] h-4 w-4 rounded-full border border-pl-line flex items-center justify-center bg-white"
+          className="ml-[27px] h-4 w-4 rounded-full border border-pl-line flex items-center justify-center bg-pl-bg"
         >
           <motion.div
             transition={{ duration: 0.2, delay: 0.5 }}
@@ -49,7 +49,7 @@ export const TracingBeam = ({
               backgroundColor: scrollYProgress.get() > 0 ? 'var(--pl-accent)' : 'var(--pl-line)',
               borderColor: scrollYProgress.get() > 0 ? 'var(--pl-accent)' : 'var(--pl-line)',
             }}
-            className="h-2 w-2 rounded-full border border-pl-line bg-white"
+            className="h-2 w-2 rounded-full border border-pl-line bg-pl-bg"
           />
         </motion.div>
         <svg
@@ -62,7 +62,7 @@ export const TracingBeam = ({
           <motion.path
             d={`M 1 0V -36 l 18 24 V ${svgHeight * 0.8} l -18 24V ${svgHeight}`}
             fill="none"
-            stroke="#9091A0"
+            stroke="var(--pl-line)"
             strokeOpacity="0.16"
             transition={{ duration: 10 }}
           ></motion.path>

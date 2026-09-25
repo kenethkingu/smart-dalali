@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, XCircle, Building2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { properties as initialProperties } from '@/data/mockData'
 import type { Property } from '@/types'
 import { formatPrice, PrimaryButton, DangerButton } from '@/components/shared/Bits'
 
 export function AdminProperties() {
+  const { t } = useTranslation()
   const [queue, setQueue] = useState<Property[]>(
     initialProperties.filter(p => p.status === 'pending')
   )
@@ -19,27 +21,26 @@ export function AdminProperties() {
   }
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-3xl text-pl-text">
       <div className="mb-8">
-        <h1 className="text-3xl font-heading font-bold text-pl-ink mb-1 flex items-center gap-2">
-          <Building2 className="w-8 h-8" /> Property Approval Queue
+        <h1 className="text-3xl font-heading font-bold text-pl-text mb-1 flex items-center gap-2">
+          <Building2 className="w-8 h-8 text-pl-accent" /> {t('admin_dashboard.tabs.properties')}
         </h1>
-        <p className="text-pl-muted">Review pending listings — approve to make them public, reject to return them to the owner.</p>
+        <p className="text-pl-muted">{t('admin_dashboard.subtitle')}</p>
       </div>
 
       {queue.length === 0 && done.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-pl-line p-12 text-center">
+        <div className="bg-pl-surface text-pl-text rounded-2xl border border-pl-line p-12 text-center">
           <CheckCircle className="w-12 h-12 text-pl-accent mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-pl-ink mb-2">Queue is clear!</h2>
-          <p className="text-pl-muted">All pending listings have been reviewed. Check back later.</p>
+          <h2 className="text-xl font-bold text-pl-text mb-2">{t('properties.zero_results_title')}</h2>
+          <p className="text-pl-muted">{t('properties.zero_results_desc')}</p>
         </div>
       ) : (
         <>
-          {/* Pending queue */}
           {queue.length > 0 && (
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-pl-ink">Pending ({queue.length})</h2>
+                <h2 className="text-lg font-bold text-pl-text">{t('status.pending')} ({queue.length})</h2>
               </div>
               <div className="space-y-4">
                 <AnimatePresence>
@@ -51,13 +52,13 @@ export function AdminProperties() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, x: -40, scale: 0.95 }}
                       transition={{ duration: 0.25 }}
-                      className="bg-white rounded-2xl border border-pl-line p-6"
+                      className="bg-pl-surface text-pl-text rounded-2xl border border-pl-line p-6 shadow-sm"
                     >
                       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start">
                         <div className="flex-1">
-                          <h3 className="font-bold text-pl-ink text-lg mb-1">{property.title}</h3>
+                          <h3 className="font-bold text-pl-text text-lg mb-1">{property.title}</h3>
                           <p className="text-sm text-pl-muted mb-2">{property.location}</p>
-                          <p className="text-sm text-pl-ink font-semibold mb-3">
+                          <p className="text-sm text-pl-text font-semibold mb-3">
                             TSh {formatPrice(property.price)}{property.priceUnit === 'month' ? '/mo' : ''}
                             <span className="text-pl-muted font-normal ml-2">•</span>
                             <span className="text-pl-muted font-normal ml-2 capitalize">{property.type}</span>
@@ -67,7 +68,7 @@ export function AdminProperties() {
                           {property.amenities.length > 0 && (
                             <div className="flex flex-wrap gap-1 mt-3">
                               {property.amenities.map(a => (
-                                <span key={a} className="text-[11px] px-2 py-0.5 rounded-full bg-pl-surface border border-pl-line text-pl-muted">
+                                <span key={a} className="text-[11px] px-2 py-0.5 rounded-full bg-pl-bg border border-pl-line text-pl-muted">
                                   {a}
                                 </span>
                               ))}
@@ -79,13 +80,13 @@ export function AdminProperties() {
                             onClick={() => decide(property.id, 'rejected')}
                             className="h-10 px-4"
                           >
-                            <XCircle className="w-4 h-4" /> Reject
+                            <XCircle className="w-4 h-4" /> {t('admin_dashboard.reject')}
                           </DangerButton>
                           <PrimaryButton
                             onClick={() => decide(property.id, 'approved')}
                             className="h-10 px-4"
                           >
-                            <CheckCircle className="w-4 h-4" /> Approve
+                            <CheckCircle className="w-4 h-4" /> {t('admin_dashboard.approve')}
                           </PrimaryButton>
                         </div>
                       </div>
@@ -96,16 +97,15 @@ export function AdminProperties() {
             </div>
           )}
 
-          {/* Reviewed section */}
           {done.length > 0 && (
             <div>
-              <h2 className="text-lg font-bold text-pl-ink mb-4">Reviewed Today ({done.length})</h2>
+              <h2 className="text-lg font-bold text-pl-text mb-4">{t('status.completed')} ({done.length})</h2>
               <div className="space-y-2">
                 {done.map(({ property, action }) => (
-                  <div key={property.id} className={`rounded-xl border p-4 flex items-center justify-between ${action === 'approved' ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
-                    <span className="text-sm font-semibold text-pl-ink">{property.title}</span>
-                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${action === 'approved' ? 'text-pl-accent-dark' : 'text-pl-danger'}`}>
-                      {action === 'approved' ? '✓ Approved' : '✗ Rejected'}
+                  <div key={property.id} className={`rounded-xl border p-4 flex items-center justify-between ${action === 'approved' ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+                    <span className="text-sm font-semibold text-pl-text">{property.title}</span>
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${action === 'approved' ? 'text-emerald-500' : 'text-red-500'}`}>
+                      {action === 'approved' ? `✓ ${t('status.approved')}` : `✗ ${t('status.rejected')}`}
                     </span>
                   </div>
                 ))}

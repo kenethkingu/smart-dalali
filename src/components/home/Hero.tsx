@@ -2,6 +2,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useState } from 'react'
 import { Search, MapPin } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { PrimaryButton, PropertyStatusBadge, formatPrice } from '../shared/Bits'
 import { RotatingWord } from '../shared/RotatingWord'
 import { useTypewriterPlaceholder } from '@/hooks/useTypewriterPlaceholder'
@@ -21,9 +22,10 @@ function MiniPropertyCard({
   entranceDelay: number
   floatDelay: number
 }) {
+  const { t } = useTranslation()
   return (
     <motion.div
-      className={`absolute bg-white rounded-xl overflow-hidden shadow-2xl p-2 w-56 sm:w-64 z-10 ${className}`}
+      className={`absolute bg-pl-surface dark:bg-pl-surface rounded-xl overflow-hidden shadow-2xl p-2 w-56 sm:w-64 z-10 border border-pl-line ${className}`}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: entranceDelay, ease: "easeOut" }}
@@ -33,7 +35,7 @@ function MiniPropertyCard({
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: floatDelay }}
       >
         <Link to={`/properties/${property.id}`} className="block group">
-          <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-3 bg-zinc-100">
+          <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-3 bg-pl-bg">
             <div className="w-full h-full group-hover:scale-[1.03] transition-transform duration-500 ease-out">
               <PropertyImage property={property} className="w-full h-full object-cover" alt={property.title} />
             </div>
@@ -41,17 +43,17 @@ function MiniPropertyCard({
               <PropertyStatusBadge status={property.status} />
             </div>
             {property.sponsored && (
-              <div className="absolute top-2 right-2 bg-pl-ink text-white text-[9px] font-bold px-1.5 py-0.5 rounded-sm tracking-wider uppercase">
-                Featured
+              <div className="absolute top-2 right-2 bg-pl-accent text-white text-[9px] font-bold px-1.5 py-0.5 rounded-sm tracking-wider uppercase">
+                {t('status.verified')}
               </div>
             )}
           </div>
           <div className="px-1 pb-1">
-            <div className="font-heading font-bold text-pl-ink tracking-tight mb-0.5">
+            <div className="font-heading font-bold text-pl-text tracking-tight mb-0.5">
               TSh {formatPrice(property.price)}
-              {property.priceUnit === 'month' && <span className="text-[10px] font-normal text-pl-muted ml-1">/ mo</span>}
+              {property.priceUnit === 'month' && <span className="text-[10px] font-normal text-pl-muted ml-1">{t('common.per_month')}</span>}
             </div>
-            <div className="text-xs font-semibold text-pl-ink/90 truncate">{property.title}</div>
+            <div className="text-xs font-semibold text-pl-text/90 truncate">{property.title}</div>
           </div>
         </Link>
       </motion.div>
@@ -61,16 +63,39 @@ function MiniPropertyCard({
 
 export function Hero() {
   const navigate = useNavigate()
+  const { t, i18n } = useTranslation()
+
   const [location, setLocation] = useState('')
 
-  const searchExamples = [
-    "Try '3-bedroom house'...",
-    "Try 'Plot in Kigamboni'...",
-    "Try 'Apartment in Mikocheni'...",
-    "Try 'Sinza Mori'...",
-    "Try 'Office space'...",
-    "Try 'Houses under 1,000,000'...",
-  ]
+  const isSwahili = (i18n.resolvedLanguage ?? i18n.language) === 'sw'
+
+  const fullHeadlines = isSwahili
+    ? [
+        t('hero.headline.house'),
+        t('hero.headline.plot'),
+        t('hero.headline.office'),
+      ]
+    : [
+        t('hero.headline.house'),
+        t('hero.headline.plot'),
+        t('hero.headline.office'),
+      ]
+
+  const searchExamples = isSwahili
+    ? [
+        "Jaribu 'Nyumba vyumba 3 Masaki'...",
+        "Jaribu 'Kiwanja Kigamboni'...",
+        "Jaribu 'Apartment Mikocheni'...",
+        "Jaribu 'Sinza Mori'...",
+        "Jaribu 'Ofisi Oysterbay'...",
+      ]
+    : [
+        "Try '3-bedroom house Masaki'...",
+        "Try 'Plot in Kigamboni'...",
+        "Try 'Apartment in Mikocheni'...",
+        "Try 'Sinza Mori'...",
+        "Try 'Office space Oysterbay'...",
+      ]
 
   const placeholderText = useTypewriterPlaceholder({
     phrases: searchExamples,
@@ -83,12 +108,11 @@ export function Hero() {
     navigate(`/properties?${params.toString()}`)
   }
 
-  // Get up to 3 featured/sponsored properties for the floating cards
   const featuredCards = publicProperties.filter(p => p.sponsored).slice(0, 3)
 
   return (
-    <section className="grain-texture relative w-full min-h-[90vh] flex items-center overflow-hidden bg-pl-ink">
-      {/* Subtle architectural grid lines — background texture */}
+    <section className="grain-texture relative w-full min-h-[90vh] flex items-center overflow-hidden bg-pl-ink text-white">
+      {/* Subtle architectural grid lines */}
       <div
         className="absolute inset-0 opacity-[0.04]"
         style={{
@@ -104,23 +128,20 @@ export function Hero() {
           <div className="max-w-xl">
             <h1
               className="text-display font-heading font-bold text-white mb-6 tracking-[-0.02em] leading-[1.05]"
-              style={{ fontSize: 'clamp(2.75rem, 7vw, 5.5rem)' }}
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 4.75rem)' }}
             >
-              Find the <RotatingWord words={['House', 'Plot', 'Office']} className="text-white" />
-              <br />
-              You Want.
-              <span className="block text-pl-accent mt-1" style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.75rem)' }}>
-                Book a visit. Pay securely.
+              <RotatingWord words={fullHeadlines} className="text-white block min-h-[1.2em]" />
+              <span className="block text-pl-accent mt-2 font-semibold" style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.5rem)' }}>
+                {t('hero.subheadline')}
               </span>
             </h1>
 
-            <p className="text-white/60 text-lg mb-10 max-w-xl leading-relaxed">
-              Every listing on Proland is reviewed by our team before going public.
-              No ghost properties, no payment before you've seen the place.
+            <p className="text-white/80 text-base sm:text-lg mb-8 max-w-xl leading-relaxed">
+              {t('hero.body')}
             </p>
 
             {/* Search bar */}
-            <div className="w-full bg-white p-1.5 rounded-lg flex flex-col sm:flex-row items-stretch gap-1.5 mb-8">
+            <div className="w-full bg-pl-bg dark:bg-pl-surface p-1.5 rounded-lg flex flex-col sm:flex-row items-stretch gap-1.5 mb-8 border border-pl-line shadow-xl">
               <div className="flex flex-1 items-center gap-2 px-4 py-3">
                 <MapPin className="text-pl-muted w-4 h-4 shrink-0" />
                 <input
@@ -129,38 +150,58 @@ export function Hero() {
                   onChange={e => setLocation(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleSearch()}
                   placeholder={placeholderText}
-                  className="w-full bg-transparent outline-none text-pl-ink placeholder:text-pl-muted text-sm font-medium"
+                  className="w-full bg-transparent outline-none text-pl-ink dark:text-pl-white placeholder:text-pl-muted text-sm font-medium"
                 />
               </div>
               <PrimaryButton
                 onClick={handleSearch}
                 className="rounded-md px-6 py-3 text-sm shrink-0"
               >
-                <Search className="w-4 h-4" /> Search
+                <Search className="w-4 h-4" /> {t('hero.search_button')}
               </PrimaryButton>
             </div>
 
             {/* Quick-filter pills */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-semibold text-white/40 uppercase tracking-widest mr-1">Filter</span>
-              <button onClick={() => navigate('/properties?purpose=rent')} className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/70 hover:bg-white/10">
-                Rent
+              <span className="text-xs font-semibold text-white/50 uppercase tracking-widest mr-1">
+                {t('common.filter')}
+              </span>
+              <button
+                onClick={() => navigate('/properties?purpose=rent')}
+                className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/80 hover:bg-white/10"
+              >
+                {t('hero.filter.rent')}
               </button>
-              <button onClick={() => navigate('/properties?purpose=buy')} className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/70 hover:bg-white/10">
-                Buy
+              <button
+                onClick={() => navigate('/properties?purpose=buy')}
+                className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/80 hover:bg-white/10"
+              >
+                {t('hero.filter.buy')}
               </button>
               <div className="w-px h-4 bg-white/20 mx-1" />
-              {['house', 'plot', 'office'].map(t => (
-                <button key={t} onClick={() => navigate(`/properties?type=${t}`)} className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/70 hover:bg-white/10 capitalize">
-                  {t === 'house' ? 'Houses' : t === 'plot' ? 'Plots' : 'Offices'}
-                </button>
-              ))}
+              <button
+                onClick={() => navigate('/properties?type=house')}
+                className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/80 hover:bg-white/10"
+              >
+                {t('hero.filter.houses')}
+              </button>
+              <button
+                onClick={() => navigate('/properties?type=plot')}
+                className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/80 hover:bg-white/10"
+              >
+                {t('hero.filter.plots')}
+              </button>
+              <button
+                onClick={() => navigate('/properties?type=office')}
+                className="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition-colors border-white/20 text-white/80 hover:bg-white/10"
+              >
+                {t('hero.filter.offices')}
+              </button>
             </div>
           </div>
 
           {/* Right Column: Line Art & Floating Cards */}
           <div className="hidden lg:block relative h-[500px] w-full">
-            {/* Atmospheric SVG Line Art (Echoes Logo Geometry) */}
             <div className="absolute inset-0 flex items-center justify-center opacity-10">
               <motion.svg 
                 viewBox="0 0 200 140" 
@@ -172,7 +213,7 @@ export function Hero() {
                 <motion.path 
                   d="M100 10 L180 100 L20 100 Z" 
                   fill="none" 
-                  stroke="#FFFFFF" 
+                  stroke="var(--pl-white)" 
                   strokeWidth="2" 
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -180,13 +221,11 @@ export function Hero() {
                 />
                 <motion.rect 
                   x="78" y="78" width="44" height="22" 
-                  fill="#0B0B0C" // acts as the cutout for the "door" like the logo
+                  fill="var(--pl-ink)"
                 />
-
               </motion.svg>
             </div>
 
-            {/* Floating Mini Property Cards */}
             {featuredCards.length >= 2 && (
               <>
                 {featuredCards[2] && (
@@ -214,8 +253,6 @@ export function Hero() {
           </div>
         </div>
       </div>
-
-      {/* Clean black-to-white cut instead of a smeared gradient */}
     </section>
   )
 }
