@@ -5,9 +5,9 @@ interface LogoProps {
   className?: string
 }
 
-export function Logo({ size = 40, tone = 'dark', showWordmark = true, className }: LogoProps) {
-  const fill = tone === 'dark' ? '#0B0B0C' : '#FFFFFF'
-  const gapColor = tone === 'dark' ? '#FFFFFF' : '#0B0B0C'
+export function Logo({ size = 40, tone, showWordmark = true, className }: LogoProps) {
+  const fill = tone === 'light' ? '#FFFFFF' : tone === 'dark' ? '#0B0B0C' : 'var(--pl-text)'
+  const gapColor = tone === 'light' ? '#0B0B0C' : tone === 'dark' ? '#FFFFFF' : 'var(--pl-bg)'
 
   return (
     <div className={`flex flex-col items-center gap-1.5 ${className ?? ''}`}>

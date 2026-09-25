@@ -160,7 +160,7 @@ export function Navbar() {
   ] as const
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-pl-line bg-pl-bg/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-pl-line bg-pl-bg shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
 
         {/* Left: Logo + desktop nav */}
