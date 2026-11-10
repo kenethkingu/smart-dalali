@@ -26,3 +26,8 @@ dist-ssr
 # Environment variables
 .env
 .env*
+
+ANIMATIONS.md
+CLAUDE.md
+DESIGN.md
+README.md
