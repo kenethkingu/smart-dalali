@@ -25,11 +25,8 @@ export function Login() {
         <LoginForm 
           contextProperty={contextProperty || undefined} 
           onSuccess={(dest) => {
-            if (dest) {
-              navigate(dest)
-            } else {
-              navigate(redirectTo)
-            }
+            const hasReturnPath = params.has('redirectTo')
+            navigate(hasReturnPath ? redirectTo : (dest ?? redirectTo))
           }}
         />
       </div>

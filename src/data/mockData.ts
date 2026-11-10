@@ -1,4 +1,4 @@
-import type { Property, SiteVisitRequest, TransactionEvent, Building, Lead } from '@/types'
+import type { Property, SiteVisitRequest, Building, Lead } from '@/types'
 
 export const buildings: Building[] = [
   {
@@ -12,7 +12,7 @@ export const buildings: Building[] = [
 
 export const properties: Property[] = [
   {
-    id: 'p1', ownerId: 'owner1', title: '3-Bedroom House — Sinza',
+    id: 'p1', ownerId: 'owner1', managerId: 'pm1', title: '3-Bedroom House — Sinza',
     location: 'Sinza Mori, Dar es Salaam', price: 900_000, priceUnit: 'month',
     purpose: 'rent', type: 'house', bedrooms: 3, areaSqm: 120, titleVerified: true, titleType: 'Residential',
     amenities: ['WiFi', 'Parking', '24/7 Security', 'Reliable Water', 'Fenced Compound', 'Servant Quarters'],
@@ -69,7 +69,27 @@ export const properties: Property[] = [
     tone: 'e', agent: { name: 'John Mwakalinga', phone: '+255700000000', verified: true, rating: 4.8 },
     lat: -6.7392, lng: 39.2185,
   },
+  {
+    id: 'p5', ownerId: 'owner1', managerId: 'pm1', title: '2-Bedroom Apartment — Masaki',
+    location: 'Masaki, Dar es Salaam', price: 1_200_000, priceUnit: 'month',
+    purpose: 'rent', type: 'house', bedrooms: 2, areaSqm: 95, titleType: 'Residential',
+    amenities: ['WiFi', 'Parking', '24/7 Security', 'Generator Backup', 'Balcony'],
+    status: 'approved',
+    imageUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2000&auto=format&fit=crop',
+    description: 'Bright apartment a short walk from the Masaki peninsula shops, with backup power and secure parking.',
+    tone: 'c', agent: { name: 'John Mwakalinga', phone: '+255700000000', verified: true, rating: 4.7 },
+    lat: -6.7466, lng: 39.2810,
+  },
 ]
+
+export const userDirectory: Record<string, string> = {
+  buyer1: 'Amina Hassan',
+  tenant1: 'Baraka Mushi',
+  owner1: 'John Mwakalinga',
+  owner2: 'Grace Kileo',
+  pm1: 'Zawadi Komba',
+  admin1: 'Proland Admin',
+}
 
 const hoursAgo = (h: number) => new Date(Date.now() - h * 60 * 60 * 1000).toISOString()
 
@@ -78,7 +98,7 @@ export const siteVisitRequests: SiteVisitRequest[] = [
   { id: 'v2', propertyId: 'p2', buyerId: 'buyer1', requestedAt: hoursAgo(70), status: 'pending', ownerConfirmedAt: hoursAgo(69) },
   { id: 'v3', propertyId: 'p3', buyerId: 'buyer1', requestedAt: hoursAgo(100), status: 'pending', ownerConfirmedAt: hoursAgo(99) },
   {
-    id: 'v4', propertyId: 'p1', buyerId: 'buyer1', requestedAt: hoursAgo(200),
+    id: 'v4', propertyId: 'p5', buyerId: 'tenant1', requestedAt: hoursAgo(200),
     status: 'payment_confirmed', paymentConfirmedAt: hoursAgo(150), ownerConfirmedAt: hoursAgo(190)
   },
 ]
@@ -88,6 +108,8 @@ export const demoUsers = {
   owner: { id: 'owner1', name: 'John Mwakalinga', phone: '+255712000222', role: 'owner' as const },
   agent: { id: 'agent1', name: 'Juma Hassan (Dalali)', phone: '+255712000444', role: 'agent' as const },
   admin: { id: 'admin1', name: 'Proland Admin', phone: '+255712000333', role: 'admin' as const },
+  tenant: { id: 'tenant1', name: 'Baraka Mushi', phone: '+255712000555', role: 'buyer' as const },
+  property_manager: { id: 'pm1', name: 'Zawadi Komba', phone: '+255712000666', role: 'property_manager' as const },
 }
 
 export const mockLeads: Lead[] = [
@@ -99,60 +121,3 @@ export const mockLeads: Lead[] = [
 ]
 
 export const publicProperties = properties.filter(p => p.status === 'approved')
-
-export const transactionEvents: TransactionEvent[] = [
-  {
-    id: 'evt-001', propertyId: 'p1', type: 'visit_requested',
-    timestamp: hoursAgo(5), actorId: 'buyer1',
-    summary: 'Amina Hassan requested a site visit.',
-    requestId: 'v1',
-  },
-  {
-    id: 'evt-002', propertyId: 'p1', type: 'visit_confirmed',
-    timestamp: hoursAgo(4), actorId: 'owner1',
-    summary: 'John Mwakalinga confirmed the site visit.',
-    requestId: 'v1',
-  },
-  {
-    id: 'evt-003', propertyId: 'p1', type: 'visit_requested',
-    timestamp: hoursAgo(200), actorId: 'buyer1',
-    summary: 'Amina Hassan requested a site visit.',
-    requestId: 'v4',
-  },
-  {
-    id: 'evt-004', propertyId: 'p1', type: 'visit_confirmed',
-    timestamp: hoursAgo(190), actorId: 'owner1',
-    summary: 'John Mwakalinga confirmed the site visit.',
-    requestId: 'v4',
-  },
-  {
-    id: 'evt-005', propertyId: 'p1', type: 'payment_confirmed',
-    timestamp: hoursAgo(150), actorId: 'buyer1',
-    summary: 'Amina Hassan confirmed payment for the site visit.',
-    requestId: 'v4',
-  },
-  {
-    id: 'evt-006', propertyId: 'p2', type: 'visit_requested',
-    timestamp: hoursAgo(70), actorId: 'buyer1',
-    summary: 'Amina Hassan requested a site visit.',
-    requestId: 'v2',
-  },
-  {
-    id: 'evt-007', propertyId: 'p2', type: 'visit_confirmed',
-    timestamp: hoursAgo(69), actorId: 'owner2',
-    summary: 'Grace Kileo confirmed the site visit.',
-    requestId: 'v2',
-  },
-  {
-    id: 'evt-008', propertyId: 'p3', type: 'visit_requested',
-    timestamp: hoursAgo(100), actorId: 'buyer1',
-    summary: 'Amina Hassan requested a site visit.',
-    requestId: 'v3',
-  },
-  {
-    id: 'evt-009', propertyId: 'p3', type: 'visit_confirmed',
-    timestamp: hoursAgo(99), actorId: 'owner2',
-    summary: 'Hamis Rajabu confirmed the site visit.',
-    requestId: 'v3',
-  },
-]

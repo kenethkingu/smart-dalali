@@ -1,8 +1,10 @@
+import { Suspense } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/lib/auth'
-import { canAccess } from '@/lib/rbac'
-import { LayoutDashboard, List, Users, Bell, LogOut, FileText } from 'lucide-react'
+import { LogOut } from 'lucide-react'
+import { getDashboardLinks } from './dashboardLinks'
+import { PageSkeleton } from '@/features/management/shared/PageSkeleton'
 import { cn } from '@/lib/utils'
 
 export function DashboardShell() {
@@ -12,36 +14,7 @@ export function DashboardShell() {
   
   if (!user) return null
 
-  const getLinks = () => {
-    if (canAccess(user.role, 'manage_leads')) {
-      return [
-        { label: t('buyer_dashboard.tabs.overview'), path: '/agent/dashboard', icon: LayoutDashboard },
-        { label: t('agent_dashboard.tabs.leads'), path: '/agent/leads', icon: Users },
-        { label: t('agent_dashboard.tabs.listings'), path: '/agent/listings', icon: FileText },
-      ]
-    }
-
-    switch(user.role) {
-      case 'buyer': return [
-        { label: t('buyer_dashboard.tabs.overview'), path: '/buyer/dashboard', icon: LayoutDashboard },
-        { label: t('buyer_dashboard.tabs.requests'), path: '/buyer/requests', icon: List }
-      ]
-      case 'owner': return [
-        { label: t('owner_dashboard.tabs.overview'), path: '/owner/dashboard', icon: LayoutDashboard },
-        { label: t('owner_dashboard.tabs.properties'), path: '/owner/properties', icon: FileText },
-        { label: t('owner_dashboard.tabs.requests'), path: '/owner/requests', icon: Bell }
-      ]
-      case 'admin': return [
-        { label: t('admin_dashboard.tabs.overview'), path: '/admin/dashboard', icon: LayoutDashboard },
-        { label: t('admin_dashboard.tabs.properties'), path: '/admin/properties', icon: FileText },
-        { label: t('admin_dashboard.tabs.users'), path: '/admin/users', icon: Users },
-        { label: t('admin_dashboard.tabs.requests'), path: '/admin/requests', icon: List }
-      ]
-    }
-    return []
-  }
-
-  const links = getLinks()
+  const links = getDashboardLinks(user, t)
 
   const formatRoleLabel = (role: string) => {
     switch (role) {
@@ -49,6 +22,7 @@ export function DashboardShell() {
       case 'owner': return t('nav.role_owner')
       case 'admin': return t('nav.role_admin')
       case 'buyer': return t('nav.role_buyer')
+      case 'property_manager': return t('management.nav.role_property_manager')
       default: return role
     }
   }
@@ -94,8 +68,26 @@ export function DashboardShell() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
-        <Outlet />
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto min-w-0">
+        <nav aria-label={t('management.nav.dashboard_menu')} className="md:hidden -mx-4 mb-6 flex gap-2 overflow-x-auto px-4 pb-2">
+          {links.map(link => (
+            <Link
+              key={link.path}
+              to={link.path}
+              aria-current={location.pathname === link.path ? 'page' : undefined}
+              className={cn(
+                'inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border px-4 text-sm font-semibold',
+                location.pathname === link.path ? 'border-pl-accent bg-pl-accent text-white' : 'border-pl-line bg-pl-surface text-pl-text',
+              )}
+            >
+              <link.icon className="h-4 w-4" aria-hidden="true" />
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+        <Suspense fallback={<PageSkeleton />}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   )

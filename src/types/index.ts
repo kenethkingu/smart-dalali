@@ -23,29 +23,7 @@ export interface Lead {
   createdAt: string
 }
 
-export type TransactionEventType =
-  | 'visit_requested'
-  | 'visit_confirmed'
-  | 'visit_declined'
-  | 'payment_confirmed'
-  | 'document_uploaded'
-  | 'contract_signed'
-  | 'inspection_completed'
-  | 'lease_started'
-  | 'maintenance_reported'
-  | 'maintenance_resolved'
-
-export interface TransactionEvent {
-  id: string
-  propertyId: string
-  type: TransactionEventType
-  timestamp: string
-  actorId: string
-  /** Plain-language description shown on the timeline */
-  summary: string
-  /** Optional: links this event to a specific SiteVisitRequest */
-  requestId?: string
-}
+export type { TransactionEvent, TransactionEventType } from '@/types/management'
 
 export type PropertyStatus = 'pending' | 'approved' | 'rejected'
 export type ListingPurpose = 'rent' | 'sale'
@@ -57,6 +35,7 @@ export interface User {
   name: string
   phone: string
   role: UserRole
+  roles?: UserRole[]
 }
 
 export interface Property {
@@ -64,6 +43,7 @@ export interface Property {
   ownerId: string
   buildingId?: string    // present only if this listing is a unit within a larger building
   unitNumber?: string    // e.g. "3B" — only meaningful when buildingId is set
+  managerId?: string
   title: string
   location: string
   price: number

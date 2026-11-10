@@ -1,5 +1,7 @@
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
 import type { User } from '@/types'
+import { useManagementState } from '@/services/management/store'
+import { withTenantRole } from '@/services/management/tenantRole'
 
 interface AuthContextValue {
   user: User | null
@@ -10,13 +12,16 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+  const [baseUser, setBaseUser] = useState<User | null>(null)
+  const leases = useManagementState(state => state.leases)
+  const user = useMemo(() => (baseUser ? withTenantRole(baseUser, leases) : null), [baseUser, leases])
 
-  const login = (user: User) => setUser(user)
+  const value = useMemo(
+    () => ({ user, login: setBaseUser, logout: () => setBaseUser(null) }),
+    [user],
+  )
 
-  const logout = () => setUser(null)
-
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {

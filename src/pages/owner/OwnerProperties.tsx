@@ -51,7 +51,10 @@ export function OwnerProperties() {
           {filtered.map(property => (
             <div key={property.id} className="relative">
               <PropertyCard property={property} />
-              <div className="mt-2 flex justify-end">
+              <div className="mt-2 flex justify-end gap-4">
+                <Link to={`/properties/${property.id}/history`} className="text-sm font-semibold text-pl-accent hover:underline">
+                  {t('history.title')}
+                </Link>
                 <Link to={`/owner/properties/${property.id}/edit`} className="text-sm font-semibold text-pl-accent hover:underline">
                   {t('common.edit')} {t('nav.properties')}
                 </Link>

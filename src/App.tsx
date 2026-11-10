@@ -1,7 +1,7 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './lib/auth'
 import { RequestsProvider } from './lib/requests'
-import { EventsProvider } from './lib/events'
 import { ThemeProvider } from './lib/theme'
 import { LeadsProvider } from './lib/leads'
 
@@ -21,7 +21,6 @@ import { Pricing } from './pages/Pricing'
 import { Login } from './pages/Login'
 import { Contact } from './pages/Contact'
 import { NotFound } from './pages/NotFound'
-import { PropertyHistory } from './pages/PropertyHistory'
 
 // buyer
 import { BuyerDashboard } from './pages/buyer/BuyerDashboard'
@@ -45,6 +44,21 @@ import { AdminProperties } from './pages/admin/AdminProperties'
 import { AdminUsers } from './pages/admin/AdminUsers'
 import { AdminRequests } from './pages/admin/AdminRequests'
 
+import { PageSkeleton } from './features/management/shared/PageSkeleton'
+
+const PropertyHistoryPage = lazy(() => import('./features/management/history/PropertyHistoryPage'))
+const TenantDashboardPage = lazy(() => import('./features/management/tenant/TenantDashboardPage'))
+const TenantRentPage = lazy(() => import('./features/management/tenant/TenantRentPage'))
+const TenantMaintenancePage = lazy(() => import('./features/management/tenant/TenantMaintenancePage'))
+const TenantMaintenanceNewPage = lazy(() => import('./features/management/tenant/TenantMaintenanceNewPage'))
+const TenantDocumentsPage = lazy(() => import('./features/management/tenant/TenantDocumentsPage'))
+const AgreementPage = lazy(() => import('./features/management/tenant/AgreementPage'))
+const TenanciesPage = lazy(() => import('./features/management/owner/TenanciesPage'))
+const TenancyDetailPage = lazy(() => import('./features/management/owner/TenancyDetailPage'))
+const OwnerMaintenancePage = lazy(() => import('./features/management/owner/OwnerMaintenancePage'))
+const OwnerDocumentsPage = lazy(() => import('./features/management/owner/OwnerDocumentsPage'))
+const VerificationPage = lazy(() => import('./features/management/admin/VerificationPage'))
+
 import { FloatingWhatsApp } from './components/shared/FloatingWhatsApp'
 import { useScrollToHash } from './hooks/useScrollToHash'
 
@@ -60,7 +74,6 @@ function App() {
         <ScrollHandler />
         <AuthProvider>
           <RequestsProvider>
-            <EventsProvider>
               <LeadsProvider>
                 <div className="flex flex-col min-h-screen">
                   <Navbar />
@@ -72,7 +85,16 @@ function App() {
                       <Route path="/pricing" element={<Pricing />} />
                       <Route path="/properties" element={<Properties />} />
                       <Route path="/properties/:id" element={<PropertyDetail />} />
-                      <Route path="/properties/:id/history" element={<PropertyHistory />} />
+                      <Route
+                        path="/properties/:id/history"
+                        element={
+                          <ProtectedRoute action="history.view">
+                            <Suspense fallback={<PageSkeleton />}>
+                              <PropertyHistoryPage />
+                            </Suspense>
+                          </ProtectedRoute>
+                        }
+                      />
                       <Route path="/how-it-works" element={<HowItWorks />} />
                       <Route path="/login" element={<Login />} />
                       <Route path="/contact" element={<Contact />} />
@@ -84,6 +106,16 @@ function App() {
                         <Route path="requests/:id" element={<BuyerRequestDetail />} />
                       </Route>
 
+                      {/* Tenant Routes */}
+                      <Route path="/tenant" element={<ProtectedRoute action="lease.view"><DashboardShell /></ProtectedRoute>}>
+                        <Route path="dashboard" element={<ProtectedRoute action="rent.view"><TenantDashboardPage /></ProtectedRoute>} />
+                        <Route path="rent" element={<ProtectedRoute action="rent.view"><TenantRentPage /></ProtectedRoute>} />
+                        <Route path="maintenance" element={<ProtectedRoute action="ticket.create"><TenantMaintenancePage /></ProtectedRoute>} />
+                        <Route path="maintenance/new" element={<ProtectedRoute action="ticket.create"><TenantMaintenanceNewPage /></ProtectedRoute>} />
+                        <Route path="documents" element={<ProtectedRoute action="rent.view"><TenantDocumentsPage /></ProtectedRoute>} />
+                        <Route path="agreement/:leaseId" element={<ProtectedRoute action="contract.view"><AgreementPage /></ProtectedRoute>} />
+                      </Route>
+
                       {/* Owner Routes */}
                       <Route path="/owner" element={<ProtectedRoute permission="manage_own_properties"><DashboardShell /></ProtectedRoute>}>
                         <Route path="dashboard" element={<OwnerDashboard />} />
@@ -91,6 +123,10 @@ function App() {
                         <Route path="properties/new" element={<PropertyForm />} />
                         <Route path="properties/:id/edit" element={<PropertyForm />} />
                         <Route path="requests" element={<OwnerRequests />} />
+                        <Route path="tenancies" element={<ProtectedRoute action="tenancy.list"><TenanciesPage /></ProtectedRoute>} />
+                        <Route path="tenancies/:leaseId" element={<ProtectedRoute action="tenancy.list"><TenancyDetailPage /></ProtectedRoute>} />
+                        <Route path="maintenance" element={<ProtectedRoute action="ticket.respond"><OwnerMaintenancePage /></ProtectedRoute>} />
+                        <Route path="documents" element={<ProtectedRoute action="document.upload"><OwnerDocumentsPage /></ProtectedRoute>} />
                       </Route>
 
                       {/* Agent Routes */}
@@ -106,6 +142,7 @@ function App() {
                         <Route path="properties" element={<AdminProperties />} />
                         <Route path="users" element={<AdminUsers />} />
                         <Route path="requests" element={<AdminRequests />} />
+                        <Route path="verification" element={<ProtectedRoute action="document.verify"><VerificationPage /></ProtectedRoute>} />
                       </Route>
 
                       {/* 404 Route */}
@@ -116,7 +153,6 @@ function App() {
                   <Footer />
                 </div>
               </LeadsProvider>
-            </EventsProvider>
           </RequestsProvider>
         </AuthProvider>
       </BrowserRouter>

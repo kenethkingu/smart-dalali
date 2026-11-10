@@ -297,6 +297,8 @@
     "demo_owner": "Mmiliki",
     "demo_agent": "Wakala",
     "demo_admin": "Msimamizi",
+    "demo_tenant": "Mpangaji",
+    "demo_property_manager": "Meneja wa Mali",
     "divider_text": "au ingia kwa akaunti yako",
     "email_label": "Barua Pepe au Simu",
     "email_placeholder": "wewe@barua.com au +255...",
@@ -646,5 +648,362 @@
     "verified": "Imethibitishwa",
     "title_verified": "Hati Imethibitishwa",
     "draft": "Rasimu"
+  },
+  "management": {
+    "_reviewed": false,
+    "access_denied": {
+      "title": "Huwezi kufungua ukurasa huu",
+      "description": "Ukurasa huu ni wa watu wanaohusika na mali au upangaji huu pekee. Ingia kwa akaunti sahihi au rudi kwenye ukurasa wa mwanzo.",
+      "action": "Nenda ukurasa wa mwanzo"
+    },
+    "not_found": {
+      "title": "Hatukuweza kukipata",
+      "description": "Ukurasa au rekodi inaweza kuwa imeondolewa, au kiungo si sahihi."
+    },
+    "common": {
+      "view_all": "Tazama zote"
+    },
+    "pagination": {
+      "label": "Kurasa",
+      "previous": "Iliyotangulia",
+      "next": "Inayofuata",
+      "status": "Ukurasa {{page}} kati ya {{total}}"
+    },
+    "nav": {
+      "my_home": "Nyumbani Kwangu",
+      "rent": "Kodi",
+      "maintenance": "Matengenezo",
+      "documents": "Nyaraka",
+      "tenancies": "Wapangaji",
+      "verification": "Uthibitisho",
+      "role_property_manager": "Muonekano wa Meneja wa Mali",
+      "dashboard_menu": "Menyu ya dashibodi"
+    },
+    "status": {
+      "rent": {
+        "paid": "Imelipwa",
+        "upcoming": "Inakuja",
+        "due": "Inakaribia",
+        "overdue": "Imechelewa"
+      },
+      "lease": {
+        "pending-signature": "Inasubiri sahihi",
+        "active": "Inaendelea",
+        "ended": "Imeisha"
+      },
+      "ticket": {
+        "open": "Wazi",
+        "in-progress": "Inashughulikiwa",
+        "resolved": "Imetatuliwa",
+        "cancelled": "Imeghairiwa"
+      },
+      "document": {
+        "pending": "Inasubiri ukaguzi",
+        "verified": "Imethibitishwa",
+        "rejected": "Imekataliwa"
+      }
+    },
+    "errors": {
+      "forbidden": "Huna ruhusa ya kufanya hili.",
+      "not_found": "Hatukuweza kupata ulichokuwa unatafuta.",
+      "conflict": "Hili limeshafanyika au halipatikani tena.",
+      "invalid_transition": "Kitendo hiki hakipatikani kwa sasa.",
+      "invalid_amount": "Weka kiasi kamili kinachozidi sifuri.",
+      "invalid_date": "Weka tarehe sahihi.",
+      "date_order": "Chagua tarehe iliyo baada ya tarehe ya sasa ya mwisho au ya kuanza.",
+      "required": "Sehemu hii inahitajika.",
+      "too_long": "Maandishi ni marefu mno. Yafupishe kisha jaribu tena.",
+      "too_many_files": "Umeongeza faili nyingi mno. Ondoa kadhaa kisha jaribu tena.",
+      "file_type": "Aina hii ya faili haikubaliki. Chagua faili ya PDF, JPG au PNG.",
+      "file_size": "Faili hii ni kubwa mno. Chagua faili ndogo zaidi.",
+      "reason_short": "Andika angalau herufi 10 ili mhusika ajue cha kurekebisha.",
+      "invalid_name": "Weka jina lako la kwanza na la mwisho.",
+      "consent_required": "Weka alama kwenye kisanduku ili kuthibitisha kabla ya kusaini."
+    },
+    "events": {
+      "visit_requested": "{{actor}} aliomba kutembelea mali.",
+      "visit_confirmed": "{{actor}} alithibitisha ziara ya kuona mali.",
+      "visit_declined": "{{actor}} alikataa ombi la ziara.",
+      "payment_confirmed": "{{actor}} alithibitisha malipo.",
+      "document_uploaded": "{{actor}} alipakia {{document}}.",
+      "document_verified": "{{actor}} alithibitisha {{document}}.",
+      "contract_signed": "{{actor}} alisaini mkataba wa upangaji.",
+      "inspection_completed": "{{actor}} alikamilisha ukaguzi.",
+      "lease_started": "Upangaji umeanza kwa {{actor}}.",
+      "lease_ended": "{{actor}} alibadilisha tarehe ya mwisho ya upangaji.",
+      "renewal_offered": "{{actor}} alitoa ofa ya kuongeza muda wa upangaji.",
+      "renewal_accepted": "{{actor}} alikubali ofa ya kuongeza muda.",
+      "renewal_declined": "{{actor}} alikataa ofa ya kuongeza muda.",
+      "rent_paid": "{{actor}} alilipa kodi ya {{amount}}.",
+      "maintenance_reported": "{{actor}} aliripoti: {{title}}.",
+      "maintenance_updated": "{{actor}} alisasisha: {{title}}.",
+      "maintenance_resolved": "{{actor}} aliweka kuwa imetatuliwa: {{title}}.",
+      "maintenance_cancelled": "{{actor}} alighairi ombi: {{title}}.",
+      "maintenance_reopened": "{{actor}} alisema tatizo bado halijarekebishwa: {{title}}.",
+      "maintenance_confirmed": "{{actor}} alithibitisha limerekebishwa: {{title}}."
+    },
+    "history": {
+      "title": "Historia ya mali",
+      "subtitle": "Kila hatua kwenye mali hii, ya karibuni zaidi juu.",
+      "latest": "Shughuli za hivi karibuni",
+      "count_one": "Tukio {{count}}",
+      "count_other": "Matukio {{count}}",
+      "empty_title": "Hakuna shughuli bado",
+      "empty_description": "Ziara, malipo, nyaraka na matengenezo vitaonekana hapa yanapotokea."
+    },
+    "lease": {
+      "summary": "Muhtasari wa upangaji",
+      "start": "Tarehe ya kuanza",
+      "end": "Tarehe ya mwisho",
+      "month_to_month": "Mwezi hadi mwezi",
+      "rent": "Kodi ya kila mwezi",
+      "per_month": "{{amount}} kwa mwezi"
+    },
+    "tenant": {
+      "dashboard_title": "Nyumbani Kwangu",
+      "dashboard_subtitle": "Hali ya upangaji wako kwa haraka, {{name}}.",
+      "current_home": "Nyumba yako ya sasa",
+      "switch_home": "Chagua nyumba",
+      "owner_name": "Mmiliki: {{name}}",
+      "unit_in_building": "Kitengo {{unit}}, {{building}}",
+      "empty_title": "Bado huna nyumba kwenye Proland",
+      "empty_description": "Ukilipia nyumba ya kupanga baada ya ziara, upangaji wako, kodi na matengenezo vitaonekana hapa."
+    },
+    "rent": {
+      "title": "Kodi",
+      "subtitle": "Ratiba ya kodi yako na risiti.",
+      "next_title": "Kodi inayofuata",
+      "all_paid": "Kodi yote iliyopangwa imelipwa.",
+      "due_on": "Inapaswa kulipwa {{date}}",
+      "overdue_note_one": "Malipo haya yamepita tarehe yake kwa siku {{count}}. Lipa utakapoweza.",
+      "overdue_note_other": "Malipo haya yamepita tarehe yake kwa siku {{count}}. Lipa utakapoweza.",
+      "sign_first": "Saini mkataba wako wa upangaji kabla ya kulipa kodi.",
+      "pay_button": "Lipa kodi",
+      "pay_title": "Lipa kodi",
+      "pay_description": "Lipa {{amount}} inayodaiwa {{date}}.",
+      "success_title": "Kodi imelipwa",
+      "success_description": "Tumepokea {{amount}}. Namba yako ya kumbukumbu ni {{reference}}.",
+      "view_receipt": "Tazama risiti",
+      "filter_label": "Chuja malipo ya kodi",
+      "filter": {
+        "all": "Yote",
+        "upcoming": "Yanayokuja",
+        "paid": "Yaliyolipwa",
+        "overdue": "Yaliyochelewa"
+      },
+      "due_date": "Tarehe ya malipo",
+      "amount": "Kiasi",
+      "paid_date": "Ililipwa",
+      "receipt": "Risiti",
+      "empty_title": "Hakuna malipo hapa",
+      "empty_description": "Jaribu kichujio kingine kuona malipo mengine."
+    },
+    "receipt": {
+      "title": "Risiti ya kodi ya Proland",
+      "note": "Hii ni risiti ya Proland kwa kumbukumbu zako.",
+      "reference": "Namba ya kumbukumbu",
+      "tenant": "Mpangaji",
+      "property": "Mali",
+      "due_date": "Tarehe ya malipo",
+      "paid_date": "Ililipwa",
+      "method": "Njia ya malipo",
+      "amount": "Kiasi",
+      "print": "Chapisha risiti"
+    },
+    "renewal": {
+      "title": "Ofa ya kuongeza muda",
+      "description": "Mmiliki wako amependekeza kuongeza muda wa upangaji hadi {{date}} kwa kodi ya {{rent}} kwa mwezi.",
+      "accept": "Kubali ofa",
+      "decline": "Kataa ofa"
+    },
+    "maintenance": {
+      "title": "Matengenezo",
+      "tenant_subtitle": "Ripoti matatizo na ufuatilie marekebisho.",
+      "owner_subtitle": "Maombi ya matengenezo kwenye mali zako zote.",
+      "report": "Ripoti tatizo",
+      "report_subtitle": "Tuambie kuna tatizo gani nasi tutamfikishia mmiliki wako.",
+      "submit": "Tuma ripoti",
+      "open_title": "Matengenezo yaliyo wazi",
+      "none_open": "Hakuna matengenezo yaliyo wazi. Mambo yote yako sawa.",
+      "category_label": "Aina",
+      "category": {
+        "plumbing": "Mabomba",
+        "electrical": "Umeme",
+        "security": "Usalama",
+        "appliances": "Vifaa vya nyumbani",
+        "structure": "Jengo",
+        "other": "Nyingine"
+      },
+      "title_label": "Kichwa kifupi",
+      "description_label": "Nini kimetokea?",
+      "urgency_label": "Ni la dharura kiasi gani?",
+      "urgency": {
+        "normal": "La kawaida",
+        "urgent": "La dharura"
+      },
+      "photos_label": "Picha (si lazima)",
+      "photos_hint": "Hadi picha {{max}}, JPG, PNG au WebP, MB 2 kila moja.",
+      "filter_label": "Chuja kwa hali",
+      "property_filter": "Mali",
+      "empty_title": "Hakuna maombi ya matengenezo",
+      "empty_description": "Ukiripoti tatizo litaonekana hapa pamoja na maendeleo yake.",
+      "owner_empty_title": "Hakuna maombi ya matengenezo",
+      "owner_empty_description": "Maombi kutoka kwa wapangaji yataonekana hapa.",
+      "updates": "Taarifa mpya",
+      "no_updates": "Hakuna taarifa mpya bado.",
+      "set_status": "Hali",
+      "add_note": "Ujumbe kwa mpangaji",
+      "note_hint": "Mpangaji ataweza kusoma ujumbe huu.",
+      "save_update": "Hifadhi taarifa",
+      "saved": "Taarifa yako imehifadhiwa.",
+      "cancel_request": "Ghairi ombi hili",
+      "confirm_question": "Je, tatizo limerekebishwa?",
+      "fixed": "Limerekebishwa",
+      "not_fixed": "Bado halijarekebishwa"
+    },
+    "documents": {
+      "title": "Nyaraka",
+      "tenant_subtitle": "Weka nyaraka za upangaji wako mahali pamoja.",
+      "owner_subtitle": "Nyaraka za mali na wapangaji wako.",
+      "upload_title": "Pakia nyaraka",
+      "for_label": "Kwa ajili ya",
+      "type_label": "Aina ya nyaraka",
+      "file_label": "Faili",
+      "file_hint": "PDF, JPG au PNG, hadi MB 5.",
+      "upload_button": "Pakia nyaraka",
+      "saved": "Nyaraka imepakiwa. Itaonyesha kuwa inasubiri hadi ikaguliwe.",
+      "list_title": "Nyaraka zako",
+      "progress": "Nyaraka {{verified}} kati ya {{total}} zimethibitishwa",
+      "type": {
+        "title_deed": "Hati ya umiliki",
+        "tenancy_agreement": "Mkataba wa upangaji",
+        "inspection_report": "Ripoti ya ukaguzi",
+        "id_verification": "Uthibitisho wa kitambulisho",
+        "other": "Nyingine"
+      },
+      "uploaded_by": "Imepakiwa na {{name}} tarehe {{date}}",
+      "rejected_reason": "Sababu: {{reason}}",
+      "open": "Fungua",
+      "preview_unavailable": "Onyesho halipatikani baada ya kupakia ukurasa upya.",
+      "lease_target": "{{property}}, mpangaji {{tenant}}",
+      "empty_title": "Hakuna nyaraka bado",
+      "empty_description": "Pakia nyaraka nayo itaonekana hapa pamoja na hali ya ukaguzi."
+    },
+    "agreement": {
+      "title": "Mkataba wa upangaji",
+      "subtitle": "Soma masharti, kisha saini kwa jina lako kamili.",
+      "open": "Fungua mkataba wa upangaji",
+      "preview_notice": "Hili ni onyesho la awali la sahihi ya kidijitali. Linaonyesha jinsi kusaini kutakavyofanya kazi kwenye Proland na si mkataba unaofunga kisheria.",
+      "pending_notice": "Mkataba wako wa upangaji unasubiri sahihi. Malipo ya kodi hufunguliwa pande zote mbili zikishasaini.",
+      "owner": "Mmiliki",
+      "tenant": "Mpangaji",
+      "property": "Mali",
+      "clause": {
+        "rent": {
+          "title": "Kodi",
+          "body": "Mpangaji hulipa {{rent}} kila mwezi katika tarehe ya malipo iliyoonyeshwa kwenye ratiba ya kodi."
+        },
+        "deposit": {
+          "title": "Amana",
+          "body": "Amana yoyote hukubaliwa kwa maandishi kati ya mmiliki na mpangaji, na hurudishwa upangaji ukiisha, baada ya kutoa gharama za marekebisho zilizokubaliwa."
+        },
+        "repairs": {
+          "title": "Marekebisho",
+          "body": "Mpangaji huripoti matatizo kupitia Proland. Mmiliki hurekebisha hitilafu za mabomba, umeme na jengo ndani ya muda unaofaa."
+        },
+        "access": {
+          "title": "Kuingia",
+          "body": "Mmiliki hutoa taarifa ya angalau saa 24 kabla ya kutembelea mali, isipokuwa wakati wa dharura."
+        },
+        "notice": {
+          "title": "Taarifa ya kuondoka",
+          "body": "Upande wowote hutoa taarifa ya maandishi ya angalau siku 30 kumaliza au kubadilisha upangaji."
+        },
+        "conduct": {
+          "title": "Mwenendo",
+          "body": "Mpangaji hutunza mali iwe safi, huheshimu majirani na haachishi mtu mwingine kupanga bila ridhaa ya maandishi ya mmiliki."
+        }
+      },
+      "signed_by": "{{name}} tarehe {{date}}",
+      "not_signed": "Bado haijasainiwa",
+      "sign_title": "Saini mkataba",
+      "full_name": "Jina kamili",
+      "full_name_hint": "Andika jina lako la kwanza na la mwisho kama linavyoonekana kwenye kitambulisho chako.",
+      "consent": "Nimesoma mkataba huu na ninakubaliana na masharti yake.",
+      "sign_button": "Saini mkataba",
+      "signed_success": "Umesaini mkataba.",
+      "waiting_other": "Umesaini. Tunasubiri upande mwingine usaini.",
+      "active_notice": "Pande zote mbili zimesaini. Upangaji unaendelea."
+    },
+    "owner": {
+      "summary_title": "Muhtasari wa kodi na matengenezo",
+      "collected": "Kilichokusanywa mwezi huu",
+      "outstanding": "Kodi inayodaiwa",
+      "open_tickets": "Matengenezo yaliyo wazi",
+      "ending_soon": "Inayoisha ndani ya siku 60",
+      "tenancies_title": "Wapangaji",
+      "tenancies_subtitle": "Wapangaji na kodi kwenye mali zako zote.",
+      "single_properties": "Mali binafsi",
+      "tenancies_empty_title": "Hakuna wapangaji bado",
+      "tenancies_empty_description": "Mnunuzi akilipia nyumba ya kupanga, upangaji wake utaonekana hapa.",
+      "next_due": "Kodi inayofuata inadaiwa {{date}}",
+      "tenancy_subtitle": "Maelezo ya upangaji, kodi na matengenezo.",
+      "ledger_title": "Leja ya kodi",
+      "ledger_collected": "Iliyokusanywa",
+      "ledger_outstanding": "Inayodaiwa",
+      "ledger_overdue": "Iliyochelewa",
+      "offer_renewal": "Toa ofa ya kuongeza muda",
+      "end_lease": "Maliza upangaji",
+      "end_date": "Tarehe ya mwisho",
+      "new_end_date": "Tarehe mpya ya mwisho",
+      "new_rent": "Kodi ya kila mwezi (TSh)",
+      "end_description": "Weka tarehe ambayo upangaji huu unaisha. Kodi isiyolipwa baada ya tarehe hiyo itaondolewa.",
+      "renew_description": "Mpe mpangaji wako tarehe mpya ya mwisho na, ukipenda, kodi mpya.",
+      "end_confirm": "Weka tarehe ya mwisho",
+      "renew_confirm": "Tuma ofa",
+      "renewal_pending": "Ofa ya kuongeza muda inasubiri jibu la mpangaji."
+    },
+    "admin": {
+      "verification_title": "Uthibitisho wa nyaraka",
+      "verification_subtitle": "Kagua nyaraka zilizopakiwa kabla hazijahesabiwa kuwa zimethibitishwa.",
+      "queue_empty_title": "Hakuna kinachosubiri",
+      "queue_empty_description": "Hakuna nyaraka zinazosubiri ukaguzi.",
+      "preview": "Onyesho",
+      "no_preview": "Hakuna onyesho la faili kwa nyaraka hii kwenye kikao hiki.",
+      "reject_reason": "Sababu ya kukataa",
+      "reject_hint": "Mwambie aliyepakia cha kurekebisha. Angalau herufi 10.",
+      "reject_confirm": "Kataa nyaraka"
+    },
+    "inspection": {
+      "title": "Ukaguzi",
+      "record": "Rekodi ukaguzi",
+      "description": "Kagua kila kipengele na uongeze maelezo pale kinapohitaji uangalizi.",
+      "inspector": "Jina la mkaguzi",
+      "date": "Tarehe ya ukaguzi",
+      "checklist": "Orodha ya ukaguzi",
+      "pass": "Kimefaulu",
+      "fail": "Kimeshindwa",
+      "note_for": "Maelezo ya {{item}}",
+      "note_placeholder": "Ongeza maelezo (si lazima)",
+      "photos": "Picha (si lazima)",
+      "photos_hint": "Hadi picha {{max}}, MB 2 kila moja.",
+      "save": "Hifadhi ukaguzi",
+      "by": "{{name}} tarehe {{date}}",
+      "passed_count": "Vipengele {{passed}} kati ya {{total}} vimefaulu",
+      "items": {
+        "plumbing": "Mabomba na msukumo wa maji",
+        "electrical": "Soketi za umeme na taa",
+        "doors": "Milango, makufuli na madirisha",
+        "structure": "Kuta, paa na sakafu",
+        "safety": "Vifaa vya moto na usalama"
+      }
+    }
+  },
+  "payment": {
+    "card_number": "Namba ya kadi",
+    "expiry": "Tarehe ya kuisha",
+    "cvv": "CVV",
+    "prompt_hint": "Ujumbe utatumwa kwenye simu yako ili kuthibitisha.",
+    "details_title": "Maelezo ya {{method}}"
   }
 }

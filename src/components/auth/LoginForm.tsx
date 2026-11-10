@@ -30,6 +30,8 @@ export function LoginForm({ onSuccess, contextProperty }: LoginFormProps) {
     { key: 'owner' as const, label: t('login.demo_owner'), dest: '/owner/dashboard' },
     { key: 'agent' as const, label: t('login.demo_agent'), dest: '/agent/dashboard' },
     { key: 'admin' as const, label: t('login.demo_admin'), dest: '/admin/dashboard' },
+    { key: 'tenant' as const, label: t('login.demo_tenant'), dest: '/tenant/dashboard' },
+    { key: 'property_manager' as const, label: t('login.demo_property_manager'), dest: '/owner/tenancies' },
   ]
 
   const handleDemoLogin = async (demoKey: keyof typeof demoUsers, dest: string) => {

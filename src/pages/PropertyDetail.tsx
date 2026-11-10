@@ -8,6 +8,7 @@ import { PropertyLightbox, type LightboxImage } from '../components/shared/Prope
 import { GradientThumb } from '../components/shared/GradientThumb'
 import { properties, buildings } from '../data/mockData'
 import { useAuth } from '@/lib/auth'
+import { usePropertyAccess } from '@/hooks/management/usePropertyAccess'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { ConfirmPaymentDialog } from '@/components/buyer/ConfirmPaymentDialog'
 import { RequestVisitDialog } from '@/components/buyer/RequestVisitDialog'
@@ -18,6 +19,7 @@ export function PropertyDetail() {
   const property = properties.find(p => p.id === id) || properties[0]
   const building = property.buildingId ? buildings.find(b => b.id === property.buildingId) : undefined
   const { user } = useAuth()
+  const access = usePropertyAccess(property)
   
   const [loginModalOpen, setLoginModalOpen] = useState(false)
   const [pendingAction, setPendingAction] = useState<'visit' | 'pay' | null>(null)
@@ -160,12 +162,14 @@ export function PropertyDetail() {
             <div className="bg-pl-surface border border-pl-line p-8 rounded-2xl shadow-md mt-8 text-pl-text">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-pl-text">{t('property_detail.about_property')}</h2>
-                <Link
-                  to={`/properties/${property.id}/history`}
-                  className="text-sm font-semibold text-pl-accent hover:underline flex items-center gap-1"
-                >
-                  {t('history.title')} <ArrowRight className="w-4 h-4" />
-                </Link>
+                {access.canViewHistory && (
+                  <Link
+                    to={`/properties/${property.id}/history`}
+                    className="text-sm font-semibold text-pl-accent hover:underline flex items-center gap-1"
+                  >
+                    {t('history.title')} <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
               </div>
               
               <div className="flex flex-wrap gap-8 mb-6 pb-6 border-b border-pl-line">

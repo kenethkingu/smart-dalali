@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useState } from 'react'
+import { OwnerSummaryStrip } from '@/features/management/owner/OwnerSummaryStrip'
 
 export function OwnerDashboard() {
   const { user } = useAuth()
@@ -62,6 +63,8 @@ export function OwnerDashboard() {
           </PrimaryButton>
         </div>
       )}
+
+      <OwnerSummaryStrip />
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-10">

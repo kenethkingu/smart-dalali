@@ -13,7 +13,7 @@ export function BuyerRequests() {
   const { requests: allRequests } = useRequests()
   const [filter, setFilter] = useState<'all' | SiteVisitRequest['status']>('all')
 
-  const myRequests = allRequests.filter(r => r.buyerId === user?.id || r.buyerId === 'buyer1')
+  const myRequests = allRequests.filter(r => r.buyerId === user?.id)
   const filtered = myRequests.filter(r => filter === 'all' || r.status === filter)
 
   return (

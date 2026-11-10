@@ -7,6 +7,7 @@ import { CountdownBadge } from '@/components/shared/CountdownBadge'
 import { DangerButton, formatPrice } from '@/components/shared/Bits'
 import { ConfirmPaymentDialog } from './ConfirmPaymentDialog'
 import { properties } from '@/data/mockData'
+import { useLeases } from '@/hooks/management/useLeases'
 import type { SiteVisitRequest } from '@/types'
 
 interface VisitRequestCardProps {
@@ -19,6 +20,7 @@ export function VisitRequestCard({ request, onDecline, onPay }: VisitRequestCard
   const { t } = useTranslation()
   const property = properties.find(p => p.id === request.propertyId)
   const canStillDecline = canDecline(request)
+  const hasLease = useLeases().some(lease => lease.requestId === request.id)
 
   return (
     <motion.div
@@ -90,6 +92,11 @@ export function VisitRequestCard({ request, onDecline, onPay }: VisitRequestCard
                   />
                 )}
               </>
+            )}
+            {hasLease && (
+              <Link to="/tenant/dashboard" className="inline-flex items-center gap-1 text-xs font-semibold text-pl-accent hover:underline">
+                {t('management.nav.my_home')} <ArrowRight className="w-3 h-3" />
+              </Link>
             )}
             <Link
               to={`/buyer/requests/${request.id}`}

@@ -171,3 +171,26 @@
   }
 }
 
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-receipt,
+  .print-receipt * {
+    visibility: visible;
+  }
+  .print-receipt {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    background: var(--pl-white);
+    color: var(--pl-ink);
+    --pl-text: var(--pl-ink);
+    --pl-muted: var(--pl-ink);
+    --pl-line: var(--pl-ink);
+  }
+  .print-hidden {
+    display: none !important;
+  }
+}

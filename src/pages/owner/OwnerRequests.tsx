@@ -1,12 +1,12 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { siteVisitRequests, properties } from '@/data/mockData'
-import { useEvents } from '@/lib/events'
+import { properties } from '@/data/mockData'
+import { useRequests } from '@/lib/requests'
+import { recordEvent } from '@/services/management/eventLog'
+import { actorOf } from '@/services/management/shared'
 import { useAuth } from '@/lib/auth'
 
 export function OwnerRequests() {
-  const [requests, setRequests] = useState(siteVisitRequests)
-  const { addEvent } = useEvents()
+  const { requests: allRequests, updateRequest } = useRequests()
   const { user } = useAuth()
   const { t } = useTranslation()
 
@@ -23,21 +23,12 @@ export function OwnerRequests() {
   }
 
   const handleConfirm = (id: string) => {
-    setRequests(prev => prev.map(r => 
-      r.id === id ? { ...r, ownerConfirmedAt: new Date().toISOString(), visitDate: new Date(Date.now() + 86400000).toISOString() } : r
-    ))
-    const req = requests.find(r => r.id === id)
-    if (req) {
-      addEvent({
-        propertyId: req.propertyId,
-        type: 'visit_confirmed',
-        actorId: user?.id ?? 'owner1',
-        summary: `${user?.name ?? 'Property Owner'} confirmed the site visit.`,
-        requestId: id,
-      })
-    }
+    updateRequest(id, { ownerConfirmedAt: new Date().toISOString(), visitDate: new Date(Date.now() + 86400000).toISOString() })
+    const req = allRequests.find(r => r.id === id)
+    if (req && user) recordEvent({ propertyId: req.propertyId, type: 'visit_confirmed', actor: actorOf(user), relatedId: id })
   }
 
+  const requests = allRequests.filter(r => properties.find(p => p.id === r.propertyId)?.ownerId === user?.id)
   const enriched = requests.map(r => ({
     ...r,
     property: properties.find(p => p.id === r.propertyId),

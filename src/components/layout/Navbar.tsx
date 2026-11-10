@@ -6,6 +6,7 @@ import { Logo } from '../shared/Logo'
 import { PrimaryButton, GhostButton } from '../shared/Bits'
 import { HoverText } from '../shared/HoverText'
 import { useAuth } from '@/lib/auth'
+import { can, dashboardPath } from '@/lib/rbac'
 import { useTheme } from '@/lib/theme'
 import { cn } from '@/lib/utils'
 
@@ -213,8 +214,13 @@ export function Navbar() {
               </>
             ) : (
               <>
+                {can(user, 'rent.view') && (
+                  <Link to="/tenant/dashboard" className="text-sm font-semibold text-pl-text hover:underline">
+                    {t('management.nav.my_home')}
+                  </Link>
+                )}
                 <Link
-                  to={`/${user.role}/dashboard`}
+                  to={dashboardPath(user)}
                   className="text-sm font-semibold text-pl-text hover:underline"
                 >
                   {t('nav.dashboard')}
@@ -266,8 +272,17 @@ export function Navbar() {
               </>
             ) : (
               <>
+                {can(user, 'rent.view') && (
+                  <Link
+                    to="/tenant/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="block py-2 text-sm font-semibold text-pl-text hover:underline"
+                  >
+                    {t('management.nav.my_home')}
+                  </Link>
+                )}
                 <Link
-                  to={`/${user.role}/dashboard`}
+                  to={dashboardPath(user)}
                   onClick={() => setMobileOpen(false)}
                   className="block py-2 text-sm font-semibold text-pl-text hover:underline"
                 >

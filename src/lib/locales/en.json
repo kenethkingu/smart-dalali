@@ -297,6 +297,8 @@
     "demo_owner": "Owner",
     "demo_agent": "Agent",
     "demo_admin": "Admin",
+    "demo_tenant": "Tenant",
+    "demo_property_manager": "Property Manager",
     "divider_text": "or log in with your account",
     "email_label": "Email Address or Phone",
     "email_placeholder": "you@example.com or +255...",
@@ -646,5 +648,361 @@
     "verified": "Verified",
     "title_verified": "Title Verified",
     "draft": "Draft"
+  },
+  "management": {
+    "access_denied": {
+      "title": "You can't open this page",
+      "description": "This page is only for people connected to this property or tenancy. Sign in with the right account or go back to the homepage.",
+      "action": "Go to homepage"
+    },
+    "not_found": {
+      "title": "We couldn't find that",
+      "description": "The page or record may have been removed, or the link may be wrong."
+    },
+    "common": {
+      "view_all": "View all"
+    },
+    "pagination": {
+      "label": "Pages",
+      "previous": "Previous",
+      "next": "Next",
+      "status": "Page {{page}} of {{total}}"
+    },
+    "nav": {
+      "my_home": "My Home",
+      "rent": "Rent",
+      "maintenance": "Maintenance",
+      "documents": "Documents",
+      "tenancies": "Tenancies",
+      "verification": "Verification",
+      "role_property_manager": "Property Manager View",
+      "dashboard_menu": "Dashboard menu"
+    },
+    "status": {
+      "rent": {
+        "paid": "Paid",
+        "upcoming": "Upcoming",
+        "due": "Due soon",
+        "overdue": "Overdue"
+      },
+      "lease": {
+        "pending-signature": "Awaiting signatures",
+        "active": "Active",
+        "ended": "Ended"
+      },
+      "ticket": {
+        "open": "Open",
+        "in-progress": "In progress",
+        "resolved": "Resolved",
+        "cancelled": "Cancelled"
+      },
+      "document": {
+        "pending": "Pending review",
+        "verified": "Verified",
+        "rejected": "Rejected"
+      }
+    },
+    "errors": {
+      "forbidden": "You don't have permission to do this.",
+      "not_found": "We couldn't find what you were looking for.",
+      "conflict": "This has already been done or is no longer available.",
+      "invalid_transition": "This action isn't available right now.",
+      "invalid_amount": "Enter a whole amount above zero.",
+      "invalid_date": "Enter a valid date.",
+      "date_order": "Choose a date after the current end or start date.",
+      "required": "This field is required.",
+      "too_long": "This is too long. Shorten it and try again.",
+      "too_many_files": "You added too many files. Remove some and try again.",
+      "file_type": "This file type isn't supported. Choose a PDF, JPG or PNG file.",
+      "file_size": "This file is too large. Choose a smaller file.",
+      "reason_short": "Write at least 10 characters so the person knows what to fix.",
+      "invalid_name": "Enter your first and last name.",
+      "consent_required": "Tick the box to confirm before signing."
+    },
+    "events": {
+      "visit_requested": "{{actor}} requested a site visit.",
+      "visit_confirmed": "{{actor}} confirmed the site visit.",
+      "visit_declined": "{{actor}} declined the site visit request.",
+      "payment_confirmed": "{{actor}} confirmed payment.",
+      "document_uploaded": "{{actor}} uploaded {{document}}.",
+      "document_verified": "{{actor}} verified {{document}}.",
+      "contract_signed": "{{actor}} signed the tenancy agreement.",
+      "inspection_completed": "{{actor}} completed an inspection.",
+      "lease_started": "Tenancy started for {{actor}}.",
+      "lease_ended": "{{actor}} changed the end date of the tenancy.",
+      "renewal_offered": "{{actor}} offered a tenancy renewal.",
+      "renewal_accepted": "{{actor}} accepted the renewal.",
+      "renewal_declined": "{{actor}} declined the renewal.",
+      "rent_paid": "{{actor}} paid rent of {{amount}}.",
+      "maintenance_reported": "{{actor}} reported: {{title}}.",
+      "maintenance_updated": "{{actor}} updated: {{title}}.",
+      "maintenance_resolved": "{{actor}} marked as resolved: {{title}}.",
+      "maintenance_cancelled": "{{actor}} cancelled the request: {{title}}.",
+      "maintenance_reopened": "{{actor}} said this is not fixed yet: {{title}}.",
+      "maintenance_confirmed": "{{actor}} confirmed it is fixed: {{title}}."
+    },
+    "history": {
+      "title": "Property history",
+      "subtitle": "Every step on this property, newest first.",
+      "latest": "Latest activity",
+      "count_one": "{{count}} event",
+      "count_other": "{{count}} events",
+      "empty_title": "No activity yet",
+      "empty_description": "Visits, payments, documents and repairs will appear here as they happen."
+    },
+    "lease": {
+      "summary": "Tenancy summary",
+      "start": "Start date",
+      "end": "End date",
+      "month_to_month": "Month to month",
+      "rent": "Monthly rent",
+      "per_month": "{{amount}} per month"
+    },
+    "tenant": {
+      "dashboard_title": "My Home",
+      "dashboard_subtitle": "Your tenancy at a glance, {{name}}.",
+      "current_home": "Your current home",
+      "switch_home": "Choose a home",
+      "owner_name": "Owner: {{name}}",
+      "unit_in_building": "Unit {{unit}}, {{building}}",
+      "empty_title": "You don't have a home on Proland yet",
+      "empty_description": "Once you pay for a rental after a site visit, your tenancy, rent and repairs will appear here."
+    },
+    "rent": {
+      "title": "Rent",
+      "subtitle": "Your rent schedule and receipts.",
+      "next_title": "Next rent",
+      "all_paid": "All scheduled rent is paid.",
+      "due_on": "Due on {{date}}",
+      "overdue_note_one": "This payment is {{count}} day past its due date. Pay when you can.",
+      "overdue_note_other": "This payment is {{count}} days past its due date. Pay when you can.",
+      "sign_first": "Sign your tenancy agreement before paying rent.",
+      "pay_button": "Pay rent",
+      "pay_title": "Pay rent",
+      "pay_description": "Pay {{amount}} due on {{date}}.",
+      "success_title": "Rent paid",
+      "success_description": "We received {{amount}}. Your reference is {{reference}}.",
+      "view_receipt": "View receipt",
+      "filter_label": "Filter rent payments",
+      "filter": {
+        "all": "All",
+        "upcoming": "Upcoming",
+        "paid": "Paid",
+        "overdue": "Overdue"
+      },
+      "due_date": "Due date",
+      "amount": "Amount",
+      "paid_date": "Paid on",
+      "receipt": "Receipt",
+      "empty_title": "No payments here",
+      "empty_description": "Try a different filter to see other payments."
+    },
+    "receipt": {
+      "title": "Proland rent receipt",
+      "note": "This is a Proland receipt for your records.",
+      "reference": "Reference",
+      "tenant": "Tenant",
+      "property": "Property",
+      "due_date": "Due date",
+      "paid_date": "Paid on",
+      "method": "Payment method",
+      "amount": "Amount",
+      "print": "Print receipt"
+    },
+    "renewal": {
+      "title": "Renewal offer",
+      "description": "Your owner offered to extend your tenancy until {{date}} at {{rent}} per month.",
+      "accept": "Accept offer",
+      "decline": "Decline offer"
+    },
+    "maintenance": {
+      "title": "Maintenance",
+      "tenant_subtitle": "Report problems and follow repairs.",
+      "owner_subtitle": "Repair requests across your properties.",
+      "report": "Report an issue",
+      "report_subtitle": "Tell us what's wrong and we'll pass it to your owner.",
+      "submit": "Send report",
+      "open_title": "Open repairs",
+      "none_open": "No open repairs. Everything is in order.",
+      "category_label": "Category",
+      "category": {
+        "plumbing": "Plumbing",
+        "electrical": "Electrical",
+        "security": "Security",
+        "appliances": "Appliances",
+        "structure": "Structure",
+        "other": "Other"
+      },
+      "title_label": "Short title",
+      "description_label": "What happened?",
+      "urgency_label": "How urgent is it?",
+      "urgency": {
+        "normal": "Normal",
+        "urgent": "Urgent"
+      },
+      "photos_label": "Photos (optional)",
+      "photos_hint": "Up to {{max}} photos, JPG, PNG or WebP, 2 MB each.",
+      "filter_label": "Filter by status",
+      "property_filter": "Property",
+      "empty_title": "No repair requests",
+      "empty_description": "When you report an issue it will show up here with its progress.",
+      "owner_empty_title": "No repair requests",
+      "owner_empty_description": "Requests from tenants will appear here.",
+      "updates": "Updates",
+      "no_updates": "No updates yet.",
+      "set_status": "Status",
+      "add_note": "Note for the tenant",
+      "note_hint": "The tenant can read this note.",
+      "save_update": "Save update",
+      "saved": "Your update was saved.",
+      "cancel_request": "Cancel this request",
+      "confirm_question": "Is the problem fixed?",
+      "fixed": "Fixed",
+      "not_fixed": "Not fixed"
+    },
+    "documents": {
+      "title": "Documents",
+      "tenant_subtitle": "Keep your tenancy documents in one place.",
+      "owner_subtitle": "Documents for your properties and tenancies.",
+      "upload_title": "Upload a document",
+      "for_label": "For",
+      "type_label": "Document type",
+      "file_label": "File",
+      "file_hint": "PDF, JPG or PNG, up to 5 MB.",
+      "upload_button": "Upload document",
+      "saved": "Document uploaded. It will show as pending until it is reviewed.",
+      "list_title": "Your documents",
+      "progress": "{{verified}} of {{total}} documents verified",
+      "type": {
+        "title_deed": "Title deed",
+        "tenancy_agreement": "Tenancy agreement",
+        "inspection_report": "Inspection report",
+        "id_verification": "ID verification",
+        "other": "Other"
+      },
+      "uploaded_by": "Uploaded by {{name}} on {{date}}",
+      "rejected_reason": "Reason: {{reason}}",
+      "open": "Open",
+      "preview_unavailable": "Preview unavailable after you reload the page.",
+      "lease_target": "{{property}}, tenant {{tenant}}",
+      "empty_title": "No documents yet",
+      "empty_description": "Upload a document and it will appear here with its review status."
+    },
+    "agreement": {
+      "title": "Tenancy agreement",
+      "subtitle": "Read the terms, then sign with your full name.",
+      "open": "Open tenancy agreement",
+      "preview_notice": "This is a digital signature preview. It shows how signing will work on Proland and is not a legally binding contract.",
+      "pending_notice": "Your tenancy agreement is waiting for signatures. Rent payments open once both sides have signed.",
+      "owner": "Owner",
+      "tenant": "Tenant",
+      "property": "Property",
+      "clause": {
+        "rent": {
+          "title": "Rent",
+          "body": "The tenant pays {{rent}} each month on the due date shown in the rent schedule."
+        },
+        "deposit": {
+          "title": "Deposit",
+          "body": "Any deposit is agreed in writing between the owner and the tenant and is returned when the tenancy ends, less agreed repair costs."
+        },
+        "repairs": {
+          "title": "Repairs",
+          "body": "The tenant reports problems through Proland. The owner repairs plumbing, electrical and structural faults within a reasonable time."
+        },
+        "access": {
+          "title": "Access",
+          "body": "The owner gives at least 24 hours' notice before visiting the property, except in an emergency."
+        },
+        "notice": {
+          "title": "Notice",
+          "body": "Either side gives at least 30 days' written notice to end or change the tenancy."
+        },
+        "conduct": {
+          "title": "Conduct",
+          "body": "The tenant keeps the property clean, respects neighbours and does not sublet without the owner's written agreement."
+        }
+      },
+      "signed_by": "{{name}} on {{date}}",
+      "not_signed": "Not signed yet",
+      "sign_title": "Sign the agreement",
+      "full_name": "Full name",
+      "full_name_hint": "Type your first and last name as it appears on your ID.",
+      "consent": "I have read this agreement and agree to its terms.",
+      "sign_button": "Sign agreement",
+      "signed_success": "You signed the agreement.",
+      "waiting_other": "You have signed. We're waiting for the other side to sign.",
+      "active_notice": "Both sides have signed. The tenancy is active."
+    },
+    "owner": {
+      "summary_title": "Rent and repairs summary",
+      "collected": "Collected this month",
+      "outstanding": "Outstanding rent",
+      "open_tickets": "Open repairs",
+      "ending_soon": "Ending in 60 days",
+      "tenancies_title": "Tenancies",
+      "tenancies_subtitle": "Tenants and rent across your properties.",
+      "single_properties": "Individual properties",
+      "tenancies_empty_title": "No tenancies yet",
+      "tenancies_empty_description": "When a buyer pays for a rental, the tenancy will appear here.",
+      "next_due": "Next rent due {{date}}",
+      "tenancy_subtitle": "Tenancy details, rent and repairs.",
+      "ledger_title": "Rent ledger",
+      "ledger_collected": "Collected",
+      "ledger_outstanding": "Outstanding",
+      "ledger_overdue": "Overdue",
+      "offer_renewal": "Offer renewal",
+      "end_lease": "End tenancy",
+      "end_date": "End date",
+      "new_end_date": "New end date",
+      "new_rent": "Monthly rent (TSh)",
+      "end_description": "Set the date this tenancy ends. Unpaid rent after that date is removed.",
+      "renew_description": "Offer your tenant a new end date and, if you wish, a new rent.",
+      "end_confirm": "Set end date",
+      "renew_confirm": "Send offer",
+      "renewal_pending": "A renewal offer is waiting for the tenant's answer."
+    },
+    "admin": {
+      "verification_title": "Document verification",
+      "verification_subtitle": "Review uploaded documents before they count as verified.",
+      "queue_empty_title": "Queue is clear",
+      "queue_empty_description": "No documents are waiting for review.",
+      "preview": "Preview",
+      "no_preview": "No file preview is available for this document in this session.",
+      "reject_reason": "Reason for rejection",
+      "reject_hint": "Tell the uploader what to fix. Minimum 10 characters.",
+      "reject_confirm": "Reject document"
+    },
+    "inspection": {
+      "title": "Inspections",
+      "record": "Record inspection",
+      "description": "Check each item and add notes where something needs attention.",
+      "inspector": "Inspector name",
+      "date": "Inspection date",
+      "checklist": "Checklist",
+      "pass": "Pass",
+      "fail": "Fail",
+      "note_for": "Note for {{item}}",
+      "note_placeholder": "Add a note (optional)",
+      "photos": "Photos (optional)",
+      "photos_hint": "Up to {{max}} photos, 2 MB each.",
+      "save": "Save inspection",
+      "by": "{{name}} on {{date}}",
+      "passed_count": "{{passed}} of {{total}} items passed",
+      "items": {
+        "plumbing": "Plumbing and water pressure",
+        "electrical": "Electrical sockets and lighting",
+        "doors": "Doors, locks and windows",
+        "structure": "Walls, roof and floors",
+        "safety": "Fire and safety equipment"
+      }
+    }
+  },
+  "payment": {
+    "card_number": "Card number",
+    "expiry": "Expiry date",
+    "cvv": "CVV",
+    "prompt_hint": "A prompt will be sent to your phone to confirm.",
+    "details_title": "{{method}} details"
   }
 }

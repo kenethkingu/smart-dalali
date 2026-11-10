@@ -7,15 +7,15 @@ import { VisitRequestCard } from '@/components/buyer/VisitRequestCard'
 import { PrimaryButton } from '@/components/shared/Bits'
 
 import { useRequests } from '@/lib/requests'
-import { useEvents } from '@/lib/events'
+import { recordEvent } from '@/services/management/eventLog'
+import { actorOf } from '@/services/management/shared'
 
 export function BuyerDashboard() {
   const { user } = useAuth()
   const { t } = useTranslation()
   const { requests: allRequests, updateRequest } = useRequests()
-  const { addEvent } = useEvents()
   
-  const requests = allRequests.filter(r => r.buyerId === user?.id || r.buyerId === 'buyer1')
+  const requests = allRequests.filter(r => r.buyerId === user?.id)
 
   const pending = requests.filter(r => r.status === 'pending').length
   const confirmed = requests.filter(r => r.status === 'payment_confirmed').length
@@ -23,29 +23,13 @@ export function BuyerDashboard() {
   const handleDecline = (id: string) => {
     updateRequest(id, { status: 'declined', declinedAt: new Date().toISOString() })
     const req = allRequests.find(r => r.id === id)
-    if (req) {
-      addEvent({
-        propertyId: req.propertyId,
-        type: 'visit_declined',
-        actorId: user?.id ?? 'buyer1',
-        summary: `${user?.name ?? 'Buyer'} declined the site visit request.`,
-        requestId: id,
-      })
-    }
+    if (req && user) recordEvent({ propertyId: req.propertyId, type: 'visit_declined', actor: actorOf(user), relatedId: id })
   }
 
   const handlePay = (id: string) => {
     updateRequest(id, { status: 'payment_confirmed', paymentConfirmedAt: new Date().toISOString() })
     const req = allRequests.find(r => r.id === id)
-    if (req) {
-      addEvent({
-        propertyId: req.propertyId,
-        type: 'payment_confirmed',
-        actorId: user?.id ?? 'buyer1',
-        summary: `${user?.name ?? 'Buyer'} confirmed payment for the site visit.`,
-        requestId: id,
-      })
-    }
+    if (req && user) recordEvent({ propertyId: req.propertyId, type: 'payment_confirmed', actor: actorOf(user), relatedId: id })
   }
 
   return (
